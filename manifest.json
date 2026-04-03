@@ -4,8 +4,8 @@
   "description": "App per la gestione delle finanze personali",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#f8fafc",
+  "background_color": "#07070e",
+  "theme_color": "#07070e",
   "icons": [
     {
       "src": "icon-192.png",
