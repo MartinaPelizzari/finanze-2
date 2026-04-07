@@ -58,7 +58,8 @@ input, select, textarea {
     pointer-events: auto !important;
 }
 
-.page{display:none;padding:0 0 calc(var(--nav)+24px);min-height:100dvh}
+/* Padding inferiore generoso per evitare tagli */
+.page{display:none;padding:0 0 calc(var(--nav) + 80px);min-height:100dvh}
 .page.active{display:block;animation:fu .3s cubic-bezier(0.16, 1, 0.3, 1)}
 @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
@@ -93,14 +94,13 @@ input, select, textarea {
 .io-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--tx2); font-weight: 600; margin-bottom: 6px; }
 .io-val { font-family: var(--mono); font-size: 20px; font-weight: 600; color: var(--tx); margin-bottom: 2px; }
 
-/* QUICK STATS (Scorrimento orizzontale) */
-.quick-stats-wrapper { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 16px; margin-bottom: 4px; scrollbar-width: none; }
-.quick-stats-wrapper::-webkit-scrollbar { display: none; }
-.q-stat { background: var(--sf); border: 1px solid var(--bd); border-radius: 16px; padding: 14px 16px; min-width: 140px; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px; }
-.qs-ic { width: 24px; height: 24px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
+/* QUICK STATS (Griglia Responsive) */
+.quick-stats-wrapper { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+.q-stat { background: var(--sf); border: 1px solid var(--bd); border-radius: 16px; padding: 14px 8px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+.qs-ic { width: 24px; height: 24px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 2px; }
 .qs-ic svg { width: 14px; height: 14px; stroke-width: 2.5; }
-.qs-lbl { font-size: 12px; color: var(--tx2); font-weight: 500; }
-.qs-val { font-family: var(--mono); font-size: 18px; font-weight: 600; color: var(--tx); }
+.qs-lbl { font-size: 11px; color: var(--tx2); font-weight: 500; line-height: 1.1; }
+.qs-val { font-family: var(--mono); font-size: 16px; font-weight: 600; color: var(--tx); }
 
 /* INSIGHTS (Allarmi e Motivazione) */
 .insights-w { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
@@ -330,6 +330,24 @@ input, select, textarea {
       <div class="dh-sub" id="h-bal-s"></div>
     </div>
 
+    <div class="quick-stats-wrapper">
+      <div class="q-stat">
+        <div class="qs-ic" style="background:var(--gra);color:var(--green);" id="ic-qs-save"></div>
+        <div class="qs-lbl">Tasso Risparmio</div>
+        <div class="qs-val" id="qs-sav-rate">0%</div>
+      </div>
+      <div class="q-stat">
+        <div class="qs-ic" style="background:var(--ba);color:var(--blue);" id="ic-qs-zero"></div>
+        <div class="qs-lbl">Giorni a €0</div>
+        <div class="qs-val" id="qs-zero-days">0</div>
+      </div>
+      <div class="q-stat">
+        <div class="qs-ic" style="background:var(--ra);color:var(--red);" id="ic-qs-burn"></div>
+        <div class="qs-lbl">Spese Fisse</div>
+        <div class="qs-val" id="qs-burn-rate">0%</div>
+      </div>
+    </div>
+
     <div class="dash-io">
       <div class="io-card">
         <div class="io-ico i" id="ic-dash-in"></div>
@@ -407,24 +425,6 @@ input, select, textarea {
     </div>
   </div>
   <div class="pw">
-
-    <div class="quick-stats-wrapper" style="margin-top: 8px;">
-      <div class="q-stat">
-        <div class="qs-ic" style="background:var(--gra);color:var(--green);" id="ic-qs-save"></div>
-        <div class="qs-lbl">Tasso Risparmio</div>
-        <div class="qs-val" id="qs-sav-rate">0%</div>
-      </div>
-      <div class="q-stat">
-        <div class="qs-ic" style="background:var(--ba);color:var(--blue);" id="ic-qs-zero"></div>
-        <div class="qs-lbl">Giorni Spesa Zero</div>
-        <div class="qs-val" id="qs-zero-days">0</div>
-      </div>
-      <div class="q-stat">
-        <div class="qs-ic" style="background:var(--ra);color:var(--red);" id="ic-qs-burn"></div>
-        <div class="qs-lbl">Peso Spese Fisse</div>
-        <div class="qs-val" id="qs-burn-rate">0%</div>
-      </div>
-    </div>
     
     <div class="chart-card" style="display:flex; flex-direction:column; align-items:center; padding: 24px;">
       <div style="font-size:12px; color:var(--tx2); text-transform:uppercase; font-weight:600; letter-spacing:0.05em; margin-bottom:8px;">Autonomia Finanziaria</div>
@@ -433,26 +433,21 @@ input, select, textarea {
     </div>
 
     <div class="chart-card">
+      <div class="chart-lbl">Cash Flow Storico</div>
+      <div id="cf-wrapper" style="width:100%; overflow-x:auto; padding-bottom:8px; scroll-behavior: smooth;">
+        <div id="cf-chart-container" style="position:relative; height:180px; min-width: 100%;">
+          <canvas id="cf-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
       <div class="chart-lbl">Dettaglio Categorie Mensili</div>
       <div style="position:relative;height:240px;display:flex;justify-content:center;align-items:center;">
         <canvas id="cat-chart"></canvas>
       </div>
     </div>
-    <div id="ana-cat-list" class="cat-list" style="margin-bottom:24px;"></div>
-    
-    <div class="sec">Top 5 Categorie (Uscite)</div>
-    <div class="chart-card" style="padding:12px 20px;">
-        <div id="ana-top5" class="top5-list"></div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-lbl">Cash Flow Storico</div>
-      <div style="width:100%; overflow-x:auto; padding-bottom:8px;">
-        <div id="cf-chart-container" style="position:relative;height:180px;min-width:300px;">
-          <canvas id="cf-chart"></canvas>
-        </div>
-      </div>
-    </div>
+    <div id="ana-cat-list" class="cat-list"></div>
 
   </div>
 </div>
@@ -681,7 +676,7 @@ document.getElementById('ic-qs-save').innerHTML = Ics.shield;
 document.getElementById('ic-qs-zero').innerHTML = Ics.target;
 document.getElementById('ic-qs-burn').innerHTML = Ics.home;
 
-// Add choices (Modificate e pulite)
+// Add choices
 document.getElementById('btn-ch-out').innerHTML = `<div style="background:var(--ra); width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${Ics.down}</div> <span style="font-weight:600">Uscita</span>`;
 document.getElementById('btn-ch-in').innerHTML = `<div style="background:var(--gra); width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${Ics.up}</div> <span style="font-weight:600">Entrata</span>`;
 document.getElementById('btn-ch-fx').innerHTML = `<div style="background:var(--sf2); width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${Ics.plus}</div> <span style="font-weight:600">Spesa Fissa</span>`;
@@ -726,12 +721,18 @@ const ICONS  = ['game','shirt','food','plane','sport','tech','health','book','ca
 const COLORS = ['#9b5de5','#3a86ff','#f77f00','#06d6a0','#2dc653','#5352ed','#ef233c','#ffd166','#00b4d8','#d4a843','#fb8500','#8ecae6','#ff006e','#8338ec','#38b000','#ffbe0b'];
 
 const CAT_COLORS = {
+  // NUOVE Categorie
   'Affitto e Casa': '#fb8500', 'Bollette': '#ffb703', 'Spesa al Supermercato': '#00b4d8',
   'Trasporti': '#d4a843', 'Salute e Prevenzione': '#ef233c',
   'Corsa e Sport': '#2dc653', 'Viaggi e Vacanze': '#06d6a0', 'Abbonamenti e Servizi': '#ff006e',
   'Ristoranti e Socialità': '#f77f00', 'Shopping': '#3a86ff', 'Cultura e Svago': '#9b5de5',
   'Imprevisti ed Emergenze': '#d90429', 'Risparmi e Investimenti': '#5352ed',
-  'Altro': '#4a4860'
+  // VECCHIE Categorie
+  'Casa': '#fb8500', 'Abbonamenti': '#ff006e', 'Assicurazioni': '#8338ec',
+  'Auto/Trasporti': '#d4a843', 'Salute': '#ef233c', 'Sport': '#2dc653',
+  'Formazione': '#ffd166', 'Svago': '#9b5de5', 'Abbigliamento': '#3a86ff',
+  'Cibo/Ristoranti': '#f77f00', 'Viaggi': '#06d6a0', 'Tecnologia': '#5352ed',
+  'Spesa': '#00b4d8', 'Lavoro': '#8ecae6', 'Altro': '#4a4860'
 };
 
 const SKEY = 'finanze_v6';
@@ -902,6 +903,11 @@ function renderHome(){
   let burnRate = inc > 0 ? Math.round((fixedTotal(ym) / inc) * 100) : 0;
   let zeroDays = getZeroSpendDays(ym);
 
+  // Aggiornamento statistiche in Home
+  document.getElementById('qs-sav-rate').textContent = savRate + '%';
+  document.getElementById('qs-zero-days').textContent = zeroDays;
+  document.getElementById('qs-burn-rate').textContent = burnRate + '%';
+
   let insights = [];
   if (disp < 0) insights.push({type: 'warn', msg: "Hai allocato o speso in fisse più di quello che hai incassato in questo mese."});
   if (savRate >= 20) insights.push({type: 'good', msg: "Ottimo lavoro! Stai risparmiando il " + savRate + "% delle tue entrate."});
@@ -1038,23 +1044,66 @@ function renderAnalisi(){
     Chart.defaults.font.family = "'Inter', sans-serif";
     Chart.defaults.color = "#9ca3af";
 
-    // 1. STATS RAPIDE INTEGRATE
-    let inc = totalIncome(ym), bal = netBalance(ym);
-    let savRate = inc > 0 ? Math.max(0, Math.round((bal / inc) * 100)) : 0;
-    let zeroDays = getZeroSpendDays(ym);
-    let burnRate = inc > 0 ? Math.round((fixedTotal(ym) / inc) * 100) : 0;
-    
-    document.getElementById('qs-sav-rate').textContent = savRate + '%';
-    document.getElementById('qs-zero-days').textContent = zeroDays;
-    document.getElementById('qs-burn-rate').textContent = burnRate + '%';
-
-    // 2. RUNWAY
+    // 1. RUNWAY
     let accWealth = getAccumulatedWealth();
     let avgBurn = getAverageBurnRate(6);
     let runway = avgBurn > 0 ? (accWealth / avgBurn).toFixed(1) : 0;
     document.getElementById('ana-runway').textContent = `${runway} Mesi`;
 
-    // 3. CATEGORIE PIE CHART
+    // 2. CASH FLOW CHART SCORREVOLE
+    let allM = allMonths();
+    // Assicuriamoci che l'array contenga almeno il mese corrente
+    if (!allM.includes(ym)) { allM.push(ym); }
+    allM.sort();
+
+    const labelsCF = allM.map(mShort);
+    const dataIn = allM.map(totalIncome);
+    const dataOut = allM.map(totalExpense);
+
+    const cfWrapper = document.getElementById('cf-wrapper');
+    const cfContainer = document.getElementById('cf-chart-container');
+    
+    // Mostriamo dinamicamente 6 mesi come viewport ideale. 
+    // Se ci sono più mesi, il container diventa più largo permettendo lo scroll
+    let visibleMonths = Math.max(6, allM.length);
+    cfContainer.style.width = (visibleMonths / 6 * 100) + '%';
+
+    if(cfChart) cfChart.destroy();
+    cfChart = new Chart(document.getElementById('cf-chart'), {
+        type: 'bar',
+        data: {
+            labels: labelsCF,
+            datasets: [
+                { label: 'Entrate', data: dataIn, backgroundColor: '#34d399', borderRadius: 4, barPercentage: 0.6 },
+                { label: 'Uscite', data: dataOut, backgroundColor: '#f87171', borderRadius: 4, barPercentage: 0.6 }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { position: 'bottom', labels: { boxWidth: 12, usePointStyle: true, padding: 20 } },
+                tooltip: { 
+                  backgroundColor: '#222222', titleFont: { size: 14 }, bodyFont: { size: 14, family: "'JetBrains Mono', monospace" },
+                  padding: 12, cornerRadius: 8,
+                  callbacks: { label: c => ` ${c.dataset.label}: €${Number(c.raw).toLocaleString('it-IT',{minimumFractionDigits:2})}` }
+                }
+            },
+            scales: {
+                x: { grid: { display: false }, ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 } } },
+                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 }, callback: v => '€' + v } }
+            }
+        }
+    });
+
+    // Auto-scrolla verso l'ultima data inserita (di solito il periodo più recente)
+    setTimeout(() => {
+        if(cfWrapper) {
+            cfWrapper.scrollLeft = cfWrapper.scrollWidth;
+        }
+    }, 10);
+
+    // 3. CATEGORIE PIE CHART E LISTA
     let spese = {};
     let totaleUscite = 0;
     S.fixedExpenses.forEach(f => {
@@ -1078,7 +1127,6 @@ function renderAnalisi(){
     if (totaleUscite === 0) {
         if(catChart) catChart.destroy();
         listEl.innerHTML = `<div class="empty"><div class="empty-i">${Ics.empty}</div><div class="empty-t">Nessuna uscita questo mese</div></div>`;
-        document.getElementById('ana-top5').innerHTML = '';
     } else {
         const labels = catArray.map(c => c.name);
         const dataVals = catArray.map(c => c.amt);
@@ -1115,58 +1163,7 @@ function renderAnalisi(){
                 }
             }
         });
-        
-        // 4. TOP 5 CATEGORIE MESE (Invece delle singole transazioni)
-        let top5Cats = catArray.slice(0, 5);
-        const top5El = document.getElementById('ana-top5');
-        top5El.innerHTML = top5Cats.map((c, i) => `
-            <div class="top5-item">
-                <div class="top5-left">
-                    <div class="top5-desc">${i+1}. ${esc(c.name)}</div>
-                </div>
-                <div class="top5-amt" style="color:var(--red)">- ${fmt(c.amt)}</div>
-            </div>
-        `).join('');
     }
-
-    // 5. CASH FLOW CHART SCORREVOLE (Tutti i mesi disponibili)
-    const allM = allMonths();
-    const labelsCF = allM.map(mShort);
-    const dataIn = allM.map(totalIncome);
-    const dataOut = allM.map(totalExpense);
-
-    const cfContainer = document.getElementById('cf-chart-container');
-    // Adatta la larghezza del canvas per permettere lo scroll se ci sono molti mesi
-    const minW = Math.max(300, allM.length * 60); 
-    cfContainer.style.width = minW + 'px';
-
-    if(cfChart) cfChart.destroy();
-    cfChart = new Chart(document.getElementById('cf-chart'), {
-        type: 'bar',
-        data: {
-            labels: labelsCF,
-            datasets: [
-                { label: 'Entrate', data: dataIn, backgroundColor: '#34d399', borderRadius: 4, barPercentage: 0.6 },
-                { label: 'Uscite', data: dataOut, backgroundColor: '#f87171', borderRadius: 4, barPercentage: 0.6 }
-            ]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            interaction: { mode: 'index', intersect: false },
-            plugins: {
-                legend: { position: 'bottom', labels: { boxWidth: 12, usePointStyle: true, padding: 20 } },
-                tooltip: { 
-                  backgroundColor: '#222222', titleFont: { size: 14 }, bodyFont: { size: 14, family: "'JetBrains Mono', monospace" },
-                  padding: 12, cornerRadius: 8,
-                  callbacks: { label: c => ` ${c.dataset.label}: €${Number(c.raw).toLocaleString('it-IT',{minimumFractionDigits:2})}` }
-                }
-            },
-            scales: {
-                x: { grid: { display: false }, ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 } } },
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 }, callback: v => '€' + v } }
-            }
-        }
-    });
 }
 
 // ── Transaction ─────────────────────────────────────────────────────
