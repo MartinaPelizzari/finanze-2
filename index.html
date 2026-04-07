@@ -39,7 +39,7 @@
   --sans: 'Inter', sans-serif;
   --r: 24px; 
   --rs: 16px;
-  --nav: 76px;
+  --nav: 86px; 
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -93,12 +93,12 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
 .io-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--tx2); font-weight: 600; margin-bottom: 2px; }
 .io-val { font-family: var(--mono); font-size: 16px; font-weight: 600; color: var(--tx); }
 
-/* KPI GRID (New Design) */
+/* KPI GRID */
 .kpi-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
 .kpi-card { background: var(--sf); border: 1px solid var(--bd); border-radius: var(--rs); padding: 16px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
 .kpi-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:3px; background: var(--kc); }
 .kpi-lbl { font-size: 11px; color: var(--tx2); font-weight: 600; margin-bottom: 8px; line-height: 1.2;}
-.kpi-val { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--tx); }
+.kpi-val { font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--tx); }
 
 /* PREVISIONI CARDS */
 .prev-card { background: var(--sf); border: 1px solid var(--bd); border-radius: var(--rs); padding: 20px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 12px; position: relative;}
@@ -106,9 +106,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
 .pr-lbl { font-size: 13px; color: var(--tx); font-weight: 600;}
 .pr-val { font-family: var(--mono); font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px;}
 .pr-desc { font-size: 12px; color: var(--tx2); line-height: 1.5; background: var(--sf2); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);}
-.pr-chart-box { height: 60px; width: 100px; position:relative; }
-.pr-chart-full { height: 10px; width: 100%; background: var(--bg); border-radius: 5px; overflow: hidden; margin-top: 8px;}
-.pr-chart-fill { height: 100%; border-radius: 5px; }
+.pr-chart-box { height: 70px; width: 110px; position:relative; display:flex; justify-content:center; align-items:center; }
 
 /* INSIGHTS */
 .insights-w { display: flex; flex-direction: column; gap: 8px; margin-bottom: 32px; }
@@ -129,15 +127,11 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
 
 /* STATS LIST HOME & PORTAFOGLI */
 .stat-list{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
-.stat-item{background: var(--sf); border: 1px solid var(--bd); border-radius: var(--rs); padding: 16px; display:flex; flex-direction:column; gap:14px;}
-.stat-top{display:flex;align-items:flex-start;gap:14px; width: 100%;}
-.stat-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stat-item{background: var(--sf); border: 1px solid var(--bd); border-radius: var(--rs); padding: 16px; display:flex; flex-direction:column; transition:transform 0.1s;}
+.stat-item:active{transform:scale(0.98); background:var(--sf2);}
+
+.stat-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .stat-ico svg{width:20px;height:20px}
-.stat-body{flex:1;min-width:0}
-.stat-name{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx)}
-.stat-sub{font-size:12px;color:var(--tx3);margin-top:4px; font-family:var(--mono);}
-.stat-vals{text-align:right; display:flex; flex-direction:column; align-items:flex-end;}
-.stat-v{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--tx)}
 
 /* LISTE FLUIDE */
 .txl, .fxl, .cat-list { display: flex; flex-direction: column; margin-bottom: 24px; background: var(--sf); border: 1px solid var(--bd); border-radius: var(--r); overflow: hidden; }
@@ -208,15 +202,15 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
 .w-avg{font-size:10px;color:var(--tx3);font-family:var(--mono);}
 
 /* BOTTOM NAV */
-.bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 8px 12px calc(env(safe-area-inset-bottom, 0px) + 12px); z-index: 50; }
+.bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 12px 12px max(24px, env(safe-area-inset-bottom, 16px)); z-index: 50; }
 .nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:4px;padding:6px 0;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
 .nt.active{color:var(--tx)}
 .nt-i{display:flex;align-items:center;justify-content:center}
 .nt-i svg{width:22px;height:22px;stroke-width:2.2}
 .fab-w{flex:0 0 72px;display:flex;justify-content:center;align-items:center}
-.fab{width:52px;height:52px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-16px); box-shadow: 0 8px 20px rgba(255,255,255,0.15); transition:all 0.2s;} 
-.fab svg{width:22px;height:22px;stroke-width:2.5}
-.fab:active{transform:translateY(-16px) scale(0.92); background: #d0d0d0;}
+.fab{width:56px;height:56px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-24px); box-shadow: 0 8px 24px rgba(255,255,255,0.2); transition:all 0.2s;} 
+.fab svg{width:24px;height:24px;stroke-width:2.5}
+.fab:active{transform:translateY(-24px) scale(0.92); background: #d0d0d0;}
 
 /* UTILS */
 .empty{text-align:center;padding:40px 20px;color:var(--tx3)}
@@ -407,7 +401,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
       <span style="font-family:var(--mono);color:var(--tx);font-size:16px;font-weight:600;" id="fx-tot">€0</span>
     </div>
     <div id="fx-list"></div>
-    <button class="add-btn" data-a="add-fx" id="btn-add-fx">Aggiungi spesa fissa</button>
+    <button class="add-btn" data-a="add-fx" id="btn-add-fx"></button>
     
     <div class="sec" style="margin-top:32px; margin-bottom:12px;">Transazioni Storiche</div>
     <div id="mov-txl"></div>
@@ -488,12 +482,23 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
         <div class="prev-card">
             <div class="pr-hd">
                 <div>
-                    <div class="pr-lbl" style="color:var(--green)">Proiezione a Fine Anno</div>
+                    <div class="pr-lbl" style="color:var(--green)">Patrimonio a Fine Anno</div>
                     <div class="pr-val" id="pr-patrimonio">€0.00</div>
                 </div>
                 <div class="pr-chart-box"><canvas id="ch-prev-eoy"></canvas></div>
             </div>
-            <div class="pr-desc" id="pr-patrimonio-desc">Calcolato sommando la tua liquidità attuale al risparmio medio mensile proiettato per i mesi restanti dell'anno. Indica quanti soldi avrai a Dicembre se mantieni le abitudini di questo periodo.</div>
+            <div class="pr-desc" id="pr-patrimonio-desc">Basato sul tuo <b>Vero Risparmio Medio Storico</b>. Proietta dove arriverai a dicembre se mantieni le abitudini registrate dall'inizio del tuo utilizzo dell'app.</div>
+        </div>
+
+        <div class="prev-card">
+            <div class="pr-hd">
+                <div>
+                    <div class="pr-lbl" style="color:var(--gold)">Risparmio Medio Mensile</div>
+                    <div class="pr-val" id="pr-spesa">€0.00</div>
+                </div>
+                <div class="pr-chart-box"><canvas id="ch-prev-bar"></canvas></div>
+            </div>
+            <div class="pr-desc" id="pr-spesa-desc">La media mensile globale delle tue Entrate (verde) meno le tue Uscite Totali (rosso). Rappresenta i soldi reali che accantoni ogni mese.</div>
         </div>
 
         <div class="prev-card">
@@ -504,21 +509,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
                 </div>
                 <div class="pr-chart-box"><canvas id="ch-prev-run"></canvas></div>
             </div>
-            <div class="pr-desc" id="pr-runway-desc">Calcolato dividendo la tua liquidità totale attuale per la spesa media mensile. Mostra per quanti mesi potresti coprire le tue uscite senza incassare un solo euro.</div>
-        </div>
-
-        <div class="prev-card">
-            <div class="pr-hd">
-                <div>
-                    <div class="pr-lbl" style="color:var(--gold)">Ritmo di Spesa (Burn)</div>
-                    <div class="pr-val" id="pr-spesa">€0.00</div>
-                </div>
-                <div class="pr-chart-box" style="display:flex; flex-direction:column; justify-content:center; padding-top:10px;">
-                    <div style="font-size:10px; text-transform:uppercase; color:var(--tx3); font-weight:600; margin-bottom:4px;">vs Entrate</div>
-                    <div class="pr-chart-full"><div class="pr-chart-fill" id="bar-burn" style="background:var(--gold); width:0%;"></div></div>
-                </div>
-            </div>
-            <div class="pr-desc" id="pr-spesa-desc">La media esatta dei tuoi costi (fissi + variabili) normalizzata su un mese solare standard, calcolata in proporzione ai giorni passati nel periodo analizzato.</div>
+            <div class="pr-desc" id="pr-runway-desc">Calcolato dividendo la tua liquidità attuale per la spesa media storica. Indica per quanti mesi potresti vivere senza incassare un solo euro.</div>
         </div>
 
     </div>
@@ -766,6 +757,7 @@ document.getElementById('ic-dash-in').innerHTML = Ics.up;
 document.getElementById('ic-dash-out').innerHTML = Ics.down;
 document.getElementById('btn-add-fx').innerHTML = Ics.plus + ' Aggiungi spesa fissa';
 document.getElementById('btn-wd-edit').innerHTML = Ics.edit + ' Modifica';
+document.getElementById('btn-add-wallet').innerHTML = Ics.plus + ' Crea Nuovo Portafoglio';
 document.getElementById('h-bal-icon').innerHTML = Ics.target;
 
 // Add choices
@@ -776,6 +768,7 @@ document.getElementById('btn-ch-fx').innerHTML = `<div style="background:var(--s
 let _confirmCallback = null;
 let catChart = null; 
 let prevEoyChart = null;
+let prevBarChart = null;
 let prevRunChart = null;
 let portCharts = {};
 
@@ -811,7 +804,6 @@ const PRESETS = [
   {i:'cart',n:'Spesa',c:'#00b4d8'},{i:'car',n:'Auto',c:'#d4a843'},
   {i:'home',n:'Casa',c:'#fb8500'},{i:'briefcase',n:'Lavoro',c:'#8ecae6'},
 ];
-// Removed duplicate coffee, ensuring 16 items
 const ICONS  = ['game','shirt','food','plane','sport','tech','health','book','cart','car','home','briefcase','music','tool','star','shield'];
 const COLORS = ['#9b5de5','#3a86ff','#f77f00','#06d6a0','#2dc653','#5352ed','#ef233c','#ffd166','#00b4d8','#d4a843','#fb8500','#8ecae6','#ff006e','#8338ec','#38b000','#ffbe0b'];
 
@@ -832,9 +824,9 @@ function thisMonth(){const d=new Date();return`${d.getFullYear()}-${String(d.get
 function startOfMonth(ym){ return `${ym}-01`; }
 function endOfMonth(ym){ let [y,m]=ym.split('-').map(Number); let e=new Date(y,m,0); return `${y}-${String(m).padStart(2,'0')}-${String(e.getDate()).padStart(2,'0')}`; }
 
-let selMonth   = thisMonth(); // Navigazione per movimenti/portafogli
-let anaDateStart = startOfMonth(thisMonth()); // Analisi
-let anaDateEnd   = endOfMonth(thisMonth()); // Analisi
+let selMonth   = thisMonth(); 
+let anaDateStart = startOfMonth(thisMonth()); 
+let anaDateEnd   = endOfMonth(thisMonth()); 
 let anaActiveTab = 'kpi';
 
 let editTxId   = null;
@@ -881,6 +873,7 @@ function offsetMonth(ym,d){let[y,m]=ym.split('-').map(Number);m+=d;while(m>12){m
 function allMonths(){
   const s=new Set();
   S.transactions.forEach(t=>s.add(t.date.slice(0,7)));
+  S.fixedExpenses.forEach(f => { if(f.startMonth) s.add(f.startMonth); });
   if(!s.size)s.add(thisMonth());
   return[...s].sort();
 }
@@ -979,14 +972,15 @@ function getAccumulatedWealthUpTo(endYm) {
 }
 
 // ── Queries Range Dates (Per Analisi) ──────────────────────────────────────
-function getMonthsInRangeYTD(start, end) {
+function getMonthsInRangeStrictYTD(start, end) {
     let res = [];
     let cur = new Date(start);
     let endD = new Date(end);
     let today = new Date();
-    if(endD > today) endD = today; // Non contiamo mesi interi del futuro se siamo "Year to Date"
-    cur.setDate(1);
-    endD.setDate(1);
+    
+    cur.setDate(1); endD.setDate(1); today.setDate(1);
+    if(endD > today) endD = today; 
+    
     while(cur <= endD) {
         res.push(`${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}`);
         cur.setMonth(cur.getMonth() + 1);
@@ -998,7 +992,7 @@ function txInRange(start, end) { return S.transactions.filter(t => t.date >= sta
 function incInRange(start, end) { return txInRange(start, end).filter(t => t.type === 'income').reduce((s,t)=>s+t.amount,0); }
 function varExpInRange(start, end) { return txInRange(start, end).filter(t => t.type === 'expense').reduce((s,t)=>s+t.amount,0); }
 function fixedInRange(start, end) { 
-    return getMonthsInRangeYTD(start, end).reduce((s,m) => s + fixedTotal(m), 0); 
+    return getMonthsInRangeStrictYTD(start, end).reduce((s,m) => s + fixedTotal(m), 0); 
 }
 function getZeroSpendDaysInRange(start, end) {
     let txs = txInRange(start, end).filter(t => t.type === 'expense');
@@ -1017,23 +1011,44 @@ function getZeroSpendDaysInRange(start, end) {
     return zeroDays;
 }
 function allocInRange(wid, start, end) {
-    let mths = getMonthsInRangeYTD(start, end);
+    let mths = getMonthsInRangeStrictYTD(start, end);
     return mths.reduce((s, m) => s + walletMonthAlloc(wid, m), 0);
 }
 function spentInRange(wid, start, end) {
     return txInRange(start, end).filter(t => t.type === 'expense' && t.walletId === wid).reduce((s,t)=>s+t.amount,0);
 }
-// Storico spesa per portafoglio (per grafico)
+
+// Storico Dinamico per grafico portafogli
 function getWalletTrend(wid, start, end) {
-    let mths = getMonthsInRangeYTD(start, end);
+    let sYM = start.slice(0,7);
+    let eYM = end.slice(0,7);
     let data = [];
-    mths.forEach(m => {
-        let spent = txForMonth(m).filter(t => t.type === 'expense' && t.walletId === wid).reduce((s,t)=>s+t.amount,0);
-        data.push({ mLabel: mShort(m), spent });
-    });
+
+    if (sYM === eYM) {
+        let [y, m] = sYM.split('-');
+        let today = new Date();
+        let isCurrentMonth = (parseInt(y) === today.getFullYear() && parseInt(m) === today.getMonth() + 1);
+        let daysInMonth = new Date(y, m, 0).getDate();
+        let checkUntil = isCurrentMonth ? today.getDate() : daysInMonth;
+
+        let txs = txForMonth(sYM).filter(t => t.type === 'expense' && t.walletId === wid);
+        let cumulative = 0;
+
+        for(let i=1; i<=checkUntil; i++) {
+            let dStr = `${y}-${m}-${String(i).padStart(2,'0')}`;
+            let daySpent = txs.filter(t => t.date === dStr).reduce((s,t)=>s+t.amount,0);
+            cumulative += daySpent;
+            data.push({ mLabel: String(i), spent: cumulative });
+        }
+    } else {
+        let mths = getMonthsInRangeStrictYTD(start, end);
+        mths.forEach(mStr => {
+            let spent = txForMonth(mStr).filter(t => t.type === 'expense' && t.walletId === wid).reduce((s,t)=>s+t.amount,0);
+            data.push({ mLabel: mShort(mStr), spent });
+        });
+    }
     return data;
 }
-
 
 function updateLabels(){
   const selL = mLabel(selMonth);
@@ -1052,7 +1067,15 @@ function nav(page){
   document.querySelectorAll('.nt').forEach(n=>n.classList.remove('active'));
   document.getElementById('pg-'+page).classList.add('active');
   const nt=document.getElementById('nt-'+page);if(nt)nt.classList.add('active');
+  
+  // Render della nuova pagina
   renderPage(page);
+  
+  // Scorrimento in cima
+  window.scrollTo(0, 0);
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  setTimeout(() => { window.scrollTo(0, 0); }, 10);
 }
 function renderPage(p){
   if(p==='home')renderHome();
@@ -1097,12 +1120,13 @@ function renderHome(){
 
   let savRate = inc > 0 ? Math.max(0, Math.round((bal / inc) * 100)) : 0;
   let burnRate = inc > 0 ? Math.round((fixedTotal(ym) / inc) * 100) : 0;
-  let zeroDays = getZeroSpendDays(ym);
+  
+  let zeroDays = getZeroSpendDaysInRange(startOfMonth(ym), endOfMonth(ym));
 
-  // Insights
   let activeW = getActiveWallets(ym);
   const tAlloc=activeW.reduce((s,w)=>s+walletMonthAlloc(w.id,ym),0);
   const disp = totalIncome(ym) - fixedTotal(ym) - tAlloc;
+  
   let insights = [];
   if (disp < 0) insights.push({type: 'warn', msg: "Hai allocato o speso in fisse più di quello che hai incassato in questo mese."});
   if (savRate >= 20) insights.push({type: 'good', msg: "Ottimo lavoro! Stai risparmiando il " + savRate + "% delle tue entrate mensili."});
@@ -1130,7 +1154,7 @@ function renderHome(){
           if (alloc > 0) {
               if (cur > alloc) { statusTxt = "Fuori budget"; statusCol = "var(--red)"; statusBg = "var(--ra)"; }
               else if (cur >= alloc * 0.8) { statusTxt = "Attenzione"; statusCol = "var(--gold)"; statusBg = "var(--ga)"; }
-              else { statusTxt = "In linea"; statusCol = "var(--green)"; statusBg = "var(--gra)"; }
+              else { statusTxt = "Sotto budget"; statusCol = "var(--green)"; statusBg = "var(--gra)"; }
           } else {
               if (avg === 0) {
                    statusTxt = cur > 0 ? "Spesa imprevista" : "Nessuna spesa";
@@ -1138,26 +1162,32 @@ function renderHome(){
                    statusBg = cur > 0 ? "var(--ga)" : "var(--sf2)";
               } else if (cur > avg * 1.1) {
                    statusTxt = "Sopra media"; statusCol = "var(--red)"; statusBg = "var(--ra)";
+              } else if (cur >= avg * 0.8) {
+                   statusTxt = "In linea"; statusCol = "var(--green)"; statusBg = "var(--gra)";
               } else {
-                   statusTxt = "Nella media"; statusCol = "var(--green)"; statusBg = "var(--gra)";
+                   statusTxt = "Sotto media"; statusCol = "var(--green)"; statusBg = "var(--gra)";
               }
           }
 
-          let rgbaBg = w.color + '22';
-
           statsHTML += `
-          <div class="stat-item" style="gap:10px;">
-            <div class="stat-top" style="align-items:flex-start;">
-                <div class="stat-ico" style="color:${w.color}; background:${rgbaBg};">${Ics[w.icon] || Ics.wallet}</div>
-                <div class="stat-body">
-                    <div class="stat-name">${esc(w.name)}</div>
-                    <div class="stat-sub">Spesa media storica: ${fmt(avg)}</div>
+          <div class="stat-item" style="cursor:pointer;" data-a="open-wallet" data-id="${w.id}">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+                    <div class="stat-ico" style="color:${w.color}; background:${w.color}22;">
+                        ${Ics[w.icon] || Ics.wallet}
+                    </div>
+                    <div style="display:flex; flex-direction:column; min-width:0;">
+                        <div style="font-size:15px; font-weight:600; color:var(--tx); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${esc(w.name)}</div>
+                        <div style="font-size:12px; color:var(--tx3); font-family:var(--mono); margin-top:2px;">Media: ${fmt(avg)}/m</div>
+                    </div>
                 </div>
-                <div class="stat-vals">
-                    <div style="font-size:11px; color:var(--tx3); font-family:var(--mono); margin-bottom:2px;">${alloc>0 ? 'su '+fmt(alloc) : 'no budget'}</div>
-                    <div class="stat-v" style="margin-bottom:6px;">${fmt(cur)}</div>
-                    <div style="font-size:9px; font-weight:700; padding:4px 6px; border-radius:6px; color:${statusCol}; background:${statusBg}; text-transform:uppercase; letter-spacing:0.05em; display:inline-block; line-height:1;">${statusTxt}</div>
+                <div style="display:flex; flex-direction:column; align-items:flex-end; flex-shrink:0;">
+                    <div style="font-family:var(--mono); font-size:16px; font-weight:600; color:var(--tx);">${fmt(cur)}</div>
+                    <div style="font-size:11px; color:var(--tx3); font-family:var(--mono); margin-top:2px;">${alloc > 0 ? 'su ' + fmt(alloc) : 'no budget'}</div>
                 </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; margin-top:4px;">
+                <div style="font-size:10px; font-weight:700; padding:4px 8px; border-radius:6px; color:${statusCol}; background:${statusBg}; text-transform:uppercase; letter-spacing:0.04em;">${statusTxt}</div>
             </div>
           </div>`;
       });
@@ -1270,7 +1300,8 @@ function setAnaTab(t) {
     document.getElementById('ana-view-kpi').style.display = (t === 'kpi') ? 'block' : 'none';
     document.getElementById('ana-view-port').style.display = (t === 'port') ? 'block' : 'none';
     document.getElementById('ana-view-prev').style.display = (t === 'prev') ? 'block' : 'none';
-    renderAnalisi();
+    
+    setTimeout(() => renderAnalisi(), 10);
 }
 
 function renderAnalisi(){
@@ -1300,11 +1331,10 @@ function renderAnalisi(){
         document.getElementById('ana-qs-zero-days').textContent = zeroDays;
         document.getElementById('ana-qs-burn-rate').textContent = burnRate + '%';
 
-        // Dettaglio Categorie Doughnut
         let spese = {};
         let totCat = 0;
         
-        let mths = getMonthsInRangeYTD(anaDateStart, anaDateEnd);
+        let mths = getMonthsInRangeStrictYTD(anaDateStart, anaDateEnd);
         mths.forEach(ym => {
             S.fixedExpenses.forEach(f => {
                 if(isFxActive(f, ym)) {
@@ -1346,24 +1376,27 @@ function renderAnalisi(){
             }).join('');
 
             if(catChart) catChart.destroy();
-            catChart = new Chart(document.getElementById('cat-chart'), {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{ data: dataVals, backgroundColor: bgColors, borderWidth: 2, borderColor: '#151515', hoverOffset: 4 }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false, cutout: '75%',
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { 
-                          backgroundColor: '#222222', titleFont: { size: 14, family: "'Inter', sans-serif" }, bodyFont: { size: 14, family: "'JetBrains Mono', monospace" },
-                          padding: 12, cornerRadius: 8,
-                          callbacks: { label: c => ` €${Number(c.raw).toLocaleString('it-IT',{minimumFractionDigits:2})}` }
+            let ctx = document.getElementById('cat-chart');
+            if(ctx) {
+                catChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{ data: dataVals, backgroundColor: bgColors, borderWidth: 2, borderColor: '#151515', hoverOffset: 4 }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false, cutout: '75%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { 
+                              backgroundColor: '#222222', titleFont: { size: 14, family: "'Inter', sans-serif" }, bodyFont: { size: 14, family: "'JetBrains Mono', monospace" },
+                              padding: 12, cornerRadius: 8,
+                              callbacks: { label: c => ` €${Number(c.raw).toLocaleString('it-IT',{minimumFractionDigits:2})}` }
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         }
     }
 
@@ -1383,50 +1416,63 @@ function renderAnalisi(){
                 let cur = spentInRange(w.id, anaDateStart, anaDateEnd);
                 let alloc = allocInRange(w.id, anaDateStart, anaDateEnd);
                 
-                // Mesi attivi nel range selezionato
-                let mths = getMonthsInRangeYTD(anaDateStart, anaDateEnd);
-                let avg = cur / mths.length; 
+                let mths = getMonthsInRangeStrictYTD(anaDateStart, anaDateEnd);
+                let avg = cur / (mths.length || 1); 
 
                 let statusTxt = ""; let statusCol = ""; let statusBg = "";
                 if (alloc > 0) {
                     if (cur > alloc) { statusTxt = "Fuori budget"; statusCol = "var(--red)"; statusBg = "var(--ra)"; }
                     else if (cur >= alloc * 0.8) { statusTxt = "Attenzione"; statusCol = "var(--gold)"; statusBg = "var(--ga)"; }
-                    else { statusTxt = "In linea"; statusCol = "var(--green)"; statusBg = "var(--gra)"; }
+                    else { statusTxt = "Sotto budget"; statusCol = "var(--green)"; statusBg = "var(--gra)"; }
                 } else {
-                    statusTxt = cur > 0 ? "Spesa imprevista" : "Nessuna spesa";
-                    statusCol = cur > 0 ? "var(--gold)" : "var(--tx3)";
-                    statusBg = cur > 0 ? "var(--ga)" : "var(--sf2)";
+                    if (avg === 0) {
+                        statusTxt = cur > 0 ? "Spesa imprevista" : "Nessuna spesa";
+                        statusCol = cur > 0 ? "var(--gold)" : "var(--tx3)";
+                        statusBg = cur > 0 ? "var(--ga)" : "var(--sf2)";
+                    } else if (cur > avg * 1.1) {
+                        statusTxt = "Sopra media"; statusCol = "var(--red)"; statusBg = "var(--ra)";
+                    } else if (cur >= avg * 0.8) {
+                        statusTxt = "In linea"; statusCol = "var(--green)"; statusBg = "var(--gra)";
+                    } else {
+                        statusTxt = "Sotto media"; statusCol = "var(--green)"; statusBg = "var(--gra)";
+                    }
                 }
 
-                let rgbaBg = w.color + '22';
-
                 statsHTML += `
-                <div class="stat-item" style="gap:16px;">
-                  <div class="stat-top" style="align-items:flex-start;">
-                      <div class="stat-ico" style="color:${w.color}; background:${rgbaBg};">${Ics[w.icon] || Ics.wallet}</div>
-                      <div class="stat-body">
-                          <div class="stat-name">${esc(w.name)}</div>
-                          <div class="stat-sub">Media nel periodo: ${fmt(avg)} / m</div>
+                <div class="stat-item" style="gap:8px;">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                      <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+                          <div class="stat-ico" style="color:${w.color}; background:${w.color}22;">
+                              ${Ics[w.icon] || Ics.wallet}
+                          </div>
+                          <div style="display:flex; flex-direction:column; min-width:0;">
+                              <div style="font-size:15px; font-weight:600; color:var(--tx); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${esc(w.name)}</div>
+                              <div style="font-size:12px; color:var(--tx3); font-family:var(--mono); margin-top:2px;">Media: ${fmt(avg)}/m</div>
+                          </div>
                       </div>
-                      <div class="stat-vals">
-                          <div style="font-size:11px; color:var(--tx3); font-family:var(--mono); margin-bottom:2px;">${alloc>0 ? 'su '+fmt(alloc) : 'no budget'}</div>
-                          <div class="stat-v" style="margin-bottom:6px;">${fmt(cur)}</div>
-                          <div style="font-size:9px; font-weight:700; padding:4px 6px; border-radius:6px; color:${statusCol}; background:${statusBg}; text-transform:uppercase; letter-spacing:0.05em; display:inline-block; line-height:1;">${statusTxt}</div>
+                      <div style="display:flex; flex-direction:column; align-items:flex-end; flex-shrink:0;">
+                          <div style="font-family:var(--mono); font-size:16px; font-weight:600; color:var(--tx);">${fmt(cur)}</div>
+                          <div style="font-size:11px; color:var(--tx3); font-family:var(--mono); margin-top:2px;">${alloc > 0 ? 'su ' + fmt(alloc) : 'no budget'}</div>
                       </div>
                   </div>
-                  <div style="height: 60px; width: 100%; position:relative;">
+                  <div style="display:flex; justify-content:flex-end; margin-top:4px;">
+                      <div style="font-size:10px; font-weight:700; padding:4px 8px; border-radius:6px; color:${statusCol}; background:${statusBg}; text-transform:uppercase; letter-spacing:0.04em;">${statusTxt}</div>
+                  </div>
+                  <div style="height: 50px; width: 100%; position:relative; border-top:1px solid var(--bd); margin-top:8px; padding-top:8px;">
                       <canvas id="chart-w-${w.id}"></canvas>
                   </div>
                 </div>`;
             });
             document.getElementById('ana-stats-list').innerHTML = statsHTML;
 
-            // Inizializza grafici
             setTimeout(() => {
                 activeW.forEach(w => {
                     const ctx = document.getElementById(`chart-w-${w.id}`);
                     if(ctx) {
                         let trendData = getWalletTrend(w.id, anaDateStart, anaDateEnd);
+                        if(trendData.length === 1) trendData.unshift({mLabel: '', spent: 0});
+                        if(trendData.length === 0) trendData = [{mLabel:'', spent:0}, {mLabel:'', spent:0}];
+                        
                         portCharts[w.id] = new Chart(ctx, {
                             type: 'line',
                             data: {
@@ -1440,12 +1486,15 @@ function renderAnalisi(){
                             options: {
                                 responsive: true, maintainAspectRatio: false,
                                 plugins: { legend: {display:false}, tooltip: { enabled: false } },
-                                scales: { x: {display:false}, y: {display:false, beginAtZero:true} }
+                                scales: { 
+                                    x: {display:false}, 
+                                    y: {display:false, beginAtZero:true, max: Math.max(...trendData.map(d => d.spent))*1.2} 
+                                }
                             }
                         });
                     }
                 });
-            }, 100);
+            }, 50);
         }
     }
 
@@ -1453,59 +1502,68 @@ function renderAnalisi(){
     if (anaActiveTab === 'prev') {
         if(prevEoyChart) prevEoyChart.destroy();
         if(prevRunChart) prevRunChart.destroy();
+        if(prevBarChart) prevBarChart.destroy();
 
-        let today = new Date();
-        let endD = new Date(anaDateEnd);
-        if(endD > today) endD = today;
+        // 1. GLOBAL AVERAGES (Veri tassi storici dell'utente)
+        let activeMths = allMonths().filter(m => totalIncome(m) > 0 || totalExpense(m) > 0);
+        let numActive = activeMths.length || 1;
+        let globalIncAvg = activeMths.reduce((s, m) => s + totalIncome(m), 0) / numActive;
+        let globalExpAvg = activeMths.reduce((s, m) => s + totalExpense(m), 0) / numActive;
+        let globalSavAvg = globalIncAvg - globalExpAvg;
 
-        let daysInRange = Math.max(1, (endD - new Date(anaDateStart)) / (1000 * 60 * 60 * 24));
+        // 2. Patrimonio Fine Anno
+        let currentWealth = getAccumulatedWealthUpTo(thisMonth());
+        let dToday = new Date();
+        let monthsLeftInYear = 12 - (dToday.getMonth() + 1); // Quanti mesi pieni mancano
+        let estimatedEoyWealth = currentWealth + (globalSavAvg * monthsLeftInYear);
         
-        let dailyExp = totalExp / daysInRange;
-        let monthlyPaceExp = dailyExp * 30.4; 
-        
-        let dailyBal = bal / daysInRange;
-        let monthlyPaceBal = dailyBal * 30.4;
-
-        let monthsLeftInYear = 12 - (today.getMonth() + 1);
-        let estimatedEoyWealth = accWealth + (monthlyPaceBal * monthsLeftInYear);
-        let runway = monthlyPaceExp > 0 ? (accWealth / monthlyPaceExp).toFixed(1) : 0;
+        // 3. Mesi Autonomia
+        let runway = globalExpAvg > 0 ? (currentWealth / globalExpAvg).toFixed(1) : 0;
 
         document.getElementById('pr-patrimonio').textContent = fmt(Math.max(0, estimatedEoyWealth));
         document.getElementById('pr-runway').textContent = `${runway}`;
-        document.getElementById('pr-spesa').textContent = fmt(monthlyPaceExp);
+        document.getElementById('pr-spesa').textContent = fmt(globalSavAvg);
 
-        // Burn Rate Bar
-        let monthlyIncPace = (inc / daysInRange) * 30.4;
-        let burnPct = monthlyIncPace > 0 ? Math.min(100, (monthlyPaceExp / monthlyIncPace) * 100) : 100;
-        let burnCol = burnPct > 90 ? 'var(--red)' : (burnPct > 70 ? 'var(--gold)' : 'var(--green)');
-        document.getElementById('bar-burn').style.width = `${burnPct}%`;
-        document.getElementById('bar-burn').style.background = burnCol;
-
-        // EOY Chart
+        // Grafici Previsioni
         setTimeout(() => {
             let ctxEoy = document.getElementById('ch-prev-eoy');
             if(ctxEoy) {
                 prevEoyChart = new Chart(ctxEoy, {
-                    type: 'bar',
+                    type: 'line',
                     data: {
-                        labels: ['Oggi', 'Fine Anno'],
-                        datasets: [{ data: [accWealth, estimatedEoyWealth], backgroundColor: ['#34d39966', '#34d399'], borderRadius: 4 }]
+                        labels: ['Oggi', 'Dicembre'],
+                        datasets: [{ 
+                            data: [currentWealth, estimatedEoyWealth], 
+                            borderColor: '#34d399', backgroundColor: '#34d39933', 
+                            borderWidth: 2, borderDash: [5,5], pointRadius: 4, fill: true
+                        }]
                     },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend:{display:false}, tooltip:{enabled:false} }, scales: { x:{display:false}, y:{display:false} } }
                 });
             }
 
-            // Runway Gauge
+            let ctxBar = document.getElementById('ch-prev-bar');
+            if(ctxBar) {
+                prevBarChart = new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Entrate', 'Uscite'],
+                        datasets: [{ data: [globalIncAvg, globalExpAvg], backgroundColor: ['#34d399', '#f87171'], borderRadius: 4 }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend:{display:false}, tooltip:{enabled:false} }, scales: { x:{display:false}, y:{display:false} } }
+                });
+            }
+
             let ctxRun = document.getElementById('ch-prev-run');
             if(ctxRun) {
-                let rVal = Math.min(runway, 24); // max visual gauge 24 months
+                let rVal = Math.min(runway, 24); // max visual gauge
                 prevRunChart = new Chart(ctxRun, {
                     type: 'doughnut',
                     data: { labels: ['Runway', 'Empty'], datasets: [{ data: [rVal, 24 - rVal], backgroundColor: ['#a78bfa', '#1e1e1e'], borderWidth: 0 }] },
                     options: { responsive: true, maintainAspectRatio: false, circumference: 180, rotation: 270, plugins: { legend:{display:false}, tooltip:{enabled:false} } }
                 });
             }
-        }, 100);
+        }, 50);
     }
 }
 
@@ -1657,7 +1715,7 @@ function deleteWallet(id){
   const w=walletById(id);if(!w)return;
   askConfirm(
     `Archiviare "${w.name}"?`,
-    'Il portafoglio non sarà più visibile nei prossimi mesi, ma le spese passate rimarranno nello storico.',
+    'Il portafoglio non sarà più visibile nei mesi futuri, ma le spese passate rimarranno nello storico.',
     'Archivia',
     ()=>{
       w.archivedMonth = selMonth;
@@ -1842,14 +1900,13 @@ loadS();
 updateLabels();
 renderHome();
 
-// ── Service Worker Registration ──────────────────────────────────
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js').then((reg) => {
         console.log('Service worker registrato.');
       });
     });
-  }
+}
 </script>
 </body>
 </html>
