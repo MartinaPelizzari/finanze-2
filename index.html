@@ -3,36 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#07070e">
+<meta name="theme-color" content="#f8fafc">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Finanze">
-<meta name="mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="icon-192.png">
 
+<meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.json">
 
 <title>Finanze</title>
-<link rel="manifest" href="manifest.json">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <style>
 :root{
-  --bg:#07070e;--sf:#0f0f1d;--sf2:#161628;--bd:#1e1e36;
-  --gold:#d4a843;--ga:rgba(212,168,67,.14);
-  --green:#3dd68c;--gra:rgba(61,214,140,.13);
-  --red:#f05454;--ra:rgba(240,84,84,.13);
-  --tx:#e8e2d9;--tx2:#6d6a7a;--tx3:#3a3858;
-  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
-  --r:14px;--rs:10px;--nav:68px;
+  --bg: #f8fafc;
+  --sf: #ffffff;
+  --sf2: #f1f5f9;
+  --bd: #e2e8f0;
+  
+  --gold: #f59e0b;
+  --ga: rgba(245, 158, 11, 0.1);
+  --green: #10b981;
+  --gra: rgba(16, 185, 129, 0.1);
+  --red: #ef4444;
+  --ra: rgba(239, 68, 68, 0.1);
+  
+  --tx: #0f172a;
+  --tx2: #64748b;
+  --tx3: #94a3b8;
+  
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+  --r: 16px;
+  --rs: 12px;
+  --nav: 68px;
 }
+
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overscroll-behavior:none}
 body{background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:15px;overflow-x:hidden}
 
-/* Evita che su iOS il testo venga selezionato, ma sblocca forzatamente gli input per la tastiera */
 body { -webkit-user-select: none; user-select: none; }
 input, select, textarea { 
     -webkit-user-select: text !important; 
@@ -44,108 +57,113 @@ input, select, textarea {
 .page.active{display:block;animation:fu .2s ease}
 @keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
 
-/* Aggiunto padding-top extra per rispettare la notch/dynamic island di iOS */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:max(52px, env(safe-area-inset-top, 52px)) 18px 12px;gap:8px}
 .tb-title{font-size:26px;font-weight:700;letter-spacing:-.02em}
 .tb-sub{font-size:12px;color:var(--tx2);margin-top:2px}
 .mnav{display:flex;align-items:center;gap:5px;flex-shrink:0}
-.mnav-btn{width:32px;height:32px;border-radius:50%;background:var(--sf);border:1px solid var(--bd);color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px}
-.mnav-lbl{font-family:var(--mono);font-size:11px;min-width:114px;text-align:center;color:var(--tx)}
+.mnav-btn{width:32px;height:32px;border-radius:50%;background:var(--sf);border:1px solid var(--bd);color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow: 0 2px 4px rgba(0,0,0,0.02);}
+.mnav-btn svg { width: 16px; height: 16px; stroke-width: 2.5; }
+.mnav-lbl{font-family:var(--mono);font-size:12px;min-width:114px;text-align:center;color:var(--tx);font-weight:500;}
 .pw{padding:0 16px}
 
-.ibar{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.ibar label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2);white-space:nowrap;flex-shrink:0}
-.ibar-in{background:transparent;border:none;color:var(--green);font-family:var(--mono);font-size:20px;font-weight:500;outline:none;flex:1;min-width:0}
-.ibar-in::placeholder{color:var(--tx3)}
+.ibar{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;box-shadow: 0 4px 12px rgba(0,0,0,0.02);}
+.ibar label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2);white-space:nowrap;flex-shrink:0;font-weight:600;}
+.ibar-in{background:transparent;border:none;color:var(--green);font-family:var(--mono);font-size:20px;font-weight:600;outline:none;flex:1;min-width:0}
+.ibar-in::placeholder{color:var(--tx3);font-weight:400;}
 
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
-.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:13px;position:relative;overflow:hidden}
-.card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:14px;position:relative;overflow:hidden;box-shadow: 0 4px 12px rgba(0,0,0,0.02);}
+.card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
 .cg::after{background:var(--green)}.cr::after{background:var(--red)}.co::after{background:var(--gold)}
-.card-l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2);margin-bottom:5px}
-.card-v{font-family:var(--mono);font-size:19px;font-weight:500}
+.card-l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2);margin-bottom:6px;font-weight:600;}
+.card-v{font-family:var(--mono);font-size:20px;font-weight:600}
 .cg .card-v{color:var(--green)}.cr .card-v{color:var(--red)}.co .card-v{color:var(--gold)}
-.card-s{font-size:10px;color:var(--tx2);margin-top:3px;font-family:var(--mono)}
+.card-s{font-size:11px;color:var(--tx2);margin-top:3px;font-family:var(--mono)}
 .cfull{grid-column:1/-1}
+.cblue::after{background:#3b82f6} .cblue .card-v{color:#3b82f6}
 
-.sec{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx2);margin:16px 0 8px}
-.sec-row{display:flex;align-items:center;justify-content:space-between;margin:16px 0 8px}
-.chart-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:12px}
-.chart-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2);margin-bottom:12px}
+.sec{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--tx2);margin:20px 0 10px}
+.sec-row{display:flex;align-items:center;justify-content:space-between;margin:20px 0 10px}
+
+/* Stats list */
+.stat-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.stat-item{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:12px;display:flex;align-items:center;gap:12px}
+.stat-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--sf2);color:var(--tx2)}
+.stat-ico svg{width:18px;height:18px}
+.stat-body{flex:1;min-width:0}
+.stat-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx)}
+.stat-sub{font-size:11px;color:var(--tx2);margin-top:2px;font-family:var(--mono)}
+.stat-vals{text-align:right}
+.stat-v{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--tx)}
+.stat-trend{font-size:11px;font-family:var(--mono);margin-top:2px;display:flex;align-items:center;justify-content:flex-end;gap:2px}
+.trend-up{color:var(--red)} .trend-up svg{width:12px;height:12px;stroke:var(--red)}
+.trend-dn{color:var(--green)} .trend-dn svg{width:12px;height:12px;stroke:var(--green)}
+.trend-eq{color:var(--tx3)}
 
 /* tx list */
-.txl{display:flex;flex-direction:column;gap:1px;background:var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:4px}
-.txr{background:var(--sf);padding:11px 12px;display:flex;align-items:center;gap:10px}
-.tx-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.tx-ico.i{background:var(--gra)}.tx-ico.e{background:var(--ra)}
+.txl{display:flex;flex-direction:column;gap:1px;background:var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:16px;border:1px solid var(--bd);}
+.txr{background:var(--sf);padding:12px 14px;display:flex;align-items:center;gap:12px}
+.tx-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tx-ico svg{width:18px;height:18px}
+.tx-ico.i{background:var(--gra);color:var(--green);}.tx-ico.e{background:var(--ra);color:var(--red);}
 .tx-body{flex:1;min-width:0}
-.tx-desc{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tx-meta{font-size:11px;color:var(--tx2);margin-top:1px}
-.tx-amt{font-family:var(--mono);font-size:14px;font-weight:500;flex-shrink:0}
+.tx-desc{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx-meta{font-size:12px;color:var(--tx2);margin-top:2px;display:flex;align-items:center;gap:4px}
+.tx-amt{font-family:var(--mono);font-size:15px;font-weight:600;flex-shrink:0}
 .tx-amt.i{color:var(--green)}.tx-amt.e{color:var(--red)}
 .tx-acts{display:flex;flex-shrink:0;gap:0}
 
-/* BIG VISIBLE ACTION BUTTONS */
-.abt{background:none;border:none;cursor:pointer;width:40px;height:40px;
-     border-radius:8px;font-size:18px;display:flex;align-items:center;justify-content:center;
-     color:var(--tx2);touch-action:manipulation;user-select:none}
+/* Actions */
+.abt{background:none;border:none;cursor:pointer;width:36px;height:36px;
+     border-radius:8px;display:flex;align-items:center;justify-content:center;
+     color:var(--tx3);touch-action:manipulation;user-select:none;transition:background 0.2s;}
+.abt svg{width:16px;height:16px}
 .abt:active{background:var(--sf2)}
 .abt-d:active{background:var(--ra);color:var(--red)}
 .abt-e:active{background:var(--ga);color:var(--gold)}
 
 /* wallet */
 .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:4px}
-.wcard{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:14px;
-       cursor:pointer;position:relative;overflow:hidden;touch-action:manipulation}
-.wcard:active{opacity:.75}
-.wcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--wc,var(--gold))}
-.w-ico{font-size:22px;margin-bottom:6px;display:block}
-.w-name{font-size:11px;color:var(--tx2);margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wcard{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;
+       cursor:pointer;position:relative;overflow:hidden;touch-action:manipulation;box-shadow: 0 4px 12px rgba(0,0,0,0.02);}
+.wcard:active{opacity:.75; transform:scale(0.98);}
+.wcard::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--wc,var(--gold))}
+.w-ico{width:28px;height:28px;margin-bottom:8px;color:var(--wc,var(--gold))}
+.w-ico svg{width:100%;height:100%}
+.w-name{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .w-bal{font-family:var(--mono);font-size:18px;font-weight:600}
-.w-bal.pos{color:var(--tx)}.w-bal.neg{color:var(--red)}.w-bal.warn{color:#f59e0b}
-.w-prog{height:4px;background:var(--bd);border-radius:2px;margin:8px 0 4px;overflow:hidden}
-.w-bar{height:100%;border-radius:2px}
-.w-sub{font-size:10px;color:var(--tx2);font-family:var(--mono)}
+.w-bal.pos{color:var(--tx)}.w-bal.neg{color:var(--red)}.w-bal.warn{color:var(--gold)}
+.w-prog{height:6px;background:var(--sf2);border-radius:3px;margin:10px 0 6px;overflow:hidden}
+.w-bar{height:100%;border-radius:3px}
+.w-sub{font-size:10px;color:var(--tx2);font-family:var(--mono);margin-bottom:2px}
+.w-avg{font-size:10px;color:var(--tx3);font-family:var(--mono);}
 .wadd{background:transparent;border:2px dashed var(--bd);border-radius:var(--r);
       display:flex;flex-direction:column;align-items:center;justify-content:center;
-      gap:5px;min-height:140px;cursor:pointer;color:var(--tx3);touch-action:manipulation}
-.wadd:active{border-color:var(--gold);color:var(--gold)}
+      gap:8px;min-height:140px;cursor:pointer;color:var(--tx2);touch-action:manipulation;font-weight:500;}
+.wadd:active{border-color:var(--gold);color:var(--gold);background:var(--sf);}
+.wadd svg{width:24px;height:24px;stroke:var(--tx3)}
 
 /* fixed */
-.fxl{display:flex;flex-direction:column;gap:1px;background:var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:6px}
-.fxr{background:var(--sf);padding:11px 12px;display:flex;align-items:center;gap:10px}
-.fxr.off{opacity:.38}
-.fx-tog{width:44px;height:26px;background:var(--bd);border-radius:13px;cursor:pointer;
-        position:relative;border:none;flex-shrink:0;touch-action:manipulation}
-.fx-tog::after{content:'';position:absolute;top:5px;left:5px;width:16px;height:16px;
-               background:var(--tx2);border-radius:50%;transition:all .2s}
-.fx-tog.on{background:rgba(61,214,140,.22)}.fx-tog.on::after{left:23px;background:var(--green)}
-.fx-body{flex:1;min-width:0}
-.fx-name{font-size:14px;font-weight:500}.fx-cat{font-size:11px;color:var(--tx2);margin-top:1px}
-.fx-amt{font-family:var(--mono);font-size:14px;color:var(--red);flex-shrink:0}
+.fxr.off{opacity:.45}
+.fx-tog{width:44px;height:26px;background:var(--sf2);border-radius:13px;cursor:pointer;
+        position:relative;border:1px solid var(--bd);flex-shrink:0;touch-action:manipulation}
+.fx-tog::after{content:'';position:absolute;top:3px;left:4px;width:18px;height:18px;
+               background:var(--tx3);border-radius:50%;transition:all .2s}
+.fx-tog.on{background:var(--green);border-color:var(--green);}.fx-tog.on::after{left:21px;background:#fff}
+.fx-name{font-size:14px;font-weight:600}.fx-cat{font-size:11px;color:var(--tx2);margin-top:2px}
+.fx-amt{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--red);flex-shrink:0}
 
-/* history */
-.histl{display:flex;flex-direction:column;gap:1px;background:var(--bd);border-radius:var(--r);overflow:hidden}
-.histr{background:var(--sf);padding:11px 14px;display:flex;align-items:center;cursor:pointer;touch-action:manipulation}
-.histr:active{background:var(--sf2)}
-.hist-m{flex:1;font-size:14px;font-weight:500}
-.hist-b{font-family:var(--mono);font-size:14px;font-weight:600}
+.empty{text-align:center;padding:32px 16px;color:var(--tx2)}
+.empty-i{margin-bottom:8px;color:var(--tx3);opacity:.5;display:flex;justify-content:center}
+.empty-i svg{width:32px;height:32px}
+.empty-t{font-size:14px;font-weight:500;}
 
-.chip{display:inline-block;padding:1px 7px;border-radius:20px;font-size:10px;background:var(--sf2);color:var(--tx2)}
-.empty{text-align:center;padding:28px 16px;color:var(--tx2)}
-.empty-i{font-size:28px;opacity:.25;margin-bottom:6px}.empty-t{font-size:13px}
-.add-btn{width:100%;padding:13px;background:var(--sf);border:1.5px dashed var(--bd);
-         border-radius:var(--r);color:var(--tx2);font-family:var(--sans);font-size:14px;
-         cursor:pointer;margin-bottom:18px;touch-action:manipulation}
-.add-btn:active{border-color:var(--gold);color:var(--gold)}
+.add-btn{width:100%;padding:14px;background:var(--sf);border:2px dashed var(--bd);
+         border-radius:var(--r);color:var(--tx2);font-family:var(--sans);font-size:14px;font-weight:600;
+         cursor:pointer;margin-bottom:20px;touch-action:manipulation;display:flex;align-items:center;justify-content:center;gap:8px}
+.add-btn svg{width:18px;height:18px}
+.add-btn:active{border-color:var(--gold);color:var(--gold);background:var(--ga);}
 
-.fbar{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}
-.fbar::-webkit-scrollbar{display:none}
-.fchip{background:var(--sf);border:1px solid var(--bd);border-radius:20px;color:var(--tx2);
-       padding:7px 13px;font-size:12px;font-family:var(--sans);outline:none;cursor:pointer;
-       white-space:nowrap;-webkit-appearance:none}
-
-/* bottom nav */
 /* bottom nav */
 .bnav {
     position: fixed;
@@ -156,115 +174,121 @@ input, select, textarea {
     border-top: 1px solid var(--bd);
     display: flex;
     align-items: center;
+    justify-content: space-around;
     z-index: 50;
-    /* Aggiunge 15px di spazio extra + l'altezza della barra di sistema di iPhone */
     padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
     padding-top: 6px;
     box-shadow: 0 -4px 16px rgba(0,0,0,0.03);
 }
 .nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    gap:3px;padding:6px 0;cursor:pointer;color:var(--tx2);font-size:10px;font-weight:500;
+    gap:4px;padding:6px 0;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600;
     user-select:none;touch-action:manipulation}
 .nt.active{color:var(--gold)}
-.nt-i{font-size:20px;line-height:1.15}
-.fab-w{flex:1;display:flex;justify-content:center;align-items:center}
-.fab{width:52px;height:52px;border-radius:50%;background:var(--gold);color:#000;border:none;
-     font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-     box-shadow:0 0 0 7px rgba(212,168,67,.15),0 4px 20px rgba(212,168,67,.35);
-     touch-action:manipulation}
-.fab:active{transform:scale(.9)}
+.nt-i{display:flex;align-items:center;justify-content:center}
+.nt-i svg{width:22px;height:22px;stroke-width:2}
+.fab-w{flex:0 0 60px;display:flex;justify-content:center;align-items:center}
+.fab{width:52px;height:52px;border-radius:50%;background:var(--gold);color:#fff;border:none;
+     cursor:pointer;display:flex;align-items:center;justify-content:center;
+     box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+     touch-action:manipulation;transform:translateY(-10px);}
+.fab svg{width:24px;height:24px;stroke-width:2.5}
+.fab:active{transform:translateY(-10px) scale(.92)}
 
 /* overlay */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:90;
-         opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay{position:fixed;inset:0;background:rgba(15, 23, 42, 0.5);z-index:90;
+         backdrop-filter: blur(2px);opacity:0;pointer-events:none;transition:opacity .25s}
 .overlay.on{opacity:1;pointer-events:all}
 
 /* sheet */
 .sheet{position:fixed;bottom:0;left:0;right:0;background:var(--sf);
-       border-radius:20px 20px 0 0;border-top:1px solid var(--bd);z-index:100;
+       border-radius:24px 24px 0 0;box-shadow: 0 -10px 40px rgba(0,0,0,0.1);z-index:100;
        transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);
        max-height:93dvh;display:flex;flex-direction:column}
 .sheet.open{transform:translateY(0)}
-.sh-drag{width:38px;height:4px;background:var(--bd);border-radius:2px;margin:12px auto 0;flex-shrink:0}
-.sh-body{overflow-y:auto;flex:1;padding:0 20px;padding-bottom:max(36px,env(safe-area-inset-bottom,0px))}
-.sh-title{font-size:19px;font-weight:700;margin:16px 0 16px}
+.sh-drag{width:40px;height:5px;background:var(--bd);border-radius:3px;margin:12px auto 0;flex-shrink:0}
+.sh-body{overflow-y:auto;flex:1;padding:0 24px;padding-bottom:max(36px,env(safe-area-inset-bottom,0px))}
+.sh-title{font-size:22px;font-weight:700;margin:20px 0 16px;color:var(--tx);}
 
-.fg{margin-bottom:13px}
-.fl{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2);margin-bottom:5px}
+.fg{margin-bottom:16px}
+.fl{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2);margin-bottom:6px}
 .fi,.fs{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:var(--rs);
-        color:var(--tx);padding:12px 14px;font-family:var(--sans);font-size:15px;
-        outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
-.fi:focus,.fs:focus{border-color:rgba(212,168,67,.4)}
+        color:var(--tx);padding:14px 16px;font-family:var(--sans);font-size:15px;font-weight:500;
+        outline:none;transition:all .2s;-webkit-appearance:none;appearance:none}
+.fi:focus,.fs:focus{border-color:var(--gold);background:var(--sf);box-shadow: 0 0 0 3px var(--ga);}
 .fs option{background:var(--sf)}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.f-acts{display:flex;gap:10px;margin-top:16px;margin-bottom:4px}
-.btn{flex:1;padding:14px;border-radius:var(--rs);font-family:var(--sans);font-size:15px;
-     font-weight:600;cursor:pointer;border:none;touch-action:manipulation}
-.btnp{background:var(--gold);color:#000}.btnp:active{background:#c89030}
-.btng{background:var(--sf2);color:var(--tx2)}.btng:active{background:var(--bd)}
-.btnr{background:var(--ra);color:var(--red);border:1px solid rgba(240,84,84,.3)}.btnr:active{background:rgba(240,84,84,.25)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f-acts{display:flex;gap:12px;margin-top:20px;margin-bottom:8px}
+.btn{flex:1;padding:16px;border-radius:var(--rs);font-family:var(--sans);font-size:15px;
+     font-weight:700;cursor:pointer;border:none;touch-action:manipulation;transition:all 0.2s;}
+.btnp{background:var(--gold);color:#fff;box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);}.btnp:active{background:#d97706}
+.btng{background:var(--sf2);color:var(--tx2);border:1px solid var(--bd);}.btng:active{background:var(--bd)}
+.btnr{background:var(--ra);color:var(--red);border:1px solid rgba(239, 68, 68, 0.3);}.btnr:active{background:rgba(239, 68, 68, 0.2)}
 
-.ttog{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--bd);border-radius:var(--rs);overflow:hidden}
-.tbtn{padding:12px;text-align:center;font-size:14px;font-weight:600;cursor:pointer;
-      border:none;background:transparent;color:var(--tx2);font-family:var(--sans);touch-action:manipulation}
-.tbtn.ae{background:var(--ra);color:var(--red)}.tbtn.ai{background:var(--gra);color:var(--green)}
+.ttog{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--bd);border-radius:var(--rs);overflow:hidden;padding:2px;}
+.tbtn{padding:12px;text-align:center;font-size:14px;font-weight:600;cursor:pointer;border-radius:var(--rs);
+      border:none;background:transparent;color:var(--tx2);font-family:var(--sans);touch-action:manipulation;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.tbtn svg{width:16px;height:16px}
+.tbtn.ae{background:var(--sf);color:var(--red);box-shadow: 0 2px 4px rgba(0,0,0,0.05);}.tbtn.ai{background:var(--sf);color:var(--green);box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
 
-.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.ptile{background:var(--bg);border:2px solid var(--bd);border-radius:var(--rs);
-       padding:9px 7px;display:flex;align-items:center;gap:7px;cursor:pointer;touch-action:manipulation}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ptile{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);
+       padding:10px 8px;display:flex;align-items:center;gap:8px;cursor:pointer;touch-action:manipulation;box-shadow: 0 2px 4px rgba(0,0,0,0.02);}
 .ptile:active{border-color:var(--gold);background:var(--ga)}
-.pt-i{font-size:18px;flex-shrink:0}
-.pt-n{font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.or-div{text-align:center;font-size:12px;color:var(--tx2);margin:12px 0}
-.igrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
-.iopt{height:40px;display:flex;align-items:center;justify-content:center;font-size:19px;
-      border-radius:var(--rs);background:var(--bg);border:2px solid transparent;cursor:pointer;touch-action:manipulation}
-.iopt.sel{border-color:var(--gold);background:var(--ga)}
-.cgrid{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
-.copt{width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;flex-shrink:0;touch-action:manipulation}
-.copt.sel{border-color:var(--tx);transform:scale(1.2)}
+.pt-i{width:18px;height:18px;flex-shrink:0;color:var(--tx)}
+.pt-i svg{width:100%;height:100%}
+.pt-n{font-size:13px;font-weight:600;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.or-div{text-align:center;font-size:13px;color:var(--tx3);margin:16px 0;font-weight:500;}
+.igrid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.iopt{height:44px;display:flex;align-items:center;justify-content:center;
+      border-radius:var(--rs);background:var(--sf);border:1px solid var(--bd);cursor:pointer;touch-action:manipulation;color:var(--tx)}
+.iopt svg{width:20px;height:20px}
+.iopt.sel{border-color:var(--gold);background:var(--ga);border-width:2px;color:var(--gold)}
+.cgrid{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.copt{width:32px;height:32px;border-radius:50%;cursor:pointer;border:3px solid transparent;flex-shrink:0;touch-action:manipulation;box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+.copt.sel{border-color:var(--tx);transform:scale(1.15)}
 
 /* wallet detail */
-.wd-hd{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
-.wd-ico{font-size:40px;line-height:1;flex-shrink:0}
+.wd-hd{display:flex;align-items:flex-start;gap:16px;margin-bottom:20px}
+.wd-ico{width:46px;height:46px;flex-shrink:0}
+.wd-ico svg{width:100%;height:100%}
 .wd-info{flex:1;min-width:0}
-.wd-name{font-size:21px;font-weight:700}
-.wd-sub{font-size:12px;color:var(--tx2);margin-top:2px;font-family:var(--mono)}
-.wd-hd-acts{display:flex;gap:8px;margin-top:8px}
+.wd-name{font-size:24px;font-weight:700;color:var(--tx);}
+.wd-sub{font-size:13px;color:var(--tx2);margin-top:2px;font-family:var(--mono)}
+.wd-hd-acts{display:flex;gap:8px;margin-top:12px}
 .wd-hd-btn{padding:8px 14px;border-radius:var(--rs);font-family:var(--sans);font-size:13px;
-           font-weight:600;cursor:pointer;border:1px solid var(--bd);background:var(--sf2);
-           color:var(--tx2);touch-action:manipulation}
-.wd-hd-btn.danger{background:var(--ra);color:var(--red);border-color:rgba(240,84,84,.3)}
+           font-weight:600;cursor:pointer;border:1px solid var(--bd);background:var(--sf);
+           color:var(--tx2);touch-action:manipulation;box-shadow: 0 2px 4px rgba(0,0,0,0.02);display:flex;align-items:center;gap:6px}
+.wd-hd-btn svg{width:14px;height:14px}
+.wd-hd-btn.danger{background:var(--ra);color:var(--red);border-color:rgba(239, 68, 68, 0.2)}
 
-.wd-bal-box{background:var(--bg);border-radius:var(--r);padding:16px;margin-bottom:12px;text-align:center}
-.wd-bal-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx2);margin-bottom:6px}
-.wd-bal-val{font-family:var(--mono);font-size:30px;font-weight:700}
-.wd-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
-.wd-mini{background:var(--bg);border-radius:var(--rs);padding:12px 13px}
-.wd-mini-l{font-size:10px;color:var(--tx2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
-.wd-mini-v{font-family:var(--mono);font-size:17px;font-weight:600}
-.wd-prog{height:6px;background:var(--bd);border-radius:3px;margin-bottom:4px;overflow:hidden}
-.wd-pbar{height:100%;border-radius:3px}
-.wd-ptxt{font-size:11px;color:var(--tx2);font-family:var(--mono);margin-bottom:14px}
-.wd-btn{width:100%;padding:13px;border-radius:var(--rs);font-family:var(--sans);font-size:14px;
-        font-weight:600;cursor:pointer;border:none;margin-bottom:10px;touch-action:manipulation}
-.wd-btn-alloc{background:var(--ga);color:var(--gold);border:1px solid rgba(212,168,67,.22)}
-.wd-btn-spend{background:var(--ra);color:var(--red);border:1px solid rgba(240,84,84,.22)}
+.wd-bal-box{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:20px;margin-bottom:16px;text-align:center}
+.wd-bal-lbl{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--tx2);margin-bottom:8px}
+.wd-bal-val{font-family:var(--mono);font-size:36px;font-weight:700}
+.wd-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.wd-mini{background:var(--bg);border:1px solid var(--bd);border-radius:var(--rs);padding:14px}
+.wd-mini-l{font-size:10px;font-weight:600;color:var(--tx2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.wd-mini-v{font-family:var(--mono);font-size:19px;font-weight:600}
+.wd-prog{height:8px;background:var(--sf2);border-radius:4px;margin-bottom:8px;overflow:hidden}
+.wd-pbar{height:100%;border-radius:4px}
+.wd-ptxt{font-size:12px;color:var(--tx2);font-family:var(--mono);margin-bottom:20px}
+.wd-btn{width:100%;padding:16px;border-radius:var(--rs);font-family:var(--sans);font-size:15px;
+        font-weight:700;cursor:pointer;border:none;margin-bottom:12px;touch-action:manipulation}
+.wd-btn-alloc{background:var(--sf);color:var(--gold);border:1px solid var(--gold);}
+.wd-btn-spend{background:var(--sf);color:var(--red);border:1px solid var(--red);}
 
-.alloc-hint{font-size:13px;color:var(--tx2);line-height:1.55;margin:-6px 0 14px;white-space:pre-line}
+.alloc-hint{font-size:14px;color:var(--tx2);line-height:1.6;margin:-6px 0 16px;white-space:pre-line}
 
-/* ─── CUSTOM CONFIRM SHEET ─── */
 .confirm-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--sf);
-               border-radius:20px 20px 0 0;border-top:1px solid var(--bd);z-index:200;
+               border-radius:24px 24px 0 0;box-shadow: 0 -10px 40px rgba(0,0,0,0.1);z-index:200;
                transform:translateY(100%);transition:transform .25s cubic-bezier(.32,.72,0,1);
-               padding:20px 20px max(24px,env(safe-area-inset-bottom,0px))}
+               padding:24px 24px max(24px,env(safe-area-inset-bottom,0px))}
 .confirm-sheet.open{transform:translateY(0)}
-.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:199;
-                 opacity:0;pointer-events:none;transition:opacity .2s}
+.confirm-overlay{position:fixed;inset:0;background:rgba(15, 23, 42, 0.6);z-index:199;
+                 backdrop-filter: blur(3px);opacity:0;pointer-events:none;transition:opacity .2s}
 .confirm-overlay.on{opacity:1;pointer-events:all}
-.cs-title{font-size:17px;font-weight:700;margin-bottom:8px}
-.cs-body{font-size:14px;color:var(--tx2);line-height:1.55;margin-bottom:20px}
-.cs-acts{display:flex;gap:10px}
+.cs-title{font-size:19px;font-weight:700;margin-bottom:10px;color:var(--tx);}
+.cs-body{font-size:15px;color:var(--tx2);line-height:1.6;margin-bottom:24px}
+.cs-acts{display:flex;gap:12px}
 
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--bd);border-radius:4px}
@@ -276,21 +300,21 @@ input, select, textarea {
   <div class="topbar">
     <div><div class="tb-title">Panoramica</div><div class="tb-sub" id="home-sub"></div></div>
     <div class="mnav">
-      <button class="mnav-btn" data-a="prev-month">‹</button>
+      <button class="mnav-btn" data-a="prev-month" id="icon-chevron-left-1"></button>
       <div class="mnav-lbl" id="home-mlbl"></div>
-      <button class="mnav-btn" data-a="next-month">›</button>
+      <button class="mnav-btn" data-a="next-month" id="icon-chevron-right-1"></button>
     </div>
   </div>
   <div class="pw">
-    <div class="ibar"><label>Entrata</label><input class="ibar-in" type="number" id="income-in" placeholder="0,00" step="0.01" min="0"></div>
+    <div class="ibar"><label>Entrata Base</label><input class="ibar-in" type="number" id="income-in" placeholder="0,00" step="0.01" min="0"></div>
     <div class="cards">
-      <div class="card cg"><div class="card-l">Entrate</div><div class="card-v" id="h-inc">€0</div><div class="card-s" id="h-inc-s">&nbsp;</div></div>
-      <div class="card cr"><div class="card-l">Uscite</div><div class="card-v" id="h-exp">€0</div><div class="card-s" id="h-exp-s">&nbsp;</div></div>
-      <div class="card co cfull"><div class="card-l">Saldo netto</div><div class="card-v" id="h-bal">€0</div><div class="card-s" id="h-bal-s">&nbsp;</div></div>
+      <div class="card cg"><div class="card-l">Entrate Mese</div><div class="card-v" id="h-inc">€0</div><div class="card-s" id="h-inc-s">&nbsp;</div></div>
+      <div class="card cr"><div class="card-l">Uscite Mese</div><div class="card-v" id="h-exp">€0</div><div class="card-s" id="h-exp-s">&nbsp;</div></div>
+      <div class="card co cfull"><div class="card-l">Saldo Netto</div><div class="card-v" id="h-bal">€0</div><div class="card-s" id="h-bal-s">&nbsp;</div></div>
     </div>
-    <div class="chart-card"><div class="chart-lbl">Ultimi 4 mesi</div><div style="position:relative;height:140px"><canvas id="home-chart"></canvas></div></div>
-    <div class="sec">Ultime transazioni</div>
-    <div id="home-txl"></div>
+    
+    <div class="sec">Statistiche Portafogli (Mese corrente)</div>
+    <div id="home-stats-list" class="stat-list"></div>
   </div>
 </div>
 
@@ -298,60 +322,62 @@ input, select, textarea {
   <div class="topbar">
     <div><div class="tb-title">Movimenti</div></div>
     <div class="mnav">
-      <button class="mnav-btn" data-a="prev-month">‹</button>
+      <button class="mnav-btn" data-a="prev-month" id="icon-chevron-left-2"></button>
       <div class="mnav-lbl" id="mov-mlbl"></div>
-      <button class="mnav-btn" data-a="next-month">›</button>
+      <button class="mnav-btn" data-a="next-month" id="icon-chevron-right-2"></button>
     </div>
   </div>
-  <div class="fbar">
-    <select class="fchip" id="f-type"><option value="all">Tutti</option><option value="expense">Uscite</option><option value="income">Entrate</option></select>
-    <select class="fchip" id="f-wallet"><option value="all">Tutti i portafogli</option></select>
+  <div class="pw">
+    <div class="sec-row">
+      <span class="sec" style="margin:0">Spese Fisse (Questo mese)</span>
+      <span style="font-family:var(--mono);color:var(--red);font-size:15px;font-weight:600;" id="fx-tot">€0</span>
+    </div>
+    <div id="fx-list"></div>
+    <button class="add-btn" data-a="add-fx" id="btn-add-fx">Aggiungi spesa fissa</button>
+    
+    <div class="sec" style="margin-top:24px">Transazioni</div>
+    <div id="mov-txl"></div>
   </div>
-  <div class="pw"><div id="mov-txl"></div></div>
 </div>
 
 <div class="page" id="pg-portafogli">
   <div class="topbar">
     <div><div class="tb-title">Portafogli</div><div class="tb-sub" id="port-sub"></div></div>
     <div class="mnav">
-      <button class="mnav-btn" data-a="prev-month">‹</button>
+      <button class="mnav-btn" data-a="prev-month" id="icon-chevron-left-3"></button>
       <div class="mnav-lbl" id="port-mlbl"></div>
-      <button class="mnav-btn" data-a="next-month">›</button>
+      <button class="mnav-btn" data-a="next-month" id="icon-chevron-right-3"></button>
     </div>
   </div>
   <div class="pw">
     <div class="cards" style="margin-bottom:14px">
-      <div class="card cr"><div class="card-l">Saldo totale</div><div class="card-v" id="port-saldo">€0</div></div>
-      <div class="card cr"><div class="card-l">Speso mese</div><div class="card-v" id="port-speso">€0</div></div>
+      <div class="card cblue cfull"><div class="card-l">Disponibile da allocare</div><div class="card-v" id="port-disp">€0</div><div class="card-s">Entrate - Fisse attive - Fondi allocati</div></div>
+      <div class="card cr"><div class="card-l">Saldo totale portafogli</div><div class="card-v" id="port-saldo">€0</div></div>
+      <div class="card cr"><div class="card-l">Speso dai portafogli</div><div class="card-v" id="port-speso">€0</div></div>
     </div>
     <div class="wgrid" id="wallet-grid"></div>
   </div>
 </div>
 
-<div class="page" id="pg-altro">
-  <div class="topbar"><div><div class="tb-title">Altro</div></div></div>
-  <div class="pw">
-    <div class="sec-row">
-      <span class="sec" style="margin:0">Spese Fisse</span>
-      <span style="font-family:var(--mono);color:var(--red);font-size:15px" id="fx-tot">€0</span>
-    </div>
-    <div id="fx-list"></div>
-    <button class="add-btn" data-a="add-fx">＋ Aggiungi spesa fissa</button>
-    <div class="sec">Storico</div>
-    <div class="chart-card"><div class="chart-lbl">Andamento saldo</div><div style="position:relative;height:150px"><canvas id="hist-chart"></canvas></div></div>
-    <div id="hist-list"></div>
-  </div>
-</div>
-
 <nav class="bnav">
-  <div class="nt active" id="nt-home"       data-a="nav-home"><div class="nt-i">⌂</div><div>Home</div></div>
-  <div class="nt"        id="nt-movimenti"  data-a="nav-movimenti"><div class="nt-i">↕</div><div>Movimenti</div></div>
-  <div class="fab-w"><button class="fab" data-a="add-tx">＋</button></div>
-  <div class="nt"        id="nt-portafogli" data-a="nav-portafogli"><div class="nt-i">👛</div><div>Portafogli</div></div>
-  <div class="nt"        id="nt-altro"      data-a="nav-altro"><div class="nt-i">⋯</div><div>Altro</div></div>
+  <div class="nt active" id="nt-home"       data-a="nav-home"><div class="nt-i" id="nav-ic-home"></div><div>Home</div></div>
+  <div class="nt"        id="nt-movimenti"  data-a="nav-movimenti"><div class="nt-i" id="nav-ic-list"></div><div>Movimenti</div></div>
+  <div class="fab-w"><button class="fab" data-a="open-add-choice" id="nav-ic-plus"></button></div>
+  <div class="nt"        id="nt-portafogli" data-a="nav-portafogli"><div class="nt-i" id="nav-ic-wallet"></div><div>Portafogli</div></div>
 </nav>
 
 <div class="overlay" id="overlay" data-a="close-all"></div>
+
+<div class="sheet" id="sh-add-choice">
+  <div class="sh-drag"></div>
+  <div class="sh-body">
+    <div class="sh-title">Cosa vuoi aggiungere?</div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;">
+      <button class="btn btnp" data-a="add-tx" style="display:flex;align-items:center;justify-content:center;gap:8px" id="btn-ch-tx">Transazione</button>
+      <button class="btn btng" data-a="add-fx" style="display:flex;align-items:center;justify-content:center;gap:8px" id="btn-ch-fx">Spesa Fissa</button>
+    </div>
+  </div>
+</div>
 
 <div class="sheet" id="sh-tx">
   <div class="sh-drag"></div>
@@ -359,8 +385,8 @@ input, select, textarea {
     <div class="sh-title" id="sh-tx-ttl">Nuova transazione</div>
     <div class="fg"><label class="fl">Tipo</label>
       <div class="ttog">
-        <button class="tbtn ae" id="tt-e" data-a="type-expense">⬇ Uscita</button>
-        <button class="tbtn"    id="tt-i" data-a="type-income">⬆ Entrata</button>
+        <button class="tbtn ae" id="tt-e" data-a="type-expense">Uscita</button>
+        <button class="tbtn"    id="tt-i" data-a="type-income">Entrata</button>
       </div>
     </div>
     <div class="frow">
@@ -370,11 +396,11 @@ input, select, textarea {
     <div class="fg"><label class="fl">Descrizione</label><input class="fi" type="text" id="tx-desc" placeholder="es. Cena con amici"></div>
     <div class="fg"><label class="fl">Categoria</label>
       <select class="fs" id="tx-cat">
-        <option>🎉 Svago</option><option>🍻 Uscite serali</option><option>🍽️ Ristoranti</option>
-        <option>🛒 Alimentari</option><option>🚗 Trasporti</option><option>🏠 Casa</option>
-        <option>⚕️ Salute</option><option>🎬 Intrattenimento</option><option>👕 Abbigliamento</option>
-        <option>⚽ Sport</option><option>💻 Tecnologia</option><option>📚 Formazione</option>
-        <option>✈️ Viaggio</option><option>💼 Lavoro</option><option>📦 Altro</option>
+        <option>Svago</option><option>Uscite serali</option><option>Ristoranti</option>
+        <option>Alimentari</option><option>Trasporti</option><option>Casa</option>
+        <option>Salute</option><option>Intrattenimento</option><option>Abbigliamento</option>
+        <option>Sport</option><option>Tecnologia</option><option>Formazione</option>
+        <option>Viaggio</option><option>Lavoro</option><option>Altro</option>
       </select>
     </div>
     <div class="fg" id="fg-wallet"><label class="fl">Portafoglio (opzionale)</label>
@@ -412,8 +438,8 @@ input, select, textarea {
         <div class="wd-name" id="wd-name"></div>
         <div class="wd-sub"  id="wd-sub"></div>
         <div class="wd-hd-acts">
-          <button class="wd-hd-btn" data-a="wd-edit">✎ Modifica</button>
-          <button class="wd-hd-btn danger" data-a="wd-delete">✕ Elimina portafoglio</button>
+          <button class="wd-hd-btn" data-a="wd-edit" id="btn-wd-edit">Modifica</button>
+          <button class="wd-hd-btn danger" data-a="wd-delete" id="btn-wd-del">Elimina</button>
         </div>
       </div>
     </div>
@@ -427,8 +453,8 @@ input, select, textarea {
     </div>
     <div class="wd-prog"><div class="wd-pbar" id="wd-pbar"></div></div>
     <div class="wd-ptxt" id="wd-ptxt"></div>
-    <button class="wd-btn wd-btn-alloc" data-a="wd-alloc">＋ Modifica fondi di questo mese</button>
-    <button class="wd-btn wd-btn-spend" data-a="wd-addtx">＋ Aggiungi spesa a questo portafoglio</button>
+    <button class="wd-btn wd-btn-alloc" data-a="wd-alloc">Modifica budget mese</button>
+    <button class="wd-btn wd-btn-spend" data-a="wd-addtx">Aggiungi spesa al portafoglio</button>
     <div class="sec">Transazioni del mese</div>
     <div id="wd-txl"></div>
   </div>
@@ -440,7 +466,7 @@ input, select, textarea {
     <div class="sh-title" id="sh-alloc-ttl">Fondi mese</div>
     <p class="alloc-hint" id="sh-alloc-hint"></p>
     <div class="fg"><label class="fl">Importo (positivo = aggiungi, negativo = togli)</label><input class="fi" type="number" id="alloc-amt" placeholder="es. 150 oppure -30" step="0.01"></div>
-    <div class="fg"><label class="fl">Note (opzionale)</label><input class="fi" type="text" id="alloc-note" placeholder="es. Budget mensile svago"></div>
+    <div class="fg"><label class="fl">Note (opzionale)</label><input class="fi" type="text" id="alloc-note" placeholder="es. Stipendio"></div>
     <div class="f-acts">
       <button class="btn btng" data-a="close-sh-alloc">Annulla</button>
       <button class="btn btnp" data-a="save-alloc">Applica</button>
@@ -457,9 +483,9 @@ input, select, textarea {
       <div class="fg"><label class="fl">Importo €/mese</label><input class="fi" type="number" id="fx-amt" placeholder="0,00" step="0.01" min="0.01"></div>
       <div class="fg"><label class="fl">Categoria</label>
         <select class="fs" id="fx-cat">
-          <option>🏠 Casa</option><option>📱 Abbonamenti</option><option>🛡️ Assicurazioni</option>
-          <option>🚗 Trasporti</option><option>⚕️ Salute</option><option>⚽ Sport</option>
-          <option>📚 Formazione</option><option>📦 Altro</option>
+          <option>Casa</option><option>Abbonamenti</option><option>Assicurazioni</option>
+          <option>Trasporti</option><option>Salute</option><option>Sport</option>
+          <option>Formazione</option><option>Altro</option>
         </select>
       </div>
     </div>
@@ -482,8 +508,56 @@ input, select, textarea {
 
 <script>
 // ════════════════════════════════════════════════════════════════
-// CUSTOM CONFIRM — replaces window.confirm() completely
+// SVG ICONS DICTIONARY
 // ════════════════════════════════════════════════════════════════
+const Ics = {
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>',
+  list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>',
+  wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg>',
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>',
+  edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>',
+  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>',
+  up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>',
+  down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>',
+  chevronL: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>',
+  chevronR: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>',
+  empty: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
+  // Categorie
+  game: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect><line x1="6" y1="12" x2="10" y2="12"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line></svg>',
+  shirt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>',
+  food: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>',
+  plane: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.7l-1.4 1.4L8 13l-4 4-2.5-1-1.5 1.5 4 2.5 2.5 4 1.5-1.5-1-2.5 4-4 4.8 5.7c.4.5.9.4 1.4.1l1.4-1.4c.5-.2.8-.7.7-1.2z"></path></svg>',
+  sport: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20"></path><path d="M2 12h20"></path></svg>',
+  tech: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>',
+  health: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>',
+  book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>',
+  cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>',
+  music: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>',
+  car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="8" rx="2" ry="2"></rect><path d="M3 11L6 6h12l3 5"></path><circle cx="7" cy="19" r="2"></circle><circle cx="17" cy="19" r="2"></circle></svg>',
+  coffee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>',
+  tool: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>',
+  briefcase: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>'
+};
+
+// UI Injects
+document.getElementById('icon-chevron-left-1').innerHTML = Ics.chevronL;
+document.getElementById('icon-chevron-right-1').innerHTML = Ics.chevronR;
+document.getElementById('icon-chevron-left-2').innerHTML = Ics.chevronL;
+document.getElementById('icon-chevron-right-2').innerHTML = Ics.chevronR;
+document.getElementById('icon-chevron-left-3').innerHTML = Ics.chevronL;
+document.getElementById('icon-chevron-right-3').innerHTML = Ics.chevronR;
+document.getElementById('nav-ic-home').innerHTML = Ics.home;
+document.getElementById('nav-ic-list').innerHTML = Ics.list;
+document.getElementById('nav-ic-wallet').innerHTML = Ics.wallet;
+document.getElementById('nav-ic-plus').innerHTML = Ics.plus;
+document.getElementById('btn-add-fx').innerHTML = Ics.plus + ' Aggiungi spesa fissa';
+document.getElementById('btn-ch-tx').innerHTML = Ics.plus + ' Transazione';
+document.getElementById('btn-ch-fx').innerHTML = Ics.plus + ' Spesa Fissa';
+document.getElementById('btn-wd-edit').innerHTML = Ics.edit + ' Modifica';
+document.getElementById('btn-wd-del').innerHTML = Ics.trash + ' Elimina';
+
+
 let _confirmCallback = null;
 
 function askConfirm(title, body, okLabel, cb){
@@ -511,17 +585,17 @@ document.getElementById('cs-ok').addEventListener('click', function(){
 // DATA
 // ════════════════════════════════════════════════════════════════
 const PRESETS = [
-  {i:'🎮',n:'Svago',         c:'#9b5de5'},{i:'👕',n:'Abbigliamento',c:'#3a86ff'},
-  {i:'🍽️',n:'Ristoranti',   c:'#f77f00'},{i:'✈️',n:'Viaggi',       c:'#06d6a0'},
-  {i:'💪',n:'Sport',         c:'#2dc653'},{i:'💻',n:'Tecnologia',   c:'#5352ed'},
-  {i:'🏥',n:'Salute',        c:'#ef233c'},{i:'📚',n:'Formazione',   c:'#ffd166'},
-  {i:'🛒',n:'Spesa',         c:'#00b4d8'},{i:'🎭',n:'Cultura',      c:'#d4a843'},
-  {i:'🏠',n:'Casa',          c:'#fb8500'},{i:'🐾',n:'Animali',      c:'#8ecae6'},
+  {i:'game',n:'Svago',c:'#9b5de5'},{i:'shirt',n:'Abbigliamento',c:'#3a86ff'},
+  {i:'food',n:'Cibo/Ristoranti',c:'#f77f00'},{i:'plane',n:'Viaggi',c:'#06d6a0'},
+  {i:'sport',n:'Sport',c:'#2dc653'},{i:'tech',n:'Tecnologia',c:'#5352ed'},
+  {i:'health',n:'Salute',c:'#ef233c'},{i:'book',n:'Formazione',c:'#ffd166'},
+  {i:'cart',n:'Spesa',c:'#00b4d8'},{i:'car',n:'Auto/Trasporti',c:'#d4a843'},
+  {i:'home',n:'Casa',c:'#fb8500'},{i:'briefcase',n:'Lavoro',c:'#8ecae6'},
 ];
-const ICONS  = PRESETS.map(p=>p.i).concat(['🚗','☕','🎵','🎨','🍕','🔧','🎯','💒','🌿','🌍','💡','🎁','🍻','🎉','👫','🎪','🏄','🎸']);
-const COLORS = PRESETS.map(p=>p.c);
+const ICONS  = ['game','shirt','food','plane','sport','tech','health','book','cart','car','home','briefcase','music','coffee','tool','star'];
+const COLORS = ['#9b5de5','#3a86ff','#f77f00','#06d6a0','#2dc653','#5352ed','#ef233c','#ffd166','#00b4d8','#d4a843','#fb8500','#8ecae6','#ff006e','#8338ec','#38b000','#ffbe0b'];
 
-const SKEY = 'finanze_v5';
+const SKEY = 'finanze_v6';
 let S = {transactions:[], fixedExpenses:[], monthlyIncome:{}, wallets:[]};
 
 let selMonth   = thisMonth();
@@ -533,10 +607,21 @@ let curWId     = null;
 let preFillWId = null;
 let selIcon    = ICONS[0];
 let selColor   = COLORS[0];
-let homeChart  = null;
-let histChart  = null;
 
-function loadS(){try{const r=localStorage.getItem(SKEY);if(r)S={...S,...JSON.parse(r)}}catch(e){}}
+function loadS(){
+    try{
+        const r=localStorage.getItem(SKEY);
+        if(r){
+            S={...S,...JSON.parse(r)};
+            // Migrate old fixed expenses format
+            S.fixedExpenses.forEach(f => {
+                if(f.skippedMonths === undefined) {
+                    f.skippedMonths = f.active === false ? ['all'] : [];
+                }
+            });
+        }
+    }catch(e){}
+}
 function saveS(){localStorage.setItem(SKEY,JSON.stringify(S))}
 
 // ── Helpers ──────────────────────────────────────────────────────
@@ -544,12 +629,10 @@ const MN=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agos
 function thisMonth(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
 function fmt(n){return'€'+Number(n).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function mLabel(ym){const[y,m]=ym.split('-');return MN[+m-1]+' '+y}
-function mShort(ym){const[y,m]=ym.split('-');return MN[+m-1].slice(0,3)+' '+y.slice(2)}
 function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function fmtDate(d){const[y,m,dd]=d.split('-');return`${dd}/${m}/${y.slice(2)}`}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function offsetMonth(ym,d){let[y,m]=ym.split('-').map(Number);m+=d;while(m>12){m-=12;y++}while(m<1){m+=12;y--}return`${y}-${String(m).padStart(2,'0')}`}
-function prevMonthsArr(n){const r=[];for(let i=n-1;i>=0;i--)r.push(offsetMonth(selMonth,-i));return r}
 function allMonths(){
   const s=new Set();
   S.transactions.forEach(t=>s.add(t.date.slice(0,7)));
@@ -560,12 +643,13 @@ function allMonths(){
 
 // ── Queries ───────────────────────────────────────────────────────
 function txForMonth(ym){return S.transactions.filter(t=>t.date.startsWith(ym))}
-function fixedTotal(){return S.fixedExpenses.filter(f=>f.active).reduce((s,f)=>s+f.amount,0)}
+function isFxActive(fx, ym){return !fx.skippedMonths.includes(ym) && !fx.skippedMonths.includes('all');}
+function fixedTotal(ym){return S.fixedExpenses.filter(f=>isFxActive(f, ym)).reduce((s,f)=>s+f.amount,0)}
 function baseIncome(ym){return parseFloat(S.monthlyIncome[ym]||0)}
 function varIncome(ym){return txForMonth(ym).filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0)}
 function varExpense(ym){return txForMonth(ym).filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0)}
 function totalIncome(ym){return baseIncome(ym)+varIncome(ym)}
-function totalExpense(ym){return fixedTotal()+varExpense(ym)}
+function totalExpense(ym){return fixedTotal(ym)+varExpense(ym)}
 function netBalance(ym){return totalIncome(ym)-totalExpense(ym)}
 function walletById(id){return S.wallets.find(w=>w.id===id)}
 function walletBalance(wid,ym){
@@ -577,6 +661,25 @@ function walletBalance(wid,ym){
 }
 function walletMonthAlloc(wid,ym){const w=walletById(wid);return((w&&w.allocations&&w.allocations[ym])||[]).reduce((s,e)=>s+e.amt,0)}
 function walletMonthSpent(wid,ym){return txForMonth(ym).filter(t=>t.type==='expense'&&t.walletId===wid).reduce((s,t)=>s+t.amount,0)}
+
+// Nuova logica per media portafogli
+function getWalletAvg(wid) {
+    let totalSpent = 0;
+    let monthsActive = 0;
+    const months = allMonths();
+    let hasStarted = false;
+    
+    for(let m of months) {
+        let alloc = walletMonthAlloc(wid, m);
+        let spent = walletMonthSpent(wid, m);
+        if(alloc > 0 || spent > 0) hasStarted = true;
+        if(hasStarted) {
+            totalSpent += spent;
+            monthsActive++;
+        }
+    }
+    return monthsActive === 0 ? 0 : totalSpent / monthsActive;
+}
 
 // ── Navigation ────────────────────────────────────────────────────
 function nav(page){
@@ -590,7 +693,6 @@ function renderPage(p){
   if(p==='home')renderHome();
   else if(p==='movimenti')renderMovimenti();
   else if(p==='portafogli')renderPortafogli();
-  else if(p==='altro')renderAltro();
 }
 function renderCurrent(){const a=document.querySelector('.page.active');if(a)renderPage(a.id.replace('pg-',''))}
 function prevMonth(){selMonth=offsetMonth(selMonth,-1);updateLabels();renderCurrent()}
@@ -611,55 +713,78 @@ function renderHome(){
   const ym=selMonth,inc=totalIncome(ym),exp=totalExpense(ym),bal=netBalance(ym);
   document.getElementById('home-sub').textContent=mLabel(ym);
   document.getElementById('h-inc').textContent=fmt(inc);
-  document.getElementById('h-inc-s').textContent=fmt(baseIncome(ym))+' + '+fmt(varIncome(ym));
+  document.getElementById('h-inc-s').textContent=fmt(baseIncome(ym))+' fisse + '+fmt(varIncome(ym));
   document.getElementById('h-exp').textContent=fmt(exp);
-  document.getElementById('h-exp-s').textContent=fmt(fixedTotal())+' fisse + '+fmt(varExpense(ym));
+  document.getElementById('h-exp-s').textContent=fmt(fixedTotal(ym))+' fisse + '+fmt(varExpense(ym));
   const bv=document.getElementById('h-bal');bv.textContent=fmt(bal);bv.style.color=bal>=0?'var(--green)':'var(--red)';
   document.getElementById('h-bal-s').textContent=bal>=0?'▲ in positivo':'▼ in negativo';
   document.getElementById('income-in').value=S.monthlyIncome[ym]??'';
-  const txs=txForMonth(ym).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
-  document.getElementById('home-txl').innerHTML=txs.length?txListHTML(txs,false)
-    :`<div class="empty"><div class="empty-i">○</div><div class="empty-t">Nessuna transazione per ${mLabel(ym)}</div></div>`;
-  buildHomeChart();
-}
-function buildHomeChart(){
-  const months=prevMonthsArr(4);
-  if(homeChart)homeChart.destroy();
-  homeChart=new Chart(document.getElementById('home-chart'),{type:'bar',
-    data:{labels:months.map(mShort),datasets:[
-      {label:'Entrate',data:months.map(totalIncome), backgroundColor:'rgba(61,214,140,.65)',borderRadius:4},
-      {label:'Uscite', data:months.map(totalExpense),backgroundColor:'rgba(240,84,84,.65)', borderRadius:4}]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#6d6a7a',font:{family:'DM Sans',size:11},boxWidth:10}},
-               tooltip:{callbacks:{label:c=>` ${c.dataset.label}: €${Number(c.raw).toLocaleString('it-IT',{minimumFractionDigits:2})}`}}},
-      scales:{x:{ticks:{color:'#6d6a7a',font:{family:'DM Mono',size:10}},grid:{color:'#1e1e36'}},
-              y:{ticks:{color:'#6d6a7a',font:{family:'DM Mono',size:10},callback:v=>'€'+v},grid:{color:'#1e1e36'}}}}});
+  
+  // Statistiche Portafogli
+  let statsHTML = '';
+  if(S.wallets.length === 0) {
+      statsHTML = `<div class="empty"><div class="empty-i">${Ics.empty}</div><div class="empty-t">Nessun portafoglio creato</div></div>`;
+  } else {
+      S.wallets.forEach(w => {
+          let avg = getWalletAvg(w.id);
+          let cur = walletMonthSpent(w.id, ym);
+          let trend = cur > avg ? 'trend-up' : (cur < avg ? 'trend-dn' : 'trend-eq');
+          let trendIco = cur > avg ? Ics.up : (cur < avg ? Ics.down : '=');
+          
+          statsHTML += `
+          <div class="stat-item">
+            <div class="stat-ico">${Ics[w.icon] || Ics.wallet}</div>
+            <div class="stat-body">
+                <div class="stat-name">${esc(w.name)}</div>
+                <div class="stat-sub">Media: ${fmt(avg)} / mese</div>
+            </div>
+            <div class="stat-vals">
+                <div class="stat-v">${fmt(cur)}</div>
+                <div class="stat-trend ${trend}">${trendIco} vs media</div>
+            </div>
+          </div>`;
+      });
+  }
+  document.getElementById('home-stats-list').innerHTML = statsHTML;
 }
 
-// ── MOVIMENTI ─────────────────────────────────────────────────────
+// ── MOVIMENTI (Lista e Fisse) ─────────────────────────────────────
 function renderMovimenti(){
-  let txs=txForMonth(selMonth);
-  const fw=document.getElementById('f-wallet'),sv=fw.value;
-  fw.innerHTML='<option value="all">Tutti i portafogli</option>'+
-    S.wallets.map(w=>`<option value="${w.id}"${w.id===sv?' selected':''}>${esc(w.icon)} ${esc(w.name)}</option>`).join('');
-  const ft=document.getElementById('f-type').value,fwv=fw.value;
-  if(ft!=='all')txs=txs.filter(t=>t.type===ft);
-  if(fwv!=='all')txs=txs.filter(t=>t.walletId===fwv);
+  const ym = selMonth;
+  
+  // 1. Spese Fisse del mese
+  document.getElementById('fx-tot').textContent=fmt(fixedTotal(ym));
+  document.getElementById('fx-list').innerHTML=S.fixedExpenses.length
+    ?'<div class="fxl">'+S.fixedExpenses.map(f=>{
+        let active = isFxActive(f, ym);
+        return `
+        <div class="fxr ${active?'':'off'}">
+          <button class="fx-tog ${active?'on':''}" data-a="toggle-fx-month" data-id="${f.id}" data-ym="${ym}"></button>
+          <div class="fx-body"><div class="fx-name">${esc(f.name)}</div><div class="fx-cat">${esc(f.cat)}</div></div>
+          <div class="fx-amt">${fmt(f.amount)}</div>
+          <button class="abt" data-a="edit-fx" data-id="${f.id}">${Ics.edit}</button>
+          <button class="abt" data-a="del-fx"  data-id="${f.id}">${Ics.trash}</button>
+        </div>`
+    }).join('')+'</div>'
+    :'<div class="empty" style="padding:14px 0; color:var(--tx3); font-size:13px">Nessuna spesa fissa</div>';
+
+  // 2. Transazioni del mese
+  let txs=txForMonth(ym);
   txs.sort((a,b)=>b.date.localeCompare(a.date));
   document.getElementById('mov-txl').innerHTML=txs.length?txListHTML(txs,true)
-    :`<div class="empty"><div class="empty-i">○</div><div class="empty-t">Nessuna transazione</div></div>`;
+    :`<div class="empty"><div class="empty-i">${Ics.empty}</div><div class="empty-t">Nessuna transazione</div></div>`;
 }
 
 function txListHTML(txs,withActs){
   return'<div class="txl">'+txs.map(t=>{
     const w=t.walletId?walletById(t.walletId):null;
-    const wm=w?` · <span class="chip">${esc(w.icon)} ${esc(w.name)}</span>`:'';
+    const wm=w?`<span class="chip">${esc(w.name)}</span>`:'';
     const acts=withActs?`<div class="tx-acts">
-      <button class="abt abt-e" data-a="edit-tx" data-id="${t.id}">✎</button>
-      <button class="abt abt-d" data-a="del-tx"  data-id="${t.id}">✕</button>
+      <button class="abt abt-e" data-a="edit-tx" data-id="${t.id}">${Ics.edit}</button>
+      <button class="abt abt-d" data-a="del-tx"  data-id="${t.id}">${Ics.trash}</button>
     </div>`:'';
     return`<div class="txr">
-      <div class="tx-ico ${t.type==='income'?'i':'e'}">${t.type==='income'?'↑':'↓'}</div>
+      <div class="tx-ico ${t.type==='income'?'i':'e'}">${t.type==='income'? Ics.up : Ics.down}</div>
       <div class="tx-body"><div class="tx-desc">${esc(t.description)}</div><div class="tx-meta">${fmtDate(t.date)}${wm}</div></div>
       <div class="tx-amt ${t.type==='income'?'i':'e'}">${t.type==='income'?'+':'−'}${fmt(t.amount)}</div>
       ${acts}
@@ -671,59 +796,36 @@ function txListHTML(txs,withActs){
 function renderPortafogli(){
   const ym=selMonth;
   document.getElementById('port-sub').textContent=mLabel(ym);
+  
   const tb=S.wallets.reduce((s,w)=>s+walletBalance(w.id,ym),0);
   const ts=S.wallets.reduce((s,w)=>s+walletMonthSpent(w.id,ym),0);
+  const tAlloc=S.wallets.reduce((s,w)=>s+walletMonthAlloc(w.id,ym),0);
+  
+  // Disponibile: Income - Fixed - Allocated this month
+  const disp = totalIncome(ym) - fixedTotal(ym) - tAlloc;
+  document.getElementById('port-disp').textContent=fmt(disp);
+  
   const ps=document.getElementById('port-saldo');
-  ps.textContent=fmt(tb);ps.style.color=tb>=0?'var(--green)':'var(--red)';
+  ps.textContent=fmt(tb);ps.style.color=tb>=0?'var(--tx)':'var(--red)';
   document.getElementById('port-speso').textContent=fmt(ts);
+  
   document.getElementById('wallet-grid').innerHTML=
     S.wallets.map(w=>{
       const bal=walletBalance(w.id,ym),alloc=walletMonthAlloc(w.id,ym),spent=walletMonthSpent(w.id,ym);
+      const avg = getWalletAvg(w.id);
       const pct=alloc>0?Math.min(100,Math.round(spent/alloc*100)):0;
-      const barCol=pct>=100?'var(--red)':pct>=80?'#f59e0b':w.color;
+      const barCol=pct>=100?'var(--red)':pct>=80?'var(--gold)':w.color;
       const balCls=bal<0?'neg':alloc>0&&pct>=80?'warn':'pos';
       return`<div class="wcard" data-a="open-wallet" data-id="${w.id}" style="--wc:${esc(w.color)}">
-        <span class="w-ico">${esc(w.icon)}</span>
+        <div class="w-ico">${Ics[w.icon] || Ics.wallet}</div>
         <div class="w-name">${esc(w.name)}</div>
         <div class="w-bal ${balCls}">${fmt(bal)}</div>
         <div class="w-prog"><div class="w-bar" style="width:${pct}%;background:${barCol}"></div></div>
-        <div class="w-sub">${alloc>0?fmt(spent)+' / '+fmt(alloc)+' mese':'nessun budget mese'}</div>
+        <div class="w-sub">${alloc>0?fmt(spent)+' / '+fmt(alloc)+' spesi':'Nessun budget mese'}</div>
+        <div class="w-avg">Spesa media: ${fmt(avg)}</div>
       </div>`;
     }).join('')+
-    `<div class="wadd" data-a="add-wallet"><div style="font-size:22px">＋</div><div style="font-size:12px">Nuovo portafoglio</div></div>`;
-}
-
-// ── ALTRO ─────────────────────────────────────────────────────────
-function renderAltro(){
-  document.getElementById('fx-tot').textContent=fmt(fixedTotal());
-  document.getElementById('fx-list').innerHTML=S.fixedExpenses.length
-    ?'<div class="fxl">'+S.fixedExpenses.map(f=>`
-        <div class="fxr ${f.active?'':'off'}">
-          <button class="fx-tog ${f.active?'on':''}" data-a="toggle-fx" data-id="${f.id}"></button>
-          <div class="fx-body"><div class="fx-name">${esc(f.name)}</div><div class="fx-cat">${esc(f.cat)}</div></div>
-          <div class="fx-amt">${fmt(f.amount)}</div>
-          <button class="abt abt-e" data-a="edit-fx" data-id="${f.id}">✎</button>
-          <button class="abt abt-d" data-a="del-fx"  data-id="${f.id}">✕</button>
-        </div>`).join('')+'</div>'
-    :'<div class="empty" style="padding:14px 0"><div class="empty-t">Nessuna spesa fissa aggiunta</div></div>';
-
-  const hs=allMonths().reverse();
-  document.getElementById('hist-list').innerHTML=hs.length
-    ?'<div class="histl">'+hs.map(ym=>{const b=netBalance(ym);return`<div class="histr" data-a="goto-month" data-month="${ym}"><div class="hist-m">${mLabel(ym)}</div><div class="hist-b" style="color:${b>=0?'var(--green)':'var(--red)'}">${fmt(b)}</div></div>`;}).join('')+'</div>'
-    :'<div class="empty"><div class="empty-t">Nessun dato storico</div></div>';
-  buildHistChart();
-}
-function buildHistChart(){
-  const last=allMonths().slice(-10),bals=last.map(m=>netBalance(m));
-  if(histChart)histChart.destroy();
-  histChart=new Chart(document.getElementById('hist-chart'),{type:'line',
-    data:{labels:last.map(mShort),datasets:[{label:'Saldo',data:bals,borderColor:'#d4a843',
-      backgroundColor:'rgba(212,168,67,.07)',tension:.35,fill:true,
-      pointBackgroundColor:bals.map(b=>b>=0?'#3dd68c':'#f05454'),pointRadius:4,pointBorderWidth:0}]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` Saldo: €${Number(c.raw).toLocaleString('it-IT',{minimumFractionDigits:2})}`}}},
-      scales:{x:{ticks:{color:'#6d6a7a',font:{family:'DM Mono',size:10}},grid:{color:'#1e1e36'}},
-              y:{ticks:{color:'#6d6a7a',font:{family:'DM Mono',size:10},callback:v=>'€'+v},grid:{color:'#1e1e36'}}}}});
+    `<div class="wadd" data-a="add-wallet">${Ics.plus}<div>Nuovo portafoglio</div></div>`;
 }
 
 // ── Income ─────────────────────────────────────────────────────────
@@ -743,6 +845,7 @@ function openAddTx(walletId){
   document.getElementById('tx-cat').selectedIndex=0;
   setTxType('expense');
   fillWalletSelect(walletId);
+  closeSheet('sh-add-choice');
   openSheet('sh-tx');
   setTimeout(()=>document.getElementById('tx-amt').focus(),300);
 }
@@ -761,13 +864,15 @@ function openEditTx(id){
 }
 function fillWalletSelect(selId){
   document.getElementById('tx-wallet').innerHTML='<option value="">— Nessuno —</option>'+
-    S.wallets.map(w=>`<option value="${w.id}"${w.id===selId?' selected':''}>${esc(w.icon)} ${esc(w.name)}</option>`).join('');
+    S.wallets.map(w=>`<option value="${w.id}"${w.id===selId?' selected':''}>${esc(w.name)}</option>`).join('');
   document.getElementById('fg-wallet').style.display=curTxType==='expense'?'block':'none';
 }
 function setTxType(type){
   curTxType=type;
   document.getElementById('tt-e').className='tbtn'+(type==='expense'?' ae':'');
+  document.getElementById('tt-e').innerHTML = (type==='expense'? Ics.down : '') + ' Uscita';
   document.getElementById('tt-i').className='tbtn'+(type==='income'?' ai':'');
+  document.getElementById('tt-i').innerHTML = (type==='income'? Ics.up : '') + ' Entrata';
   document.getElementById('fg-wallet').style.display=type==='expense'?'block':'none';
 }
 function saveTx(){
@@ -799,9 +904,9 @@ function delTx(id){
 function buildWalletForm(){
   document.getElementById('preset-grid').innerHTML=PRESETS.map(p=>
     `<div class="ptile" data-a="apply-preset" data-icon="${p.i}" data-name="${esc(p.n)}" data-color="${p.c}">
-      <span class="pt-i">${p.i}</span><span class="pt-n">${p.n}</span></div>`).join('');
+      <span class="pt-i">${Ics[p.i] || ''}</span><span class="pt-n">${p.n}</span></div>`).join('');
   document.getElementById('icon-grid').innerHTML=ICONS.map(ic=>
-    `<div class="iopt${ic===selIcon?' sel':''}" data-a="pick-icon" data-icon="${ic}">${ic}</div>`).join('');
+    `<div class="iopt${ic===selIcon?' sel':''}" data-a="pick-icon" data-icon="${ic}">${Ics[ic] || ''}</div>`).join('');
   document.getElementById('col-grid').innerHTML=COLORS.map(c=>
     `<div class="copt${c===selColor?' sel':''}" data-a="pick-color" data-color="${c}" style="background:${c}"></div>`).join('');
 }
@@ -836,9 +941,7 @@ function deleteWallet(id){
     'Il portafoglio e tutte le sue allocazioni saranno eliminati definitivamente. Le transazioni collegate rimarranno ma perderanno l\'associazione al portafoglio.',
     'Elimina tutto',
     ()=>{
-      // remove wallet
       S.wallets=S.wallets.filter(x=>x.id!==id);
-      // detach transactions
       S.transactions.forEach(t=>{if(t.walletId===id)delete t.walletId});
       saveS();closeAll();renderPortafogli();
     }
@@ -851,11 +954,12 @@ function renderWalletDetail(id){
   const w=walletById(id);if(!w)return;
   const ym=selMonth,bal=walletBalance(id,ym),alloc=walletMonthAlloc(id,ym),spent=walletMonthSpent(id,ym);
   const pct=alloc>0?Math.min(100,Math.round(spent/alloc*100)):0;
-  const barCol=pct>=100?'var(--red)':pct>=80?'#f59e0b':w.color;
-  document.getElementById('wd-ico').textContent=w.icon;
+  const barCol=pct>=100?'var(--red)':pct>=80?'var(--gold)':w.color;
+  document.getElementById('wd-ico').innerHTML=Ics[w.icon] || Ics.wallet;
+  document.getElementById('wd-ico').style.color=w.color;
   document.getElementById('wd-name').textContent=w.name;
   document.getElementById('wd-sub').textContent=mLabel(ym);
-  const bv=document.getElementById('wd-bal');bv.textContent=fmt(bal);bv.style.color=bal<0?'var(--red)':bal<10?'#f59e0b':'var(--green)';
+  const bv=document.getElementById('wd-bal');bv.textContent=fmt(bal);bv.style.color=bal<0?'var(--red)':bal<10?'var(--gold)':'var(--green)';
   document.getElementById('wd-alloc').textContent=alloc>0?fmt(alloc):'—';
   document.getElementById('wd-spent').textContent=fmt(spent);
   document.getElementById('wd-pbar').style.cssText=`width:${pct}%;background:${barCol}`;
@@ -864,7 +968,7 @@ function renderWalletDetail(id){
     :'Nessun budget impostato — usa "Modifica fondi" per aggiungere.';
   const wtxs=txForMonth(ym).filter(t=>t.type==='expense'&&t.walletId===id).sort((a,b)=>b.date.localeCompare(a.date));
   document.getElementById('wd-txl').innerHTML=wtxs.length?txListHTML(wtxs,true)
-    :`<div class="empty"><div class="empty-i">○</div><div class="empty-t">Nessuna spesa questo mese</div></div>`;
+    :`<div class="empty"><div class="empty-i">${Ics.empty}</div><div class="empty-t">Nessuna spesa questo mese</div></div>`;
 }
 
 // ── Allocation ────────────────────────────────────────────────────
@@ -895,6 +999,7 @@ function openAddFx(){
   document.getElementById('fx-name').value='';
   document.getElementById('fx-amt').value='';
   document.getElementById('fx-cat').selectedIndex=0;
+  closeSheet('sh-add-choice');
   openSheet('sh-fx');
 }
 function openEditFx(id){
@@ -915,27 +1020,33 @@ function saveFx(){
     const i=S.fixedExpenses.findIndex(f=>f.id===editFxId);
     if(i>=0)S.fixedExpenses[i]={...S.fixedExpenses[i],name,amount:amt,cat};
   }else{
-    S.fixedExpenses.push({id:genId(),name,amount:amt,cat,active:true});
+    S.fixedExpenses.push({id:genId(),name,amount:amt,cat,skippedMonths:[]});
   }
-  saveS();closeSheet('sh-fx');renderAltro();
+  saveS();closeSheet('sh-fx');renderMovimenti();
 }
-function toggleFx(id){
-  const i=S.fixedExpenses.findIndex(f=>f.id===id);
-  if(i>=0)S.fixedExpenses[i].active=!S.fixedExpenses[i].active;
-  saveS();renderAltro();
+function toggleFxMonth(id, ym){
+  const fx = S.fixedExpenses.find(f => f.id === id);
+  if (!fx) return;
+  const idx = fx.skippedMonths.indexOf(ym);
+  if (idx >= 0) {
+      fx.skippedMonths.splice(idx, 1); // Rimuovi il mese skippato -> si riattiva
+  } else {
+      fx.skippedMonths.push(ym); // Aggiungi il mese -> si disattiva per questo mese
+  }
+  saveS();
+  renderCurrent();
 }
 function delFx(id){
-  askConfirm('Eliminare spesa fissa?','Questa operazione non può essere annullata.','Elimina',()=>{
+  askConfirm('Eliminare spesa fissa?','Questa operazione eliminerà la spesa fissa in tutti i mesi.','Elimina',()=>{
     S.fixedExpenses=S.fixedExpenses.filter(f=>f.id!==id);
-    saveS();renderAltro();
+    saveS();renderMovimenti();
   });
 }
 
 // ════════════════════════════════════════════════════════════════
-// CENTRAL EVENT DELEGATION  — single listener on document
+// CENTRAL EVENT DELEGATION
 // ════════════════════════════════════════════════════════════════
 document.addEventListener('click',function(e){
-  // Walk up the tree to find a data-a element
   let el=e.target;
   while(el&&el!==document){
     if(el.dataset&&el.dataset.a)break;
@@ -947,28 +1058,23 @@ document.addEventListener('click',function(e){
   const id=el.dataset.id||null;
 
   switch(a){
-    // nav
     case 'nav-home':        nav('home');        break;
     case 'nav-movimenti':   nav('movimenti');   break;
     case 'nav-portafogli':  nav('portafogli');  break;
-    case 'nav-altro':       nav('altro');       break;
     case 'prev-month':      prevMonth();        break;
     case 'next-month':      nextMonth();        break;
-    case 'goto-month':      selMonth=el.dataset.month;updateLabels();nav('home');break;
     case 'close-all':       closeAll();         break;
-
-    // FAB
-    case 'add-tx': openAddTx(null); break;
-
-    // transaction
+    
+    case 'open-add-choice': openSheet('sh-add-choice'); break;
+    case 'add-tx':          openAddTx(null); break;
+    case 'add-fx':          openAddFx(); break;
+    
     case 'type-expense': setTxType('expense'); break;
     case 'type-income':  setTxType('income');  break;
     case 'save-tx':      saveTx();             break;
     case 'close-sh-tx':  closeSheet('sh-tx');  break;
     case 'edit-tx':      closeAll();openEditTx(id); break;
     case 'del-tx':       delTx(id);            break;
-
-    // wallet
     case 'add-wallet':   openAddWallet();      break;
     case 'open-wallet':  openWalletDetail(id); break;
     case 'apply-preset':
@@ -979,29 +1085,19 @@ document.addEventListener('click',function(e){
     case 'pick-color': selColor=el.dataset.color;buildWalletForm();break;
     case 'save-wallet':      saveWallet();             break;
     case 'close-sh-wallet':  closeSheet('sh-wallet');  break;
-
-    // wallet detail
     case 'wd-edit':   openEditWallet(curWId);    break;
     case 'wd-delete': deleteWallet(curWId);      break;
     case 'wd-alloc':  openAllocSheet(curWId);    break;
     case 'wd-addtx':  closeSheet('sh-wdet');openAddTx(curWId); break;
-
-    // allocation
     case 'save-alloc':     saveAlloc();                                  break;
     case 'close-sh-alloc': closeSheet('sh-alloc');openWalletDetail(curWId);break;
-
-    // fixed
-    case 'add-fx':    openAddFx();        break;
     case 'edit-fx':   openEditFx(id);     break;
     case 'del-fx':    delFx(id);          break;
-    case 'toggle-fx': toggleFx(id);       break;
+    case 'toggle-fx-month': toggleFxMonth(id, el.dataset.ym); break;
     case 'save-fx':   saveFx();           break;
     case 'close-sh-fx': closeSheet('sh-fx'); break;
   }
-},true); // ← useCapture:true — fires BEFORE any other listener
-
-document.getElementById('f-type').addEventListener('change',renderMovimenti);
-document.getElementById('f-wallet').addEventListener('change',renderMovimenti);
+},true);
 
 // ── Init ────────────────────────────────────────────────────────
 loadS();
@@ -1012,7 +1108,7 @@ renderHome();
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js').then((reg) => {
-        console.log('Service worker registrato.', reg);
+        console.log('Service worker registrato.');
       });
     });
   }
