@@ -239,18 +239,18 @@ input, select, textarea {
 .chart-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:20px;margin-bottom:24px;}
 .chart-lbl{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:16px;text-align:center; text-transform:uppercase; letter-spacing:0.05em;}
 
-/* OVERLAY & SHEETS (FIX GHOST HITBOX) */
+/* OVERLAY & SHEETS */
 .overlay{position:fixed;inset:0;background:rgba(0, 0, 0, 0.8);z-index:90; backdrop-filter: blur(4px); opacity:0;pointer-events:none;transition:opacity .3s ease}
 .overlay.on{opacity:1;pointer-events:all}
 
 .confirm-overlay{position:fixed;inset:0;background:rgba(0, 0, 0, 0.8);z-index:190; backdrop-filter: blur(4px); opacity:0;pointer-events:none;transition:opacity .3s ease}
 .confirm-overlay.on{opacity:1;pointer-events:all}
 
-/* Animate bottom property instead of transform to prevent iOS ghost hitboxes */
-.sheet{position:fixed;bottom:-100%;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:100; transition:bottom .35s cubic-bezier(0.16, 1, 0.3, 1); max-height:85vh; max-height:85dvh; display:flex;flex-direction:column;}
+/* TENDINE FIX KEYBOARD BUG (No f-acts dentro sh-body) */
+.sheet{position:fixed;bottom:-100%;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:100; transition:bottom .35s cubic-bezier(0.16, 1, 0.3, 1); max-height:90vh; max-height:90dvh; display:flex;flex-direction:column;}
 .sheet.open{bottom:0;}
 .sh-drag{width:48px;height:5px;background:var(--tx3);border-radius:3px;margin:16px auto 0;flex-shrink:0;opacity:0.5;}
-.sh-body{overflow-y:auto;flex:1;padding:0 24px;padding-bottom:max(40px,env(safe-area-inset-bottom,0px))}
+.sh-body{overflow-y:auto;flex:1;padding:0 24px 24px;}
 .sh-title{font-size:24px;font-weight:700;margin:24px 0 20px;color:var(--tx);letter-spacing:-0.02em;}
 
 .fg{margin-bottom:20px}
@@ -259,7 +259,9 @@ input, select, textarea {
 .fi:focus,.fs:focus{border-color:var(--tx);background:var(--sf2);}
 .fs option{background:var(--sf)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.f-acts{display:flex;gap:12px;margin-top:28px;margin-bottom:12px; flex-shrink:0; padding-bottom:env(safe-area-inset-bottom, 20px);}
+
+/* Pulsanti fuori dallo scrollabile sh-body */
+.f-acts { display: flex; gap: 12px; flex-shrink: 0; padding: 16px 24px; padding-bottom: max(24px, env(safe-area-inset-bottom, 20px)); background: var(--sf); border-top: 1px solid var(--bd); }
 
 .btn{flex:1;padding:18px;border-radius:16px;font-family:var(--sans);font-size:16px; font-weight:600;cursor:pointer;border:none;touch-action:manipulation;transition:all 0.2s;}
 .btnp{background:var(--tx);color:var(--bg);}.btnp:active{background:#d0d0d0}
@@ -429,7 +431,7 @@ input, select, textarea {
       <span style="font-family:var(--mono);color:var(--tx);font-size:16px;font-weight:600;" id="fx-tot">€0</span>
     </div>
     <div id="fx-list"></div>
-    <button class="add-btn" data-a="add-fx" id="btn-add-fx">Aggiungi spesa fissa</button>
+    <button class="add-btn" data-a="add-fx" id="btn-add-fx"></button>
     
     <div class="sec" style="margin-top:32px; margin-bottom:12px;">Transazioni Storiche</div>
     <div id="mov-txl"></div>
@@ -573,7 +575,6 @@ input, select, textarea {
     <div class="sec-row" style="margin-top:10px; margin-bottom:12px;">
         <span class="sec" style="margin:0; color:var(--tx3);">Configurazione</span>
     </div>
-    
     <button class="io-card" data-a="open-profile" style="cursor:pointer; border:1px solid var(--bd); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px; margin-bottom:24px;">
         <div class="io-lbl" style="color:var(--gold);">Profilo</div>
         <div class="io-val" style="font-size:14px; color:var(--tx);">Modifica Saldo e Mese Iniziale</div>
@@ -598,10 +599,9 @@ input, select, textarea {
             <input type="file" id="import-file" accept=".json" style="display:none;">
         </label>
     </div>
-    
-    <div class="f-acts">
-      <button class="btn btng" data-a="close-sh-settings">Chiudi</button>
-    </div>
+  </div>
+  <div class="f-acts">
+    <button class="btn btng" data-a="close-sh-settings">Chiudi</button>
   </div>
 </div>
 
@@ -614,10 +614,10 @@ input, select, textarea {
         <div class="fg"><label class="fl">Saldo Iniziale €</label><input class="fi" type="text" inputmode="decimal" id="prof-amt" placeholder="0,00"></div>
         <div class="fg"><label class="fl">Mese di Partenza</label><input class="fi" type="month" id="prof-month"></div>
     </div>
-    <div class="f-acts">
-      <button class="btn btng" data-a="close-sh-profile">Annulla</button>
-      <button class="btn btnp" data-a="save-profile">Salva</button>
-    </div>
+  </div>
+  <div class="f-acts">
+    <button class="btn btng" data-a="close-sh-profile">Annulla</button>
+    <button class="btn btnp" data-a="save-profile">Salva</button>
   </div>
 </div>
 
@@ -638,11 +638,10 @@ input, select, textarea {
       <div class="fg"><label class="fl">Da</label><input class="fi" type="date" id="ana-d-start"></div>
       <div class="fg"><label class="fl">A</label><input class="fi" type="date" id="ana-d-end"></div>
     </div>
-    
-    <div class="f-acts">
-      <button class="btn btng" data-a="close-sh-period">Annulla</button>
-      <button class="btn btnp" data-a="save-period">Applica</button>
-    </div>
+  </div>
+  <div class="f-acts">
+    <button class="btn btng" data-a="close-sh-period">Annulla</button>
+    <button class="btn btnp" data-a="save-period">Applica</button>
   </div>
 </div>
 
@@ -696,10 +695,10 @@ input, select, textarea {
     <div class="fg" id="fg-wallet"><label class="fl">Portafoglio (opzionale)</label>
       <select class="fs" id="tx-wallet"><option value="">— Nessuno —</option></select>
     </div>
-    <div class="f-acts">
-      <button class="btn btng" data-a="close-sh-tx">Annulla</button>
-      <button class="btn btnp" data-a="save-tx">Salva</button>
-    </div>
+  </div>
+  <div class="f-acts">
+    <button class="btn btng" data-a="close-sh-tx">Annulla</button>
+    <button class="btn btnp" data-a="save-tx">Salva</button>
   </div>
 </div>
 
@@ -712,10 +711,10 @@ input, select, textarea {
     <div class="fg"><label class="fl">Nome</label><input class="fi" type="text" id="w-name" placeholder="es. Svago"></div>
     <div class="fg"><label class="fl">Icona</label><div class="igrid" id="icon-grid"></div></div>
     <div class="fg"><label class="fl">Colore</label><div class="cgrid" id="col-grid"></div></div>
-    <div class="f-acts">
-      <button class="btn btng" data-a="close-sh-wallet">Annulla</button>
-      <button class="btn btnp" data-a="save-wallet">Salva</button>
-    </div>
+  </div>
+  <div class="f-acts">
+    <button class="btn btng" data-a="close-sh-wallet">Annulla</button>
+    <button class="btn btnp" data-a="save-wallet">Salva</button>
   </div>
 </div>
 
@@ -756,10 +755,10 @@ input, select, textarea {
     <p class="alloc-hint" id="sh-alloc-hint" style="color:var(--tx2); margin-bottom:16px; font-size:14px; line-height:1.5;"></p>
     <div class="fg"><label class="fl">Importo (+ aggiungi, - togli)</label><input class="fi" type="text" inputmode="decimal" id="alloc-amt" placeholder="es. 150 oppure -30"></div>
     <div class="fg"><label class="fl">Note (opzionale)</label><input class="fi" type="text" id="alloc-note" placeholder="es. Stipendio"></div>
-    <div class="f-acts">
-      <button class="btn btng" data-a="close-sh-alloc">Annulla</button>
-      <button class="btn btnp" data-a="save-alloc">Applica</button>
-    </div>
+  </div>
+  <div class="f-acts">
+    <button class="btn btng" data-a="close-sh-alloc">Annulla</button>
+    <button class="btn btnp" data-a="save-alloc">Applica</button>
   </div>
 </div>
 
@@ -781,10 +780,10 @@ input, select, textarea {
         </select>
       </div>
     </div>
-    <div class="f-acts">
-      <button class="btn btng" data-a="close-sh-fx">Annulla</button>
-      <button class="btn btnp" data-a="save-fx">Salva</button>
-    </div>
+  </div>
+  <div class="f-acts">
+    <button class="btn btng" data-a="close-sh-fx">Annulla</button>
+    <button class="btn btnp" data-a="save-fx">Salva</button>
   </div>
 </div>
 
@@ -2035,7 +2034,7 @@ function delFx(id){
 }
 
 // ════════════════════════════════════════════════════════════════
-// CENTRAL EVENT DELEGATION
+// CENTRAL EVENT DELEGATION E LISTENER
 // ════════════════════════════════════════════════════════════════
 document.addEventListener('click',function(e){
   let el=e.target;
@@ -2057,7 +2056,6 @@ document.addEventListener('click',function(e){
     case 'prev-month':      prevMonth();        break;
     case 'next-month':      nextMonth();        break;
 
-    // Analisi e periodo
     case 'set-ana-tab':     setAnaTab(el.dataset.t); break;
     case 'open-period-sheet': 
         document.getElementById('ana-d-start').value = anaDateStart;
@@ -2068,7 +2066,6 @@ document.addEventListener('click',function(e){
     case 'save-period':      saveCustomPeriod(); break;
     case 'close-sh-period':  closeSheet('sh-period'); break;
 
-    // Impostazioni e Profilo
     case 'open-settings':     openSheet('sh-settings'); break;
     case 'close-sh-settings': closeSheet('sh-settings'); break;
     case 'open-profile':      openProfile(); break;
@@ -2133,6 +2130,32 @@ document.addEventListener('click',function(e){
 loadS();
 updateLabels();
 renderHome();
+
+// ── FIX iOS KEYBOARD GHOST OFFSET ──────────────────────────────
+if (window.visualViewport) {
+    let kbOpen = false;
+    const fullH = window.visualViewport.height;
+    window.visualViewport.addEventListener('resize', () => {
+        const currentH = window.visualViewport.height;
+        const isKeyboard = currentH < fullH * 0.75;
+        if (!isKeyboard && kbOpen) {
+            // Tastiera chiusa: forza reset completo
+            kbOpen = false;
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+                // Resetta eventuali offset sui sheet aperti
+                document.querySelectorAll('.sheet.open').forEach(s => {
+                    s.style.bottom = '0px';
+                    s.style.transform = 'none';
+                });
+            }, 50);
+        } else if (isKeyboard) {
+            kbOpen = true;
+        }
+    });
+}
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
