@@ -543,9 +543,14 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
     <div class="sh-title" style="text-align:center; margin-bottom:24px;">Impostazioni</div>
     
     <div class="sec-row" style="margin-top:10px; margin-bottom:12px;">
-        <span class="sec" style="margin:0; color:var(--tx3);">Salvataggio Dati</span>
+        <span class="sec" style="margin:0; color:var(--tx3);">Sistema</span>
     </div>
     <div class="dash-io" style="margin-bottom:20px;">
+        <button class="io-card" data-a="force-update" style="cursor:pointer; border:1px solid rgba(96, 165, 250, 0.3); background:var(--ba); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px; grid-column: 1 / -1;">
+            <div class="io-lbl" style="color:var(--blue);">App</div>
+            <div class="io-val" style="font-size:14px; color:var(--tx);">Cerca Aggiornamenti</div>
+        </button>
+
         <button class="io-card" data-a="export-data" style="cursor:pointer; border:1px solid var(--bd); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">
             <div class="io-lbl">Backup</div>
             <div class="io-val" style="font-size:14px;">Esporta Dati</div>
@@ -735,7 +740,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
   <div class="cs-body"  id="cs-body"></div>
   <div class="cs-acts">
     <button class="btn btng" id="cs-cancel">Annulla</button>
-    <button class="btn btnr" id="cs-ok" style="background:var(--ra); border:1px solid rgba(248,113,113,0.3); color:var(--red);">Elimina</button>
+    <button class="btn btnr" id="cs-ok" style="background:var(--ra); border:1px solid rgba(248,113,113,0.3); color:var(--red);">Conferma</button>
   </div>
 </div>
 
@@ -812,7 +817,7 @@ function askConfirm(title, body, okLabel, cb){
   _confirmCallback = cb;
   document.getElementById('cs-title').textContent = title;
   document.getElementById('cs-body').textContent  = body;
-  document.getElementById('cs-ok').textContent    = okLabel || 'Elimina';
+  document.getElementById('cs-ok').textContent    = okLabel || 'Conferma';
   document.getElementById('conf-sheet').classList.add('open');
   document.getElementById('conf-overlay').classList.add('on');
 }
@@ -1930,6 +1935,21 @@ document.addEventListener('click',function(e){
     case 'open-settings':   openSheet('sh-settings'); break;
     case 'close-sh-settings': closeSheet('sh-settings'); break;
     case 'export-data':     exportData(); break;
+    case 'force-update':
+        if(confirm('Vuoi forzare la ricerca di aggiornamenti? L\'app verrà riavviata (i tuoi dati non andranno persi).')) {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) { registration.unregister(); }
+                });
+            }
+            if ('caches' in window) {
+                caches.keys().then(function(names) {
+                    for (let name of names) { caches.delete(name); }
+                });
+            }
+            setTimeout(() => { window.location.reload(true); }, 500);
+        }
+        break;
 
     case 'close-all':       closeAll();         break;
     
