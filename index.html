@@ -53,11 +53,10 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overscroll-behavior:none;background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:15px;overflow-x:hidden}
 
-/* FIX DEFINITIVO IOS INPUTS E TASTIERA */
+/* FIX DEFINITIVO IOS INPUTS E TASTIERA (Niente auto, solo text) */
 input, select, textarea { 
     -webkit-user-select: text !important; 
     user-select: text !important; 
-    -webkit-touch-callout: default !important;
     pointer-events: auto !important; 
 }
 .btn, .mnav-btn, .nt, .pt-btn, .qp-btn, .sh-drag { -webkit-user-select: none; user-select: none; }
