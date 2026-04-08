@@ -53,9 +53,9 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overscroll-behavior:none;background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:15px;overflow-x:hidden}
 
-/* Fix iOS Inputs */
-input, select, textarea { -webkit-user-select: text !important; user-select: text !important; pointer-events: auto !important; }
-.btn, .mnav-btn, .nt, .wcard, .io-card, .pt-btn, .qp-btn { -webkit-user-select: none; user-select: none; }
+/* Fix iOS Inputs: Rimuovo blocchi al testo generici che distruggono il focus su Safari */
+input, select, textarea { -webkit-user-select: auto !important; user-select: auto !important; pointer-events: auto !important; }
+.btn, .mnav-btn, .nt, .pt-btn, .qp-btn, .sh-drag { -webkit-user-select: none; user-select: none; }
 
 .page{display:none;padding:0 0 calc(var(--nav) + 80px);min-height:100dvh}
 .page.active{display:block;animation:fu .3s cubic-bezier(0.16, 1, 0.3, 1)}
@@ -336,15 +336,20 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
   <div class="ob-card">
       <div class="ob-icon">👋</div>
       <div class="ob-title">Benvenuto in Finanze</div>
-      <div class="ob-desc">Inserisci il tuo nome e la liquidità attuale per iniziare.</div>
+      <div class="ob-desc">Inserisci il tuo nome, la liquidità e il mese da cui vuoi far partire i conti.</div>
       
       <div class="ob-input-wrap" style="margin-bottom: 12px;">
         <input type="text" id="onb-name" class="ob-input" placeholder="Il tuo nome">
       </div>
       
-      <div class="ob-input-wrap" style="margin-bottom: 24px;">
+      <div class="ob-input-wrap" style="margin-bottom: 16px;">
         <span class="ob-currency">€</span>
-        <input type="number" id="onb-amt" class="ob-input num" placeholder="0.00" step="0.01">
+        <input type="text" inputmode="decimal" id="onb-amt" class="ob-input num" placeholder="0,00">
+      </div>
+
+      <div style="font-size: 12px; color: var(--tx3); text-align: left; margin-bottom: 4px; padding-left: 4px; font-weight: 600;">Mese di partenza</div>
+      <div class="ob-input-wrap" style="margin-bottom: 24px; padding:0;">
+        <input type="month" id="onb-month" class="ob-input" style="font-family:var(--mono); padding-left: 20px; padding-right: 20px;">
       </div>
       
       <button class="btn btnp" style="width:100%; font-size:16px; margin-bottom: 16px;" onclick="finishOnboarding()">Inizia a tracciare</button>
@@ -352,7 +357,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
       <div style="font-size: 11px; color: var(--tx3); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Oppure</div>
       
       <label class="btn btng" style="width:100%; display:block; font-size:15px; cursor:pointer; padding:14px; margin:0;">
-          Hai già un backup? Importalo
+          Hai già un backup? Importalo qui
           <input type="file" id="onb-import-file" accept=".json" style="display:none;">
       </label>
   </div>
@@ -419,7 +424,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
       <span style="font-family:var(--mono);color:var(--tx);font-size:16px;font-weight:600;" id="fx-tot">€0</span>
     </div>
     <div id="fx-list"></div>
-    <button class="add-btn" data-a="add-fx" id="btn-add-fx">Aggiungi spesa fissa</button>
+    <button class="add-btn" data-a="add-fx" id="btn-add-fx"></button>
     
     <div class="sec" style="margin-top:32px; margin-bottom:12px;">Transazioni Storiche</div>
     <div id="mov-txl"></div>
@@ -552,6 +557,15 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
     <div class="sh-title" style="text-align:center; margin-bottom:24px;">Impostazioni</div>
     
     <div class="sec-row" style="margin-top:10px; margin-bottom:12px;">
+        <span class="sec" style="margin:0; color:var(--tx3);">Configurazione</span>
+    </div>
+    
+    <button class="io-card" data-a="open-profile" style="cursor:pointer; border:1px solid var(--bd); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px; margin-bottom:24px;">
+        <div class="io-lbl" style="color:var(--gold);">Profilo</div>
+        <div class="io-val" style="font-size:14px; color:var(--tx);">Modifica Saldo e Mese Iniziale</div>
+    </button>
+    
+    <div class="sec-row" style="margin-bottom:12px;">
         <span class="sec" style="margin:0; color:var(--tx3);">Sistema</span>
     </div>
     <div class="dash-io" style="margin-bottom:20px;">
@@ -573,6 +587,22 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
     
     <div class="f-acts">
       <button class="btn btng" data-a="close-sh-settings">Chiudi</button>
+    </div>
+  </div>
+</div>
+
+<div class="sheet" id="sh-profile">
+  <div class="sh-drag"></div>
+  <div class="sh-body">
+    <div class="sh-title" style="text-align:center; margin-bottom:24px;">Profilo</div>
+    <div class="fg"><label class="fl">Il tuo nome</label><input class="fi" type="text" id="prof-name"></div>
+    <div class="frow">
+        <div class="fg"><label class="fl">Saldo Iniziale €</label><input class="fi" type="text" inputmode="decimal" id="prof-amt" placeholder="0,00"></div>
+        <div class="fg"><label class="fl">Mese di Partenza</label><input class="fi" type="month" id="prof-month"></div>
+    </div>
+    <div class="f-acts">
+      <button class="btn btng" data-a="close-sh-profile">Annulla</button>
+      <button class="btn btnp" data-a="save-profile">Salva</button>
     </div>
   </div>
 </div>
@@ -620,7 +650,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
     <div class="sh-title" id="sh-tx-ttl">Nuova transazione</div>
     <div class="frow">
       <div class="fg"><label class="fl">Data</label><input class="fi" type="date" id="tx-date"></div>
-      <div class="fg"><label class="fl">Importo €</label><input class="fi" type="number" id="tx-amt" placeholder="0.00" step="0.01" min="0.01"></div>
+      <div class="fg"><label class="fl">Importo €</label><input class="fi" type="text" inputmode="decimal" id="tx-amt" placeholder="0,00"></div>
     </div>
     <div class="fg"><label class="fl">Descrizione</label><input class="fi" type="text" id="tx-desc" placeholder="es. Spesa supermercato"></div>
     <div class="fg" id="fg-cat"><label class="fl">Categoria</label>
@@ -710,7 +740,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
   <div class="sh-body">
     <div class="sh-title" id="sh-alloc-ttl">Fondi mese</div>
     <p class="alloc-hint" id="sh-alloc-hint" style="color:var(--tx2); margin-bottom:16px; font-size:14px; line-height:1.5;"></p>
-    <div class="fg"><label class="fl">Importo (+ aggiungi, - togli)</label><input class="fi" type="number" id="alloc-amt" placeholder="es. 150 oppure -30" step="0.01"></div>
+    <div class="fg"><label class="fl">Importo (+ aggiungi, - togli)</label><input class="fi" type="text" inputmode="decimal" id="alloc-amt" placeholder="es. 150 oppure -30"></div>
     <div class="fg"><label class="fl">Note (opzionale)</label><input class="fi" type="text" id="alloc-note" placeholder="es. Stipendio"></div>
     <div class="f-acts">
       <button class="btn btng" data-a="close-sh-alloc">Annulla</button>
@@ -725,7 +755,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
     <div class="sh-title" id="sh-fx-ttl">Nuova spesa fissa</div>
     <div class="fg"><label class="fl">Nome</label><input class="fi" type="text" id="fx-name" placeholder="es. Affitto"></div>
     <div class="frow">
-      <div class="fg"><label class="fl">Importo €/mese</label><input class="fi" type="number" id="fx-amt" placeholder="0.00" step="0.01" min="0.01"></div>
+      <div class="fg"><label class="fl">Importo €/mese</label><input class="fi" type="text" inputmode="decimal" id="fx-amt" placeholder="0,00"></div>
       <div class="fg"><label class="fl">Categoria</label>
         <select class="fs" id="fx-cat">
             <option value="Affitto e Casa">Affitto e Casa</option>
@@ -749,7 +779,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
   <div class="cs-body"  id="cs-body"></div>
   <div class="cs-acts">
     <button class="btn btng" id="cs-cancel">Annulla</button>
-    <button class="btn btnr" id="cs-ok" style="background:var(--ra); border:1px solid rgba(248,113,113,0.3); color:var(--red);">Elimina</button>
+    <button class="btn btnr" id="cs-ok" style="background:var(--ra); border:1px solid rgba(248,113,113,0.3); color:var(--red);">Conferma</button>
   </div>
 </div>
 
@@ -867,7 +897,7 @@ const CAT_COLORS = {
 };
 
 const SKEY = 'finanze_v6';
-let S = {transactions:[], fixedExpenses:[], monthlyIncome:{}, wallets:[], initialBalance: null, userName: null};
+let S = {transactions:[], fixedExpenses:[], monthlyIncome:{}, wallets:[], initialBalance: null, initialBalanceMonth: null, userName: null};
 
 // Helpers Generici Date
 function thisMonth(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
@@ -896,11 +926,22 @@ function loadS(){
             S.fixedExpenses.forEach(f => {
                 if(f.skippedMonths === undefined) f.skippedMonths = [];
             });
+            if(S.initialBalanceMonth === undefined) {
+                S.initialBalanceMonth = getAppStartMonth();
+            }
         }
     }catch(e){}
     checkOnboarding();
 }
 function saveS(){localStorage.setItem(SKEY,JSON.stringify(S))}
+
+// Parsing Valuta (Supporta Virgola e Punto)
+function parseAmt(val) {
+    if (!val) return 0;
+    val = val.toString().replace(',', '.');
+    let parsed = parseFloat(val);
+    return isNaN(parsed) ? 0 : parsed;
+}
 
 // Backup & Ripristino
 function exportData() {
@@ -967,6 +1008,7 @@ function allMonths(){
 // ── Onboarding ────────────────────────────────────────────────────
 function checkOnboarding() {
     if (S.initialBalance === null || S.initialBalance === undefined || !S.userName) {
+        document.getElementById('onb-month').value = thisMonth();
         document.getElementById('onboarding-modal').style.display = 'flex';
     } else {
         document.getElementById('onboarding-modal').style.display = 'none';
@@ -977,16 +1019,40 @@ function finishOnboarding() {
     let name = document.getElementById('onb-name').value.trim();
     if(!name) { alert("Inserisci il tuo nome per continuare!"); return; }
     
-    let val = parseFloat(document.getElementById('onb-amt').value);
-    if(isNaN(val)) val = 0;
+    let val = parseAmt(document.getElementById('onb-amt').value);
+    let month = document.getElementById('onb-month').value || thisMonth();
     
     S.userName = name;
     S.initialBalance = val;
+    S.initialBalanceMonth = month;
     saveS();
     
     document.getElementById('onboarding-modal').style.display = 'none';
     updateLabels();
     renderHome();
+}
+
+// ── Gestione Profilo (Settings) ─────────────────────────────────────────
+function openProfile() {
+    document.getElementById('prof-name').value = S.userName || '';
+    document.getElementById('prof-amt').value = S.initialBalance || 0;
+    document.getElementById('prof-month').value = S.initialBalanceMonth || thisMonth();
+    closeSheet('sh-settings');
+    openSheet('sh-profile');
+}
+function saveProfile() {
+    let n = document.getElementById('prof-name').value.trim();
+    let a = parseAmt(document.getElementById('prof-amt').value);
+    let m = document.getElementById('prof-month').value;
+    if(!n || !m) { alert('Compila nome e mese di partenza.'); return; }
+    
+    S.userName = n;
+    S.initialBalance = a;
+    S.initialBalanceMonth = m;
+    saveS();
+    closeSheet('sh-profile');
+    updateLabels();
+    refreshUI();
 }
 
 // ── Queries Finanziarie Core (Mese Singolo) ──────────────────────────────────────
@@ -1018,15 +1084,13 @@ function walletMonthAlloc(wid,ym){const w=walletById(wid);return((w&&w.allocatio
 function walletMonthSpent(wid,ym){return txForMonth(ym).filter(t=>t.type==='expense'&&t.walletId===wid).reduce((s,t)=>s+t.amount,0)}
 
 function getAppStartMonth() {
-    let earliest = null;
+    let earliest = S.initialBalanceMonth || null;
     S.transactions.forEach(t => {
         let m = t.date.slice(0,7);
         if(!earliest || m < earliest) earliest = m;
     });
     S.fixedExpenses.forEach(f => {
-        if (f.startMonth) {
-            if(!earliest || f.startMonth < earliest) earliest = f.startMonth;
-        }
+        if (f.startMonth && (!earliest || f.startMonth < earliest)) earliest = f.startMonth;
     });
     return earliest || thisMonth();
 }
@@ -1050,9 +1114,12 @@ function getWalletAvg(wid, endYm) {
 }
 
 function getAccumulatedWealthUpTo(endYm) {
-    let total = S.initialBalance || 0;
+    let total = parseFloat(S.initialBalance) || 0;
+    let startM = S.initialBalanceMonth || "1970-01";
     allMonths().forEach(m => {
-        if (m <= endYm) total += netBalance(m);
+        if (m >= startM && m <= endYm) {
+            total += netBalance(m);
+        }
     });
     return total;
 }
@@ -1154,10 +1221,8 @@ function nav(page){
   document.getElementById('pg-'+page).classList.add('active');
   const nt=document.getElementById('nt-'+page);if(nt)nt.classList.add('active');
   
-  // Render della nuova pagina
   renderPage(page);
   
-  // Forzatura per scorrere in cima cross browser
   window.scrollTo(0, 0);
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
@@ -1709,7 +1774,6 @@ function openAddTx(walletId, type){
   fillWalletSelect(walletId);
   closeSheet('sh-add-choice');
   openSheet('sh-tx');
-  setTimeout(()=>document.getElementById('tx-amt').focus(),300);
 }
 
 function openEditTx(id){
@@ -1737,7 +1801,7 @@ function fillWalletSelect(selId){
 
 function saveTx(){
   const date=document.getElementById('tx-date').value;
-  const amt=parseFloat(document.getElementById('tx-amt').value);
+  const amt=parseAmt(document.getElementById('tx-amt').value);
   const desc=document.getElementById('tx-desc').value.trim();
   const cat= curTxType === 'expense' ? document.getElementById('tx-cat').value : 'Entrata';
   const wid=curTxType==='expense'?(document.getElementById('tx-wallet').value||undefined):undefined;
@@ -1843,7 +1907,7 @@ function openAllocSheet(id){
   closeSheet('sh-wdet');openSheet('sh-alloc');
 }
 function saveAlloc(){
-  const amt=parseFloat(document.getElementById('alloc-amt').value);
+  const amt=parseAmt(document.getElementById('alloc-amt').value);
   const note=document.getElementById('alloc-note').value.trim();
   if(isNaN(amt)||amt===0){alert('Inserisci un importo diverso da zero.');return}
   const w=walletById(curWId);if(!w)return;
@@ -1875,7 +1939,7 @@ function openEditFx(id){
 }
 function saveFx(){
   const name=document.getElementById('fx-name').value.trim();
-  const amt=parseFloat(document.getElementById('fx-amt').value);
+  const amt=parseAmt(document.getElementById('fx-amt').value);
   const cat=document.getElementById('fx-cat').value;
   if(!name||!amt||amt<=0){alert('Inserisci nome e importo.');return}
   if(editFxId){
@@ -1943,10 +2007,14 @@ document.addEventListener('click',function(e){
     case 'save-period':      saveCustomPeriod(); break;
     case 'close-sh-period':  closeSheet('sh-period'); break;
 
-    // Impostazioni
-    case 'open-settings':   openSheet('sh-settings'); break;
+    // Impostazioni e Profilo
+    case 'open-settings':     openSheet('sh-settings'); break;
     case 'close-sh-settings': closeSheet('sh-settings'); break;
-    case 'export-data':     exportData(); break;
+    case 'open-profile':      openProfile(); break;
+    case 'close-sh-profile':  closeSheet('sh-profile'); break;
+    case 'save-profile':      saveProfile(); break;
+
+    case 'export-data':       exportData(); break;
     case 'force-update':
         if(confirm('Vuoi forzare la ricerca di aggiornamenti? L\'app verrà riavviata (i tuoi dati non andranno persi).')) {
             if ('serviceWorker' in navigator) {
