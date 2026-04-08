@@ -64,7 +64,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
 .tb-title{font-size:28px;font-weight:700;letter-spacing:-0.03em; color: var(--tx);}
 .tb-sub{font-size:13px;color:var(--tx2);margin-top:2px; font-weight: 500;}
 .mnav{display:flex;align-items:center;gap:6px;flex-shrink:0; background: var(--sf); padding: 4px; border-radius: 100px; border: 1px solid var(--bd);}
-.mnav-btn{width:28px;height:28px;border-radius:50%;background:transparent;border:none;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.mnav-btn{width:28px;height:28px;border-radius:50%;background:transparent;border:none;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
 .mnav-btn svg { width: 16px; height: 16px; stroke-width: 2.5; }
 .mnav-btn:active{background:var(--sf2); color:var(--tx);}
 .mnav-lbl{font-size:12px;min-width:90px;text-align:center;color:var(--tx);font-weight:600; white-space:nowrap; overflow:hidden;}
@@ -240,7 +240,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
 .confirm-overlay{position:fixed;inset:0;background:rgba(0, 0, 0, 0.8);z-index:190; backdrop-filter: blur(4px); opacity:0;pointer-events:none;transition:opacity .3s ease}
 .confirm-overlay.on{opacity:1;pointer-events:all}
 
-.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:100; transform:translateY(100%);transition:transform .35s cubic-bezier(0.16, 1, 0.3, 1); max-height:92dvh;display:flex;flex-direction:column}
+.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:100; transform:translateY(100%);transition:transform .35s cubic-bezier(0.16, 1, 0.3, 1); max-height:90vh;display:flex;flex-direction:column}
 .sheet.open{transform:translateY(0)}
 .sh-drag{width:48px;height:5px;background:var(--tx3);border-radius:3px;margin:16px auto 0;flex-shrink:0;opacity:0.5;}
 .sh-body{overflow-y:auto;flex:1;padding:0 24px;padding-bottom:max(40px,env(safe-area-inset-bottom,0px))}
@@ -252,7 +252,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
 .fi:focus,.fs:focus{border-color:var(--tx);background:var(--sf2);}
 .fs option{background:var(--sf)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.f-acts{display:flex;gap:12px;margin-top:28px;margin-bottom:12px}
+.f-acts{display:flex;gap:12px;margin-top:28px;margin-bottom:12px; flex-shrink:0; padding-bottom:env(safe-area-inset-bottom, 20px);}
 
 .btn{flex:1;padding:18px;border-radius:16px;font-family:var(--sans);font-size:16px; font-weight:600;cursor:pointer;border:none;touch-action:manipulation;transition:all 0.2s;}
 .btnp{background:var(--tx);color:var(--bg);}.btnp:active{background:#d0d0d0}
@@ -352,6 +352,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
 <div class="page active" id="pg-home">
   <div class="topbar">
     <div><div class="tb-title">Dashboard</div><div class="tb-sub" id="home-sub"></div></div>
+    <button class="mnav-btn" data-a="open-settings" id="btn-settings" style="background:var(--sf); border:1px solid var(--bd); width:36px; height:36px; border-radius:12px;"></button>
   </div>
   <div class="pw">
     
@@ -536,6 +537,32 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
 <div class="overlay" id="overlay" data-a="close-all"></div>
 <div class="confirm-overlay" id="conf-overlay"></div>
 
+<div class="sheet" id="sh-settings">
+  <div class="sh-drag"></div>
+  <div class="sh-body">
+    <div class="sh-title" style="text-align:center; margin-bottom:24px;">Impostazioni</div>
+    
+    <div class="sec-row" style="margin-top:10px; margin-bottom:12px;">
+        <span class="sec" style="margin:0; color:var(--tx3);">Salvataggio Dati</span>
+    </div>
+    <div class="dash-io" style="margin-bottom:20px;">
+        <button class="io-card" data-a="export-data" style="cursor:pointer; border:1px solid var(--bd); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">
+            <div class="io-lbl">Backup</div>
+            <div class="io-val" style="font-size:14px;">Esporta Dati</div>
+        </button>
+        <label class="io-card" style="cursor:pointer; margin:0; width:100%; padding:14px; border:1px solid var(--bd); display:flex; flex-direction:column; align-items:flex-start; gap:4px;">
+            <div class="io-lbl">Ripristina</div>
+            <div class="io-val" style="font-size:14px;">Importa Dati</div>
+            <input type="file" id="import-file" accept=".json" style="display:none;">
+        </label>
+    </div>
+    
+    <div class="f-acts">
+      <button class="btn btng" data-a="close-sh-settings">Chiudi</button>
+    </div>
+  </div>
+</div>
+
 <div class="sheet" id="sh-period">
   <div class="sh-drag"></div>
   <div class="sh-body">
@@ -714,7 +741,7 @@ input, select, textarea { -webkit-user-select: text !important; user-select: tex
 
 <script>
 // ════════════════════════════════════════════════════════════════
-// SVG ICONS
+// SVG ICONS E SISTEMA
 // ════════════════════════════════════════════════════════════════
 const Ics = {
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>',
@@ -740,14 +767,14 @@ const Ics = {
   cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>',
   music: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>',
   car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="8" rx="2" ry="2"></rect><path d="M3 11L6 6h12l3 5"></path><circle cx="7" cy="19" r="2"></circle><circle cx="17" cy="19" r="2"></circle></svg>',
-  coffee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>',
   tool: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>',
   briefcase: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>',
   star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>',
   shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
   bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>',
   target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>',
-  calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>'
+  calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>',
+  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
 };
 
 // UI Injects
@@ -756,6 +783,7 @@ document.getElementById('icon-chevron-right-2').innerHTML = Ics.chevronR;
 document.getElementById('icon-chevron-left-3').innerHTML = Ics.chevronL;
 document.getElementById('icon-chevron-right-3').innerHTML = Ics.chevronR;
 document.getElementById('icon-calendar-1').innerHTML = Ics.calendar;
+document.getElementById('btn-settings').innerHTML = Ics.settings;
 document.getElementById('nav-ic-home').innerHTML = Ics.home;
 document.getElementById('nav-ic-list').innerHTML = Ics.list;
 document.getElementById('nav-ic-wallet').innerHTML = Ics.wallet;
@@ -859,6 +887,38 @@ function loadS(){
     checkOnboarding();
 }
 function saveS(){localStorage.setItem(SKEY,JSON.stringify(S))}
+
+// Backup & Ripristino
+function exportData() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(S));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", "finanze_backup.json");
+    document.body.appendChild(downloadAnchorNode); 
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+document.getElementById('import-file').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        try {
+            const importedData = JSON.parse(event.target.result);
+            if (importedData && importedData.transactions) {
+                S = importedData;
+                saveS();
+                alert("Dati ripristinati con successo!");
+                window.location.reload();
+            } else {
+                alert("File non valido.");
+            }
+        } catch(err) {
+            alert("Errore nella lettura del file.");
+        }
+    };
+    reader.readAsText(file);
+});
 
 // ── Helpers Formattazione ─────────────────────────────────────────────
 function fmt(n){return'€'+Number(n).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})}
@@ -1079,12 +1139,12 @@ function nav(page){
   // Render della nuova pagina
   renderPage(page);
   
-  // Scorrimento in cima
+  // Scorrimento in cima rapido e cross-browser
   window.scrollTo(0, 0);
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
-  setTimeout(() => { window.scrollTo(0, 0); }, 10);
 }
+
 function renderPage(p){
   if(p==='home')renderHome();
   else if(p==='movimenti')renderMovimenti();
@@ -1865,6 +1925,11 @@ document.addEventListener('click',function(e){
     case 'set-period-quick': applyPeriodPreset(el.dataset.range); break;
     case 'save-period':      saveCustomPeriod(); break;
     case 'close-sh-period':  closeSheet('sh-period'); break;
+
+    // Impostazioni
+    case 'open-settings':   openSheet('sh-settings'); break;
+    case 'close-sh-settings': closeSheet('sh-settings'); break;
+    case 'export-data':     exportData(); break;
 
     case 'close-all':       closeAll();         break;
     
