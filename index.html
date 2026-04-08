@@ -53,7 +53,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overscroll-behavior:none;background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:15px;overflow-x:hidden}
 
-/* Fix iOS Inputs: Rimuovo blocchi al testo generici che distruggono il focus su Safari */
+/* Fix iOS Inputs */
 input, select, textarea { -webkit-user-select: auto !important; user-select: auto !important; pointer-events: auto !important; }
 .btn, .mnav-btn, .nt, .pt-btn, .qp-btn, .sh-drag { -webkit-user-select: none; user-select: none; }
 
@@ -494,6 +494,15 @@ input, select, textarea { -webkit-user-select: auto !important; user-select: aut
           </div>
         </div>
         <div id="ana-cat-list" class="cat-list"></div>
+
+        <div class="chart-card" style="margin-top: 24px;">
+          <div class="chart-lbl">Flusso di Cassa (Entrate vs Uscite)</div>
+          <div id="cf-kpi-wrapper" style="width:100%; overflow-x:auto; padding-bottom:8px; scroll-behavior: smooth;">
+            <div id="cf-kpi-container" style="position:relative; height:220px; min-width: 100%;">
+              <canvas id="cf-chart-kpi"></canvas>
+            </div>
+          </div>
+        </div>
     </div>
 
     <div id="ana-view-port" style="display:none;">
@@ -847,6 +856,7 @@ document.getElementById('btn-ch-fx').innerHTML = `<div style="background:var(--s
 
 let _confirmCallback = null;
 let catChart = null; 
+let cfKpiChart = null;
 let prevEoyChart = null;
 let prevBarChart = null;
 let prevRunChart = null;
@@ -1547,6 +1557,52 @@ function renderAnalisi(){
                     }
                 });
             }
+        }
+
+        // FLUSSO DI CASSA
+        let cfLabels = mths.map(m => mShort(m));
+        let cfIncData = mths.map(m => totalIncome(m));
+        let cfExpData = mths.map(m => totalExpense(m));
+
+        const cfKpiContainer = document.getElementById('cf-kpi-container');
+        const cfKpiWrapper = document.getElementById('cf-kpi-wrapper');
+        let visiblePeriods = Math.max(6, mths.length);
+        if(cfKpiContainer) {
+            cfKpiContainer.style.width = (visiblePeriods / 6 * 100) + '%';
+        }
+
+        if(cfKpiChart) cfKpiChart.destroy();
+        let ctxCf = document.getElementById('cf-chart-kpi');
+        if(ctxCf) {
+            cfKpiChart = new Chart(ctxCf, {
+                type: 'bar',
+                data: {
+                    labels: cfLabels,
+                    datasets: [
+                        { label: 'Entrate', data: cfIncData, backgroundColor: '#34d399', borderRadius: 4, barPercentage: 0.6, categoryPercentage: 0.8 },
+                        { label: 'Uscite', data: cfExpData, backgroundColor: '#f87171', borderRadius: 4, barPercentage: 0.6, categoryPercentage: 0.8 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, usePointStyle: true, padding: 20, color: '#9ca3af' } },
+                        tooltip: { 
+                          backgroundColor: '#222222', titleFont: { size: 14, family: "'Inter', sans-serif" }, bodyFont: { size: 14, family: "'JetBrains Mono', monospace" },
+                          padding: 12, cornerRadius: 8,
+                          callbacks: { label: c => ` ${c.dataset.label}: €${Number(c.raw).toLocaleString('it-IT',{minimumFractionDigits:2})}` }
+                        }
+                    },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 }, color: '#6b7280' } },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 }, color: '#6b7280', callback: v => '€' + v } }
+                    }
+                }
+            });
+            setTimeout(() => {
+                if(cfKpiWrapper) { cfKpiWrapper.scrollLeft = cfKpiWrapper.scrollWidth; }
+            }, 10);
         }
     }
 
