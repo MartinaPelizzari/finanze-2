@@ -1210,7 +1210,7 @@ function getWalletTrend(wid, start, end) {
     } else {
         let mths = getMonthsInRangeStrictYTD(start, end);
         mths.forEach(mStr => {
-            let spent = txForMonth(mStr).filter(t => t.type === 'expense' && t.walletId === wid).reduce((s,t)=>s+t.amount,0);
+            let spent = txForMonth(mStr).filter(t => t.type === 'expense' && t.walletId === wid).reduce((s,mStr)=>s+t.amount,0);
             data.push({ mLabel: mShort(mStr), spent });
         });
     }
@@ -2132,28 +2132,29 @@ updateLabels();
 renderHome();
 
 // ── FIX DEFINITIVO iOS KEYBOARD GHOST OFFSET ──────────────────────────────
-const inputs = document.querySelectorAll('input, select, textarea');
-inputs.forEach(input => {
-    input.addEventListener('blur', () => {
+// Deleghiamo l'ascolto del blur al document per intercettare anche gli input dinamici
+document.addEventListener('focusout', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') {
         if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
             // 1. Reset immediato dello scroll globale
             window.scrollTo(0, 0);
             
-            // 2. Forza un reflow dello sheet aperto (Risolve hitbox sfasato)
-            const openSheet = document.querySelector('.sheet.open');
-            if (openSheet) {
-                const originalDisplay = openSheet.style.display;
-                openSheet.style.display = 'none';
-                
-                setTimeout(() => {
-                    openSheet.style.display = originalDisplay;
-                    openSheet.style.bottom = '0px';
-                    // Trigger manuale resize per le librerie/grafici
-                    window.dispatchEvent(new Event('resize'));
-                }, 10);
-            }
+            // 2. Forza un ricalcolo dell'hitbox solo se il foglio è ancora visibile
+            // Usiamo un controllo per verificare se il blur non è causato dalla chiusura del foglio stesso
+            setTimeout(() => {
+                const openSheet = document.querySelector('.sheet.open');
+                if (openSheet && openSheet.offsetParent !== null) {
+                    const originalTransform = openSheet.style.transform;
+                    // Spostiamo impercettibilmente l'elemento per forzare il ridisegno dell'hitbox
+                    openSheet.style.transform = 'translateY(1px)';
+                    setTimeout(() => {
+                        openSheet.style.transform = originalTransform || 'none';
+                        window.dispatchEvent(new Event('resize'));
+                    }, 50);
+                }
+            }, 100);
         }
-    });
+    }
 });
 
 if (window.visualViewport) {
@@ -2164,8 +2165,8 @@ if (window.visualViewport) {
         const layoutH = window.innerHeight;
         const visualH = window.visualViewport.height;
 
+        // Se l'altezza visiva è ridotta del 20%, consideriamo la tastiera aperta
         if (visualH < layoutH * 0.8) {
-            // Tastiera probabilmente aperta
             const offset = layoutH - visualH;
             openSheet.style.bottom = offset + 'px';
         } else {
