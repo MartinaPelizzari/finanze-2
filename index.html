@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 
 <meta name="mobile-web-app-capable" content="yes">
@@ -247,7 +247,7 @@ input, select, textarea {
 .confirm-overlay.on{opacity:1;pointer-events:all}
 
 /* TENDINE FIX KEYBOARD BUG (No f-acts dentro sh-body) */
-.sheet{position:fixed;bottom:-100%;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:100; transition:bottom .35s cubic-bezier(0.16, 1, 0.3, 1); max-height:90vh; max-height:90dvh; display:flex;flex-direction:column;}
+.sheet{position:fixed;bottom:-100%;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:100; transition:bottom .35s cubic-bezier(0.16, 1, 0.3, 1); max-height:90vh; max-height:90dvh; display:flex;flex-direction:column; -webkit-transform: translateZ(0); transform: translateZ(0);}
 .sheet.open{bottom:0;}
 .sh-drag{width:48px;height:5px;background:var(--tx3);border-radius:3px;margin:16px auto 0;flex-shrink:0;opacity:0.5;}
 .sh-body{overflow-y:auto;flex:1;padding:0 24px 24px;}
@@ -261,7 +261,7 @@ input, select, textarea {
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 
 /* Pulsanti fuori dallo scrollabile sh-body */
-.f-acts { display: flex; gap: 12px; flex-shrink: 0; padding: 16px 24px; padding-bottom: max(24px, env(safe-area-inset-bottom, 20px)); background: var(--sf); border-top: 1px solid var(--bd); }
+.f-acts { display: flex; gap: 12px; flex-shrink: 0; padding: 16px 24px; padding-bottom: max(24px, env(safe-area-inset-bottom, 20px)); background: var(--sf); border-top: 1px solid var(--bd); position: relative; z-index: 101;}
 
 .btn{flex:1;padding:18px;border-radius:16px;font-family:var(--sans);font-size:16px; font-weight:600;cursor:pointer;border:none;touch-action:manipulation;transition:all 0.2s;}
 .btnp{background:var(--tx);color:var(--bg);}.btnp:active{background:#d0d0d0}
@@ -317,7 +317,7 @@ input, select, textarea {
 .wd-btn svg{width:18px;height:18px}
 .wd-btn-alloc{background:var(--bg);color:var(--tx);border:1px solid var(--bd);}
 
-.confirm-sheet{position:fixed;bottom:-100%;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:200; transition:bottom .3s cubic-bezier(0.16, 1, 0.3, 1); padding:32px 24px max(32px,env(safe-area-inset-bottom,0px))}
+.confirm-sheet{position:fixed;bottom:-100%;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:200; transition:bottom .3s cubic-bezier(0.16, 1, 0.3, 1); padding:32px 24px max(32px,env(safe-area-inset-bottom,0px)); -webkit-transform: translateZ(0); transform: translateZ(0);}
 .confirm-sheet.open{bottom:0;}
 .cs-title{font-size:22px;font-weight:700;margin-bottom:12px;color:var(--tx);letter-spacing:-0.02em;}
 .cs-body{font-size:15px;color:var(--tx2);line-height:1.6;margin-bottom:28px}
@@ -790,7 +790,7 @@ input, select, textarea {
 <div class="confirm-sheet" id="conf-sheet">
   <div class="cs-title" id="cs-title"></div>
   <div class="cs-body"  id="cs-body"></div>
-  <div class="cs-acts">
+  <div class="cs-acts" style="display:flex; gap:12px; margin-top:24px;">
     <button class="btn btng" id="cs-cancel">Annulla</button>
     <button class="btn btnr" id="cs-ok" style="background:var(--ra); border:1px solid rgba(248,113,113,0.3); color:var(--red);">Conferma</button>
   </div>
@@ -1163,7 +1163,7 @@ function fixedInRange(start, end) {
 }
 function getZeroSpendDaysInRange(start, end) {
     let txs = txInRange(start, end).filter(t => t.type === 'expense');
-    let daysWithSpend = new Set(txs.map(t => t.date));
+    let daysWithSpent = new Set(txs.map(t => t.date));
     let zeroDays = 0;
     let cur = new Date(start);
     let endD = new Date(end);
@@ -1172,7 +1172,7 @@ function getZeroSpendDaysInRange(start, end) {
     
     while(cur <= endD) {
         let dStr = `${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}-${String(cur.getDate()).padStart(2,'0')}`;
-        if(!daysWithSpend.has(dStr)) zeroDays++;
+        if(!daysWithSpent.has(dStr)) zeroDays++;
         cur.setDate(cur.getDate() + 1);
     }
     return zeroDays;
@@ -1394,7 +1394,7 @@ function renderMovimenti(){
           </div>
         </div>`
     }).join('')+'</div>'
-    :'<div class="empty"><div class="empty-i">${Ics.empty}</div><div class="empty-t">Nessuna spesa fissa</div></div>';
+    :`<div class="empty"><div class="empty-i">${Ics.empty}</div><div class="empty-t">Nessuna spesa fissa</div></div>`;
 
   let txs=txForMonth(ym);
   txs.sort((a,b)=>b.date.localeCompare(a.date));
@@ -2066,13 +2066,13 @@ document.addEventListener('click',function(e){
     case 'save-period':      saveCustomPeriod(); break;
     case 'close-sh-period':  closeSheet('sh-period'); break;
 
-    case 'open-settings':     openSheet('sh-settings'); break;
+    case 'open-settings':      openSheet('sh-settings'); break;
     case 'close-sh-settings': closeSheet('sh-settings'); break;
     case 'open-profile':      openProfile(); break;
     case 'close-sh-profile':  closeSheet('sh-profile'); break;
     case 'save-profile':      saveProfile(); break;
 
-    case 'export-data':       exportData(); break;
+    case 'export-data':        exportData(); break;
     case 'force-update':
         if(confirm('Vuoi forzare la ricerca di aggiornamenti? L\'app verrà riavviata (i tuoi dati non andranno persi).')) {
             if ('serviceWorker' in navigator) {
@@ -2089,7 +2089,7 @@ document.addEventListener('click',function(e){
         }
         break;
 
-    case 'close-all':       closeAll();         break;
+    case 'close-all':        closeAll();         break;
     
     case 'open-add-choice': openSheet('sh-add-choice'); break;
     
@@ -2097,7 +2097,7 @@ document.addEventListener('click',function(e){
     case 'add-tx-income':   openAddTx(null, 'income'); break;
     case 'add-fx':          openAddFx(); break;
     
-    case 'save-tx':      saveTx();             break;
+    case 'save-tx':      saveTx();               break;
     case 'close-sh-tx':  closeSheet('sh-tx');  break;
     case 'edit-tx':      closeAll();openEditTx(id); break;
     case 'del-tx':       delTx(id);            break;
@@ -2115,7 +2115,7 @@ document.addEventListener('click',function(e){
     case 'wd-edit':   openEditWallet(curWId);    break;
     case 'wd-delete': deleteWallet(curWId);      break;
     case 'wd-alloc':  openAllocSheet(curWId);    break;
-    case 'save-alloc':       saveAlloc();                                        break;
+    case 'save-alloc':       saveAlloc();                                                                        break;
     case 'close-sh-alloc': closeSheet('sh-alloc');openWalletDetail(curWId);break;
     
     case 'edit-fx':   openEditFx(id);     break;
@@ -2131,28 +2131,46 @@ loadS();
 updateLabels();
 renderHome();
 
-// ── FIX iOS KEYBOARD GHOST OFFSET ──────────────────────────────
+// ── FIX DEFINITIVO iOS KEYBOARD GHOST OFFSET ──────────────────────────────
+const inputs = document.querySelectorAll('input, select, textarea');
+inputs.forEach(input => {
+    input.addEventListener('blur', () => {
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+            // 1. Reset immediato dello scroll globale
+            window.scrollTo(0, 0);
+            
+            // 2. Forza un reflow dello sheet aperto (Risolve hitbox sfasato)
+            const openSheet = document.querySelector('.sheet.open');
+            if (openSheet) {
+                const originalDisplay = openSheet.style.display;
+                openSheet.style.display = 'none';
+                
+                setTimeout(() => {
+                    openSheet.style.display = originalDisplay;
+                    openSheet.style.bottom = '0px';
+                    // Trigger manuale resize per le librerie/grafici
+                    window.dispatchEvent(new Event('resize'));
+                }, 10);
+            }
+        }
+    });
+});
+
 if (window.visualViewport) {
-    let kbOpen = false;
-    const fullH = window.visualViewport.height;
     window.visualViewport.addEventListener('resize', () => {
-        const currentH = window.visualViewport.height;
-        const isKeyboard = currentH < fullH * 0.75;
-        if (!isKeyboard && kbOpen) {
-            // Tastiera chiusa: forza reset completo
-            kbOpen = false;
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-                document.body.scrollTop = 0;
-                document.documentElement.scrollTop = 0;
-                // Resetta eventuali offset sui sheet aperti
-                document.querySelectorAll('.sheet.open').forEach(s => {
-                    s.style.bottom = '0px';
-                    s.style.transform = 'none';
-                });
-            }, 50);
-        } else if (isKeyboard) {
-            kbOpen = true;
+        const openSheet = document.querySelector('.sheet.open');
+        if (!openSheet) return;
+
+        const layoutH = window.innerHeight;
+        const visualH = window.visualViewport.height;
+
+        if (visualH < layoutH * 0.8) {
+            // Tastiera probabilmente aperta
+            const offset = layoutH - visualH;
+            openSheet.style.bottom = offset + 'px';
+        } else {
+            // Tastiera chiusa
+            openSheet.style.bottom = '0px';
         }
     });
 }
