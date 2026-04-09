@@ -632,6 +632,12 @@ let preFillWId = null;
 let selIcon    = ICONS[0];
 let selColor   = COLORS[0];
 
+function renderIconColGrids() {
+    document.getElementById('icon-grid').innerHTML = ICONS.map(i => `<div class="iopt ${i===selIcon?'sel':''}" data-a="sel-icon" data-v="${i}">${Ics[i]}</div>`).join('');
+    document.getElementById('col-grid').innerHTML = COLORS.map(c => `<div class="copt ${c===selColor?'sel':''}" data-a="sel-col" data-v="${c}" style="background:${c}"></div>`).join('');
+    document.getElementById('preset-grid').innerHTML = PRESETS.map(p => `<div class="ptile" data-a="sel-preset" data-i="${p.i}" data-c="${p.c}" data-n="${p.n}"><div class="pt-i" style="color:${p.c}">${Ics[p.i]}</div><div class="pt-n">${p.n}</div></div>`).join('');
+}
+
 function loadS(){
     try{
         const r=localStorage.getItem(SKEY);
@@ -898,7 +904,7 @@ function renderPage(p){
 function refreshUI(){
     const a=document.querySelector('.page.active');
     if(a) renderPage(a.id.replace('pg-',''));
-    if(document.getElementById('sh-wdet').classList.contains('open') && curWId) renderWalletDetail(curWId);
+    if(document.getElementById('sh-wdet').classList.contains('open') && curWId) openWalletDetail(curWId);
 }
 
 function prevMonth(){selMonth=offsetMonth(selMonth,-1);updateLabels();refreshUI()}
@@ -906,16 +912,13 @@ function nextMonth(){selMonth=offsetMonth(selMonth,+1);updateLabels();refreshUI(
 
 function openSheet(id){document.getElementById(id).classList.add('open');document.getElementById('overlay').classList.add('on')}
 
-/* FIX BUG 1: Pulisci lo stile inline per permettere la transizione CSS */
 function closeSheet(id){
     const sheet = document.getElementById(id);
     if(sheet) {
         sheet.classList.remove('open');
-        sheet.style.bottom = '';
+        sheet.style.removeProperty('bottom');
     }
     if(!document.querySelector('.sheet.open')) document.getElementById('overlay').classList.remove('on');
-    
-    // Fix iOS: reset scroll body dopo chiusura
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
 }
@@ -923,7 +926,7 @@ function closeSheet(id){
 function closeAll(){
     document.querySelectorAll('.sheet.open').forEach(s => {
         s.classList.remove('open');
-        s.style.bottom = '';
+        s.style.removeProperty('bottom');
     });
     document.getElementById('overlay').classList.remove('on');
     window.scrollTo(0, 0);
@@ -997,6 +1000,43 @@ function setAnaTab(t) {
     setTimeout(() => renderAnalisi(), 10);
 }
 
+function setPeriodQuick(range) {
+    let today = new Date();
+    let y = today.getFullYear();
+    let m = String(today.getMonth() + 1).padStart(2, '0');
+    if (range === 'this_month') {
+        anaDateStart = startOfMonth(`${y}-${m}`);
+        anaDateEnd = endOfMonth(`${y}-${m}`);
+    } else if (range === 'last_month') {
+        let lm = offsetMonth(`${y}-${m}`, -1);
+        anaDateStart = startOfMonth(lm);
+        anaDateEnd = endOfMonth(lm);
+    } else if (range === 'this_quarter') {
+        let qm = Math.floor(today.getMonth() / 3) * 3 + 1;
+        anaDateStart = startOfMonth(`${y}-${String(qm).padStart(2,'0')}`);
+        let eqm = qm + 2;
+        anaDateEnd = endOfMonth(`${y}-${String(eqm).padStart(2,'0')}`);
+    } else if (range === 'this_year') {
+        anaDateStart = `${y}-01-01`;
+        anaDateEnd = `${y}-12-31`;
+    }
+    document.getElementById('ana-d-start').value = anaDateStart;
+    document.getElementById('ana-d-end').value = anaDateEnd;
+}
+
+function savePeriod() {
+    let st = document.getElementById('ana-d-start').value;
+    let en = document.getElementById('ana-d-end').value;
+    if (st && en && st <= en) {
+        anaDateStart = st;
+        anaDateEnd = en;
+        closeSheet('sh-period');
+        renderAnalisi();
+    } else {
+        alert("Date non valide.");
+    }
+}
+
 function renderAnalisi(){
     document.getElementById('ana-period-lbl').textContent = formatPeriod(anaDateStart, anaDateEnd);
     Chart.defaults.font.family = "'Inter', sans-serif"; Chart.defaults.color = "#9ca3af";
@@ -1014,6 +1054,9 @@ function renderAnalisi(){
             document.getElementById('ana-cat-list').innerHTML = catArray.map(c => `<div class="cat-item"><div class="cat-color" style="background:${CAT_COLORS[c.name]||'#4a4860'}"></div><div class="cat-name">${c.name}</div><div class="cat-pct">${Math.round(c.amt/totCat*100)}%</div><div class="cat-amt">${fmt(c.amt)}</div></div>`).join('');
             if(catChart) catChart.destroy();
             catChart = new Chart(document.getElementById('cat-chart'), { type: 'doughnut', data: { labels: catArray.map(c=>c.name), datasets: [{ data: catArray.map(c=>c.amt), backgroundColor: catArray.map(c=>CAT_COLORS[c.name]||'#4a4860'), borderWidth: 2, borderColor: '#151515' }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false } } } });
+        } else {
+            document.getElementById('ana-cat-list').innerHTML = `<div class="empty"><div class="empty-t">Nessuna spesa nel periodo</div></div>`;
+            if(catChart) catChart.destroy();
         }
     }
 }
@@ -1045,6 +1088,52 @@ function openAddTx(walletId, type){
   openSheet('sh-tx');
 }
 
+function delTx(id) {
+    askConfirm('Elimina Transazione', 'Vuoi eliminare questa transazione?', 'Elimina', () => {
+        S.transactions = S.transactions.filter(t => t.id !== id);
+        saveS(); refreshUI();
+    });
+}
+
+function openEditTx(id) {
+    const t = S.transactions.find(x => x.id === id);
+    if(!t) return;
+    editTxId = id; curTxType = t.type;
+    document.getElementById('sh-tx-ttl').textContent = 'Modifica transazione';
+    document.getElementById('tx-date').value = t.date;
+    document.getElementById('tx-amt').value = t.amount;
+    document.getElementById('tx-desc').value = t.description;
+    document.getElementById('fg-cat').style.display = t.type === 'expense' ? 'block' : 'none';
+    document.getElementById('fg-wallet').style.display = t.type === 'expense' ? 'block' : 'none';
+    if(t.type === 'expense') {
+        document.getElementById('tx-cat').value = t.category;
+        document.getElementById('tx-wallet').innerHTML='<option value="">— Nessun portafoglio —</option>'+getActiveWallets(selMonth).map(w=>`<option value="${w.id}"${w.id===t.walletId?' selected':''}>${esc(w.name)}</option>`).join('');
+    }
+    openSheet('sh-tx');
+}
+
+function openAddWallet() {
+    editWId = null;
+    document.getElementById('sh-w-ttl').textContent = 'Nuovo portafoglio';
+    document.getElementById('w-name').value = '';
+    selIcon = ICONS[0];
+    selColor = COLORS[0];
+    renderIconColGrids();
+    openSheet('sh-wallet');
+}
+
+function openEditWallet() {
+    const w = walletById(curWId);
+    if(!w) return;
+    editWId = curWId;
+    document.getElementById('sh-w-ttl').textContent = 'Modifica portafoglio';
+    document.getElementById('w-name').value = w.name;
+    selIcon = w.icon; selColor = w.color;
+    renderIconColGrids();
+    closeSheet('sh-wdet');
+    openSheet('sh-wallet');
+}
+
 function saveWallet(){
   const name=document.getElementById('w-name').value.trim();
   if(!name){alert('Inserisci un nome.');return}
@@ -1059,6 +1148,36 @@ function saveWallet(){
   refreshUI();
 }
 
+function openWalletDetail(wid) {
+    curWId = wid;
+    const w = walletById(wid);
+    if(!w) return;
+    document.getElementById('wd-ico').innerHTML = `<div style="background:${w.color}22; color:${w.color}; width:100%; height:100%; border-radius:16px; display:flex; align-items:center; justify-content:center;">${Ics[w.icon]||Ics.wallet}</div>`;
+    document.getElementById('wd-name').textContent = w.name;
+    document.getElementById('wd-sub').textContent = 'Media spesa: ' + fmt(getWalletAvg(wid, selMonth));
+    document.getElementById('wd-bal').textContent = fmt(walletBalance(wid, selMonth));
+    
+    let alloc = walletMonthAlloc(wid, selMonth);
+    let spent = walletMonthSpent(wid, selMonth);
+    document.getElementById('wd-alloc').textContent = alloc > 0 ? fmt(alloc) : 'No budget';
+    document.getElementById('wd-spent').textContent = fmt(spent);
+    
+    let pct = alloc > 0 ? Math.min(100, Math.round((spent/alloc)*100)) : 0;
+    document.getElementById('wd-pbar').style.width = pct + '%';
+    document.getElementById('wd-pbar').style.background = pct >= 100 ? 'var(--red)' : (pct >= 80 ? 'var(--gold)' : w.color);
+    
+    let txs = txForMonth(selMonth).filter(t => t.walletId === wid);
+    document.getElementById('wd-txl').innerHTML = txs.length ? txListHTML(txs, true) : `<div class="empty"><div class="empty-t">Nessuna transazione nel mese</div></div>`;
+    
+    openSheet('sh-wdet');
+}
+
+function openAllocSheet(wid) {
+    document.getElementById('alloc-amt').value = '';
+    document.getElementById('alloc-note').value = '';
+    openSheet('sh-alloc');
+}
+
 function saveAlloc(){
   const amt=parseAmt(document.getElementById('alloc-amt').value);
   if(isNaN(amt)||amt===0){alert('Inserisci un importo.');return}
@@ -1069,6 +1188,16 @@ function saveAlloc(){
   closeSheet('sh-alloc');
   openWalletDetail(curWId);
   refreshUI();
+}
+
+function openAddFx() {
+    editFxId = null;
+    document.getElementById('sh-fx-ttl').textContent = 'Nuova spesa fissa';
+    document.getElementById('fx-name').value = '';
+    document.getElementById('fx-amt').value = '';
+    document.getElementById('fx-cat').value = 'Affitto e Casa';
+    closeSheet('sh-add-choice');
+    openSheet('sh-fx');
 }
 
 function saveFx(){
@@ -1085,6 +1214,35 @@ function saveFx(){
   refreshUI();
 }
 
+function delFx(id) {
+    askConfirm('Elimina Spesa Fissa', 'Eliminare questa spesa fissa rimuoverà anche lo storico futuro. Procedere?', 'Elimina', () => {
+        S.fixedExpenses = S.fixedExpenses.filter(f => f.id !== id);
+        saveS(); refreshUI();
+    });
+}
+
+function openEditFx(id) {
+    const f = S.fixedExpenses.find(x => x.id === id);
+    if(!f) return;
+    editFxId = id;
+    document.getElementById('sh-fx-ttl').textContent = 'Modifica spesa fissa';
+    document.getElementById('fx-name').value = f.name;
+    document.getElementById('fx-amt').value = f.amount;
+    document.getElementById('fx-cat').value = f.cat;
+    openSheet('sh-fx');
+}
+
+function toggleFxMonth(id, ym) {
+    const f = S.fixedExpenses.find(x => x.id === id);
+    if(!f) return;
+    if (f.skippedMonths.includes(ym)) {
+        f.skippedMonths = f.skippedMonths.filter(m => m !== ym);
+    } else {
+        f.skippedMonths.push(ym);
+    }
+    saveS(); refreshUI();
+}
+
 // ════════════════════════════════════════════════════════════════
 // EVENT DELEGATION
 // ════════════════════════════════════════════════════════════════
@@ -1092,48 +1250,116 @@ document.addEventListener('click',function(e){
   let el=e.target; while(el&&el!==document){ if(el.dataset&&el.dataset.a)break; el=el.parentElement; }
   if(!el||!el.dataset||!el.dataset.a)return;
   const a=el.dataset.a; const id=el.dataset.id||null;
+  
   switch(a){
-    case 'nav-home': nav('home'); break; case 'nav-movimenti': nav('movimenti'); break; case 'nav-portafogli': nav('portafogli'); break; case 'nav-analisi': nav('analisi'); break;
-    case 'prev-month': prevMonth(); break; case 'next-month': nextMonth(); break;
-    case 'open-settings': openSheet('sh-settings'); break; case 'close-sh-settings': closeSheet('sh-settings'); break;
-    case 'save-tx': saveTx(); break; case 'close-sh-tx': closeSheet('sh-tx'); break;
-    case 'save-wallet': saveWallet(); break; case 'close-sh-wallet': closeSheet('sh-wallet'); break;
-    case 'save-alloc': saveAlloc(); break; case 'close-sh-alloc': closeSheet('sh-alloc'); openWalletDetail(curWId); break;
-    case 'save-fx': saveFx(); break; case 'close-sh-fx': closeSheet('sh-fx'); break;
-    case 'close-all': closeAll(); break;
+    case 'nav-home': nav('home'); break; 
+    case 'nav-movimenti': nav('movimenti'); break; 
+    case 'nav-portafogli': nav('portafogli'); break; 
+    case 'nav-analisi': nav('analisi'); break;
+    
+    case 'prev-month': prevMonth(); break; 
+    case 'next-month': nextMonth(); break;
+    
+    case 'open-settings': openSheet('sh-settings'); break; 
+    case 'close-sh-settings': closeSheet('sh-settings'); break;
+    
+    case 'open-profile': openProfile(); break;
+    case 'close-sh-profile': closeSheet('sh-profile'); break;
+    case 'save-profile': saveProfile(); break;
+    
+    case 'force-update': alert("Sei già all'ultima versione di Finanze."); break;
+    case 'export-data': exportData(); break;
+    
     case 'open-add-choice': openSheet('sh-add-choice'); break;
     case 'add-tx-expense': openAddTx(null, 'expense'); break;
     case 'add-tx-income': openAddTx(null, 'income'); break;
     case 'add-fx': openAddFx(); break;
+    case 'add-wallet': openAddWallet(); break;
+    
+    case 'save-tx': saveTx(); break; 
+    case 'close-sh-tx': closeSheet('sh-tx'); break;
+    
+    case 'save-wallet': saveWallet(); break; 
+    case 'close-sh-wallet': closeSheet('sh-wallet'); break;
+    
     case 'open-wallet': openWalletDetail(id); break;
+    case 'close-sh-wdet': closeSheet('sh-wdet'); break;
+    
     case 'wd-alloc': openAllocSheet(curWId); break;
-    case 'del-tx': delTx(id); break; case 'edit-tx': closeAll(); openEditTx(id); break;
-    case 'del-fx': delFx(id); break; case 'edit-fx': openEditFx(id); break;
+    case 'save-alloc': saveAlloc(); break; 
+    case 'close-sh-alloc': closeSheet('sh-alloc'); openWalletDetail(curWId); break;
+    
+    case 'wd-edit': openEditWallet(); break;
+    case 'wd-delete': 
+        askConfirm('Archivia Portafoglio', 'Sei sicuro di volerlo archiviare?', 'Archivia', () => {
+            const i = S.wallets.findIndex(w => w.id === curWId);
+            if(i>=0) S.wallets[i].archivedMonth = selMonth;
+            saveS(); closeSheet('sh-wdet'); refreshUI();
+        }); 
+        break;
+    
+    case 'save-fx': saveFx(); break; 
+    case 'close-sh-fx': closeSheet('sh-fx'); break;
+    
+    case 'close-all': closeAll(); break;
+    
+    case 'del-tx': delTx(id); break; 
+    case 'edit-tx': closeAll(); openEditTx(id); break;
+    
+    case 'del-fx': delFx(id); break; 
+    case 'edit-fx': openEditFx(id); break;
     case 'toggle-fx-month': toggleFxMonth(id, el.dataset.ym); break;
-    /* Altri casi omessi per brevità, ma inclusi nel flusso */
+    
+    case 'set-ana-tab': setAnaTab(el.dataset.t); break;
+    case 'open-period-sheet': openSheet('sh-period'); break;
+    case 'close-sh-period': closeSheet('sh-period'); break;
+    case 'set-period-quick': setPeriodQuick(el.dataset.range); break;
+    case 'save-period': savePeriod(); break;
+    
+    case 'sel-icon': selIcon = el.dataset.v; renderIconColGrids(); break;
+    case 'sel-col': selColor = el.dataset.v; renderIconColGrids(); break;
+    case 'sel-preset': 
+        selIcon = el.dataset.i; 
+        selColor = el.dataset.c; 
+        document.getElementById('w-name').value = el.dataset.n; 
+        renderIconColGrids(); 
+        break;
   }
 },true);
 
-loadS(); updateLabels(); renderHome();
+// INITIALIZATION
+renderIconColGrids();
+loadS(); 
+updateLabels(); 
+renderHome();
 
-/* FIX BUG 2: Soglia tastiera meno sensibile e reset corretto del bottom */
+/* FIX DEFINITIVO IOS KEYBOARD: Ancora al bottom SOLO se un input è focalizzato */
 if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', () => {
         const openSheet = document.querySelector('.sheet.open');
-        if (openSheet) {
-            const layoutH = window.innerHeight;
-            const visualH = window.visualViewport.height;
-            
-            // La tastiera occupa tipicamente più di 150px. 
-            // Differenze minori sono dovute alla UI del browser.
-            if (layoutH - visualH > 150) {
-                openSheet.style.bottom = (layoutH - visualH) + 'px';
-            } else {
-                // Nessuna tastiera aperta: rimuoviamo l'inline style 
-                // e lasciamo lavorare il "bottom: 0 !important" del CSS
-                openSheet.style.bottom = '';
-            }
+        if (!openSheet) return;
+        
+        // Verifica se un campo di testo è attualmente attivo
+        const activeEl = document.activeElement;
+        const isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT');
+        
+        const layoutH = window.innerHeight;
+        const visualH = window.visualViewport.height;
+        const diff = layoutH - visualH;
+        
+        // Se un input è in focus e la differenza di altezza è consistente (>100px), alza il foglio
+        if (isInput && diff > 100) {
+            openSheet.style.setProperty('bottom', diff + 'px', 'important');
+        } else {
+            // Altrimenti rimuovi lo stile inline per farlo poggiare naturalmente
+            openSheet.style.removeProperty('bottom');
         }
+    });
+
+    // Sicurezza aggiuntiva: se si esce dal campo di testo (es. nascondendo la tastiera dal tasto 'Fatto' su iOS)
+    document.addEventListener('focusout', () => {
+        const openSheet = document.querySelector('.sheet.open');
+        if (openSheet) openSheet.style.removeProperty('bottom');
     });
 }
 </script>
