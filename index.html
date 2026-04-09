@@ -65,9 +65,9 @@ input, select, textarea {
 .page.active{display:block;animation:fu .3s cubic-bezier(0.16, 1, 0.3, 1)}
 @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-/* TOPBAR */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:max(56px, env(safe-area-inset-top, 56px)) 20px 16px;gap:8px}
-.tb-title{font-size:28px;font-weight:700;letter-spacing:-0.03em; color: var(--tx);}
+/* TOPBAR - MODIFICATA PER ABBASSARE I TITOLI */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top, 44px) + 24px) 20px 16px;gap:8px}
+.tb-title{font-size:26px;font-weight:700;letter-spacing:-0.03em; color: var(--tx);}
 .tb-sub{font-size:13px;color:var(--tx2);margin-top:2px; font-weight: 500;}
 .mnav{display:flex;align-items:center;gap:6px;flex-shrink:0; background: var(--sf); padding: 4px; border-radius: 100px; border: 1px solid var(--bd);}
 .mnav-btn{width:28px;height:28px;border-radius:50%;background:transparent;border:none;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
@@ -215,18 +215,18 @@ input, select, textarea {
 .w-sub{font-size:11px;color:var(--tx2);font-weight:500;margin-bottom:2px}
 .w-avg{font-size:10px;color:var(--tx3);font-family:var(--mono);}
 
-/* BOTTOM NAV - OTTIMIZZATO PER ESSERE MOLTO PIU BASSO */
-.bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 8px 12px max(8px, env(safe-area-inset-bottom, 0px)); z-index: 50; }
-.nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:2px;padding:4px 0;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
+/* BOTTOM NAV - ANCORA PIU BASSO E SCHIACCIATO */
+.bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 6px 12px calc(env(safe-area-inset-bottom, 0px) + 4px); z-index: 50; }
+.nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:2px;padding:2px 0;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
 .nt.active{color:var(--tx)}
 .nt-i{display:flex;align-items:center;justify-content:center}
 .nt-i svg{width:22px;height:22px;stroke-width:2.2}
 
-/* FAB IN EVIDENZA */
+/* FAB RIPROPORZIONATO */
 .fab-w{flex:0 0 72px;display:flex;justify-content:center;align-items:center}
-.fab{width:56px;height:56px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-24px); box-shadow: 0 8px 24px rgba(255,255,255,0.2); transition:all 0.2s;} 
+.fab{width:56px;height:56px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-20px); box-shadow: 0 8px 24px rgba(255,255,255,0.2); transition:all 0.2s;} 
 .fab svg{width:24px;height:24px;stroke-width:2.5}
-.fab:active{transform:translateY(-24px) scale(0.92); background: #d0d0d0;}
+.fab:active{transform:translateY(-20px) scale(0.92); background: #d0d0d0;}
 
 /* UTILS */
 .empty{text-align:center;padding:40px 20px;color:var(--tx3)}
@@ -253,7 +253,7 @@ input, select, textarea {
 .sheet.open{bottom:0 !important;}
 .sh-drag{width:48px;height:5px;background:var(--tx3);border-radius:3px;margin:16px auto 0;flex-shrink:0;opacity:0.5;}
 .sh-body{overflow-y:auto;flex:1;padding:0 24px 24px;}
-.sh-title{font-size:24px;font-weight:700;margin:24px 0 20px;color:var(--tx);letter-spacing:-0.02em;}
+.sh-title{font-size:22px;font-weight:700;margin:24px 0 20px;color:var(--tx);letter-spacing:-0.02em;}
 
 .fg{margin-bottom:20px}
 .fl{display:block;font-size:12px;font-weight:600;color:var(--tx2);margin-bottom:8px}
