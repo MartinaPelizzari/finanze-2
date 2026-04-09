@@ -215,14 +215,14 @@ input, select, textarea {
 .w-sub{font-size:11px;color:var(--tx2);font-weight:500;margin-bottom:2px}
 .w-avg{font-size:10px;color:var(--tx3);font-family:var(--mono);}
 
-/* BOTTOM NAV - OTTIMIZZATO PER ESSERE PIU BASSO */
+/* BOTTOM NAV */
 .bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 12px 12px max(10px, env(safe-area-inset-bottom, 8px)); z-index: 50; }
 .nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:4px;padding:6px 0;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
 .nt.active{color:var(--tx)}
 .nt-i{display:flex;align-items:center;justify-content:center}
 .nt-i svg{width:22px;height:22px;stroke-width:2.2}
 
-/* FAB RIPRISTINATO A -24px PER ESSERE IN EVIDENZA */
+/* FAB IN EVIDENZA */
 .fab-w{flex:0 0 72px;display:flex;justify-content:center;align-items:center}
 .fab{width:56px;height:56px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-24px); box-shadow: 0 8px 24px rgba(255,255,255,0.2); transition:all 0.2s;} 
 .fab svg{width:24px;height:24px;stroke-width:2.5}
@@ -1340,39 +1340,43 @@ loadS();
 updateLabels(); 
 renderHome();
 
-/* FIX DEFINITIVO IOS KEYBOARD: Esclusione dei <select> dal calcolo */
+/* FIX DEFINITIVO IOS KEYBOARD: Gestione transizioni Input vs Select */
+let activeInputType = null;
+
+// Intercettiamo globalmente il tipo di elemento su cui l'utente fa tap
+document.addEventListener('focusin', (e) => {
+    if (e.target) activeInputType = e.target.tagName;
+});
+
+// Resettiamo quando si esce dal campo
+document.addEventListener('focusout', () => {
+    activeInputType = null;
+});
+
 if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', () => {
         const openSheet = document.querySelector('.sheet.open');
         if (!openSheet) return;
         
-        const activeEl = document.activeElement;
-        
-        // ESCLUSIONE FONDAMENTALE: Se è un 'SELECT', iOS usa un picker nativo overlay. 
-        // Non considerarlo come un vero e proprio "input" testuale da sollevare.
-        const isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
-        
         const layoutH = window.innerHeight;
         const visualH = window.visualViewport.height;
         const diff = layoutH - visualH;
         
-        // Solleva il foglio solo se un campo di testo vero e proprio è a fuoco
-        if (isInput && diff > 100) {
-            openSheet.style.setProperty('bottom', diff + 'px', 'important');
+        // Se la tastiera/picker è visibile (occupa più di 100px di schermo)
+        if (diff > 100) {
+            // Solleviamo la tendina SOLO se il focus è su un campo testuale vero.
+            if (activeInputType === 'INPUT' || activeInputType === 'TEXTAREA') {
+                openSheet.style.setProperty('bottom', diff + 'px', 'important');
+            } else {
+                // Se passiamo a un SELECT (che apre la "rotella" nativa di iOS), 
+                // lasciamo scendere la tendina per non rompere l'impaginazione.
+                openSheet.style.removeProperty('bottom');
+            }
         } else {
-            // Se si tratta del picker o se la tastiera si è chiusa, rimuovi l'offset
+            // Tastiera completamente chiusa
             openSheet.style.removeProperty('bottom');
+            window.scrollTo(0, 0); 
         }
-        
-        // Reset scroll nativo di Safari che a volte spinge in su la pagina body
-        if (diff < 100) window.scrollTo(0, 0); 
-    });
-
-    // Se la persona nasconde la tastiera premendo "Fatto" nell'iPhone, pulisce tutto.
-    document.addEventListener('focusout', () => {
-        const openSheet = document.querySelector('.sheet.open');
-        if (openSheet) openSheet.style.removeProperty('bottom');
-        window.scrollTo(0, 0);
     });
 }
 </script>
