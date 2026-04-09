@@ -222,11 +222,11 @@ input, select, textarea {
 .nt-i{display:flex;align-items:center;justify-content:center}
 .nt-i svg{width:22px;height:22px;stroke-width:2.2}
 
-/* FAB ABBASSATO PER ACCOMPAGNARE LA BNAV */
+/* FAB RIPRISTINATO A -24px PER ESSERE IN EVIDENZA */
 .fab-w{flex:0 0 72px;display:flex;justify-content:center;align-items:center}
-.fab{width:56px;height:56px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-16px); box-shadow: 0 8px 24px rgba(255,255,255,0.2); transition:all 0.2s;} 
+.fab{width:56px;height:56px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-24px); box-shadow: 0 8px 24px rgba(255,255,255,0.2); transition:all 0.2s;} 
 .fab svg{width:24px;height:24px;stroke-width:2.5}
-.fab:active{transform:translateY(-16px) scale(0.92); background: #d0d0d0;}
+.fab:active{transform:translateY(-24px) scale(0.92); background: #d0d0d0;}
 
 /* UTILS */
 .empty{text-align:center;padding:40px 20px;color:var(--tx3)}
@@ -1269,7 +1269,12 @@ document.addEventListener('click',function(e){
     case 'close-sh-profile': closeSheet('sh-profile'); break;
     case 'save-profile': saveProfile(); break;
     
-    case 'force-update': alert("Sei già all'ultima versione di Finanze."); break;
+    case 'force-update': 
+        if(confirm("Vuoi ricaricare l'app per cercare e applicare nuovi aggiornamenti?")) {
+            window.location.reload(true); 
+        }
+        break;
+        
     case 'export-data': exportData(); break;
     
     case 'open-add-choice': openSheet('sh-add-choice'); break;
