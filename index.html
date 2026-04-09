@@ -1391,3 +1391,53 @@ document.addEventListener('click',function(e){
     
     case 'sel-icon': selIcon = el.dataset.v; renderIconColGrids(); break;
     case 'sel-col': selColor = el.dataset.v; renderIconColGrids(); break;
+    case 'sel-preset': 
+        selIcon = el.dataset.i; 
+        selColor = el.dataset.c; 
+        document.getElementById('w-name').value = el.dataset.n; 
+        renderIconColGrids(); 
+        break;
+  }
+},true);
+
+// INITIALIZATION
+renderIconColGrids();
+loadS(); 
+updateLabels(); 
+renderHome();
+
+/* FIX DEFINITIVO IOS KEYBOARD: Approccio garantito senza blocchi CSS */
+if (window.visualViewport) {
+    const handleViewportChange = () => {
+        const openSheet = document.querySelector('.sheet.open');
+        if (!openSheet) return;
+        
+        const layoutH = window.innerHeight;
+        const visualH = window.visualViewport.height;
+        const diff = layoutH - visualH;
+        
+        if (diff > 50) {
+            openSheet.style.bottom = diff + 'px';
+            
+            if (document.activeElement && ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                setTimeout(() => {
+                    document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            }
+        } else {
+            openSheet.style.bottom = '0px';
+        }
+    };
+
+    window.visualViewport.addEventListener('resize', handleViewportChange);
+    window.visualViewport.addEventListener('scroll', handleViewportChange);
+
+    document.addEventListener('focusout', () => {
+        const openSheet = document.querySelector('.sheet.open');
+        if (openSheet) openSheet.style.bottom = '0px';
+        window.scrollTo(0, 0);
+    });
+}
+</script>
+</body>
+</html>
