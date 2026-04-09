@@ -215,18 +215,25 @@ input, select, textarea {
 .w-sub{font-size:11px;color:var(--tx2);font-weight:500;margin-bottom:2px}
 .w-avg{font-size:10px;color:var(--tx3);font-family:var(--mono);}
 
-/* BOTTOM NAV - COMPLETAMENTE SCHIACCIATA E ANCORATA AL FONDO */
-.bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 2px 12px env(safe-area-inset-bottom, 0px); z-index: 50; }
-.nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:2px;padding:4px 0 2px;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
+/* BOTTOM NAV - COMPLETAMENTE SCHIACCIATA AL FONDO CON 0 PADDING EXTRA */
+.bnav { 
+    position: fixed; bottom: 0; left: 0; right: 0; 
+    background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); 
+    border-top: 1px solid rgba(255, 255, 255, 0.05); 
+    display: flex; align-items: center; justify-content: space-between; 
+    padding-top: 0px; padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: 12px; padding-right: 12px;
+    z-index: 50; 
+}
+.nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:2px;padding:8px 0 4px;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
 .nt.active{color:var(--tx)}
 .nt-i{display:flex;align-items:center;justify-content:center}
 .nt-i svg{width:22px;height:22px;stroke-width:2.2}
 
-/* FAB IN EVIDENZA, BILANCIATO CON LA NUOVA ALTEZZA */
+/* FAB IN EVIDENZA, ANCORA PIU ABBASSATO PER BILANCIARE LA BARRA SOTTILE */
 .fab-w{flex:0 0 72px;display:flex;justify-content:center;align-items:center}
-.fab{width:56px;height:56px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-14px); box-shadow: 0 8px 24px rgba(255,255,255,0.2); transition:all 0.2s;} 
+.fab{width:54px;height:54px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-12px); box-shadow: 0 4px 16px rgba(255,255,255,0.15); transition:all 0.2s;} 
 .fab svg{width:24px;height:24px;stroke-width:2.5}
-.fab:active{transform:translateY(-14px) scale(0.92); background: #d0d0d0;}
+.fab:active{transform:translateY(-12px) scale(0.92); background: #d0d0d0;}
 
 /* UTILS */
 .empty{text-align:center;padding:40px 20px;color:var(--tx3)}
@@ -382,7 +389,7 @@ input, select, textarea {
     <div class="period-tabs"><button class="pt-btn active" data-a="set-ana-tab" data-t="kpi">Statistiche</button><button class="pt-btn" data-a="set-ana-tab" data-t="port">Portafogli</button><button class="pt-btn" data-a="set-ana-tab" data-t="prev">Previsioni</button></div>
     <div id="ana-view-kpi"><div class="hero-clean" style="padding-top:0;"><div class="hc-lbl" id="hw-lbl-dinamico">Liquidità al termine del periodo</div><div class="hc-val" id="ana-liquidita" style="margin-bottom:0;">€0.00</div></div><div class="kpi-grid"><div class="kpi-card" style="--kc: var(--green);"><div class="kpi-lbl">Tasso di Risparmio</div><div class="kpi-val" id="ana-qs-sav-rate">0%</div></div><div class="kpi-card" style="--kc: var(--gold);"><div class="kpi-lbl">Giorni Senza Spese</div><div class="kpi-val" id="ana-qs-zero-days">0</div></div><div class="kpi-card" style="--kc: var(--red);"><div class="kpi-lbl">Peso Spese Fisse</div><div class="kpi-val" id="ana-qs-burn-rate">0%</div></div></div><div class="chart-card"><div class="chart-lbl">Ripartizione Uscite Periodo</div><div style="position:relative;height:240px;display:flex;justify-content:center;align-items:center;"><canvas id="cat-chart"></canvas></div></div><div id="ana-cat-list" class="cat-list"></div><div class="chart-card" style="margin-top: 24px;"><div class="chart-lbl">Flusso di Cassa (Entrate vs Uscite)</div><div id="cf-kpi-wrapper" style="width:100%; overflow-x:auto; padding-bottom:8px; scroll-behavior: smooth;"><div id="cf-kpi-container" style="position:relative; height:220px; min-width: 100%;"><canvas id="cf-chart-kpi"></canvas></div></div></div></div>
     <div id="ana-view-port" style="display:none;"><div id="ana-stats-list" class="stat-list"></div></div>
-    <div id="ana-view-prev" style="display:none;"><div class="prev-card"><div class="pr-hd"><div><div class="pr-lbl" style="color:var(--green)">Patrimonio a Fine Anno</div><div class="pr-val" id="pr-patrimonio">€0.00</div></div><div class="pr-chart-box"><canvas id="ch-prev-eoy"></canvas></div></div><div class="pr-desc" id="pr-patrimonio-desc">Basato sul tuo <b>Vero Risparmio Medio Storico</b>. Proietta dove arriverai a dicembre se mantieni le abitudini registrate dall'inizio del tuo utilizzo dell'app.</div></div><div class="prev-card"><div class="pr-hd"><div><div class="pr-lbl" style="color:var(--gold)">Risparmio Medio Mensile</div><div class="pr-val" id="pr-spesa">€0.00</div></div><div class="pr-chart-box"><canvas id="ch-prev-bar"></canvas></div></div><div class="pr-desc" id="pr-spesa-desc">La media mensile globale delle tue Entrate (verde) meno le tue Uscite Totali (rosso). Rappresenta i soldi reali che accantoni ogni mese.</div></div><div class="prev-card"><div class="pr-hd"><div><div class="pr-lbl" style="color:var(--purple)">Mesi di Autonomia</div><div class="pr-val" id="pr-runway">0</div></div><div class="pr-chart-box"><canvas id="ch-prev-run"></canvas></div></div><div class="pr-desc" id="pr-runway-desc">Calcolato dividendo la tua liquidità attuale per la spesa media storica. Indica per quanti mesi potresti vivere senza incassare un solo euro.</div></div></div>
+    <div id="ana-view-prev" style="display:none;"><div class="prev-card"><div class="pr-hd"><div><div class="pr-lbl" style="color:var(--green)">Liquidità a Fine Anno</div><div class="pr-val" id="pr-patrimonio">€0.00</div></div><div class="pr-chart-box"><canvas id="ch-prev-eoy"></canvas></div></div><div class="pr-desc" id="pr-patrimonio-desc">Basato sul tuo <b>Vero Risparmio Medio Storico</b>. Proietta dove arriverai a dicembre se mantieni le abitudini registrate dall'inizio del tuo utilizzo dell'app.</div></div><div class="prev-card"><div class="pr-hd"><div><div class="pr-lbl" style="color:var(--gold)">Risparmio Medio Mensile</div><div class="pr-val" id="pr-spesa">€0.00</div></div><div class="pr-chart-box"><canvas id="ch-prev-bar"></canvas></div></div><div class="pr-desc" id="pr-spesa-desc">La media mensile globale delle tue Entrate (verde) meno le tue Uscite Totali (rosso). Rappresenta i soldi reali che accantoni ogni mese.</div></div><div class="prev-card"><div class="pr-hd"><div><div class="pr-lbl" style="color:var(--purple)">Mesi di Autonomia</div><div class="pr-val" id="pr-runway">0</div></div><div class="pr-chart-box"><canvas id="ch-prev-run"></canvas></div></div><div class="pr-desc" id="pr-runway-desc">Calcolato dividendo la tua liquidità attuale per la spesa media storica. Indica per quanti mesi potresti vivere senza incassare un solo euro.</div></div></div>
   </div>
 </div>
 
@@ -534,7 +541,7 @@ const Ics = {
   bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>',
   target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>',
   calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>',
-  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
+  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
 };
 
 // UI Injects
@@ -604,13 +611,22 @@ const PRESETS = [
 const ICONS  = ['game','shirt','food','plane','sport','tech','health','book','cart','car','home','briefcase','music','tool','star','shield'];
 const COLORS = ['#9b5de5','#3a86ff','#f77f00','#06d6a0','#2dc653','#5352ed','#ef233c','#ffd166','#00b4d8','#d4a843','#fb8500','#8ecae6','#ff006e','#8338ec','#38b000','#ffbe0b'];
 
+// FIX COLORI: 14 colori totalmente differenti per la torta
 const CAT_COLORS = {
-  'Affitto e Casa': '#fb8500', 'Bollette': '#ffb703', 'Spesa al Supermercato': '#00b4d8',
-  'Trasporti': '#d4a843', 'Salute e Prevenzione': '#ef233c',
-  'Corsa e Sport': '#2dc653', 'Viaggi e Vacanze': '#06d6a0', 'Abbonamenti e Servizi': '#ff006e',
-  'Ristoranti e Socialità': '#f77f00', 'Shopping': '#3a86ff', 'Cultura e Svago': '#9b5de5',
-  'Imprevisti ed Emergenze': '#d90429', 'Risparmi e Investimenti': '#5352ed',
-  'Altro': '#4a4860'
+  'Affitto e Casa': '#FF5733', 
+  'Bollette': '#FFC300', 
+  'Spesa al Supermercato': '#36A2EB',
+  'Trasporti': '#4BC0C0', 
+  'Salute e Prevenzione': '#FF9F40',
+  'Corsa e Sport': '#9966FF', 
+  'Viaggi e Vacanze': '#C9CBCF', 
+  'Abbonamenti e Servizi': '#E056FD',
+  'Ristoranti e Socialità': '#8B008B', 
+  'Shopping': '#00FA9A', 
+  'Cultura e Svago': '#00CED1',
+  'Imprevisti ed Emergenze': '#DC143C', 
+  'Risparmi e Investimenti': '#0000CD',
+  'Altro': '#708090'
 };
 
 const SKEY = 'finanze_v6';
@@ -864,28 +880,6 @@ function spentInRange(wid, start, end) {
     return txInRange(start, end).filter(t => t.type === 'expense' && t.walletId === wid).reduce((s,t)=>s+t.amount,0);
 }
 
-function getWalletTrend(wid, start, end) {
-    let sYM = start.slice(0,7); let eYM = end.slice(0,7); let data = [];
-    if (sYM === eYM) {
-        let [y, m] = sYM.split('-'); let today = new Date();
-        let daysInMonth = new Date(y, m, 0).getDate();
-        let checkUntil = (parseInt(y) === today.getFullYear() && parseInt(m) === today.getMonth() + 1) ? today.getDate() : daysInMonth;
-        let txs = txForMonth(sYM).filter(t => t.type === 'expense' && t.walletId === wid);
-        let cumulative = 0;
-        for(let i=1; i<=checkUntil; i++) {
-            let dStr = `${y}-${m}-${String(i).padStart(2,'0')}`;
-            cumulative += txs.filter(t => t.date === dStr).reduce((s,t)=>s+t.amount,0);
-            data.push({ mLabel: String(i), spent: cumulative });
-        }
-    } else {
-        getMonthsInRangeStrictYTD(start, end).forEach(mStr => {
-            let spent = txForMonth(mStr).filter(t => t.type === 'expense' && t.walletId === wid).reduce((s,t)=>s+t.amount,0);
-            data.push({ mLabel: mShort(mStr), spent });
-        });
-    }
-    return data;
-}
-
 function updateLabels(){
   const selL = mLabel(selMonth);
   document.getElementById('home-sub').textContent = S.userName ? `Ciao, ${S.userName} • ${mLabel(thisMonth())}` : mLabel(thisMonth());
@@ -1039,19 +1033,25 @@ function savePeriod() {
     }
 }
 
+// FIX: Ricostruzione completa delle 3 sotto-sezioni di Analisi
 function renderAnalisi(){
     document.getElementById('ana-period-lbl').textContent = formatPeriod(anaDateStart, anaDateEnd);
     Chart.defaults.font.family = "'Inter', sans-serif"; Chart.defaults.color = "#9ca3af";
     let inc = incInRange(anaDateStart, anaDateEnd); let totalExp = varExpInRange(anaDateStart, anaDateEnd) + fixedInRange(anaDateStart, anaDateEnd);
+    let endYM = anaDateEnd.slice(0,7);
+
+    // TAB 1: KPI E GRAFICI
     if (anaActiveTab === 'kpi') {
-        document.getElementById('ana-liquidita').textContent = fmt(getAccumulatedWealthUpTo(anaDateEnd.slice(0,7)));
+        document.getElementById('ana-liquidita').textContent = fmt(getAccumulatedWealthUpTo(endYM));
         document.getElementById('ana-qs-sav-rate').textContent = (inc > 0 ? Math.max(0, Math.round(((inc-totalExp) / inc) * 100)) : 0) + '%';
         document.getElementById('ana-qs-zero-days').textContent = getZeroSpendDaysInRange(anaDateStart, anaDateEnd);
         document.getElementById('ana-qs-burn-rate').textContent = (inc > 0 ? Math.round((fixedInRange(anaDateStart, anaDateEnd) / inc) * 100) : 0) + '%';
+        
         let spese = {}; let totCat = 0;
         getMonthsInRangeStrictYTD(anaDateStart, anaDateEnd).forEach(ym => S.fixedExpenses.forEach(f => { if(isFxActive(f, ym)) { spese[f.cat] = (spese[f.cat]||0) + f.amount; totCat += f.amount; } }));
         txInRange(anaDateStart, anaDateEnd).forEach(t => { if(t.type === 'expense') { spese[t.category] = (spese[t.category]||0) + t.amount; totCat += t.amount; } });
         let catArray = Object.keys(spese).map(k => ({name: k, amt: spese[k]})).sort((a,b) => b.amt - a.amt);
+        
         if (totCat > 0) {
             document.getElementById('ana-cat-list').innerHTML = catArray.map(c => `<div class="cat-item"><div class="cat-color" style="background:${CAT_COLORS[c.name]||'#4a4860'}"></div><div class="cat-name">${c.name}</div><div class="cat-pct">${Math.round(c.amt/totCat*100)}%</div><div class="cat-amt">${fmt(c.amt)}</div></div>`).join('');
             if(catChart) catChart.destroy();
@@ -1060,6 +1060,72 @@ function renderAnalisi(){
             document.getElementById('ana-cat-list').innerHTML = `<div class="empty"><div class="empty-t">Nessuna spesa nel periodo</div></div>`;
             if(catChart) catChart.destroy();
         }
+
+        // FIX: Ripristinato Flusso di Cassa
+        let cfLabels = []; let cfInc = []; let cfExp = [];
+        let sYM = anaDateStart.slice(0,7);
+        if (sYM === endYM) {
+            let [y, m] = sYM.split('-'); let days = new Date(y, m, 0).getDate();
+            for(let i=1; i<=days; i++) {
+                let dStr = `${y}-${m}-${String(i).padStart(2,'0')}`;
+                cfLabels.push(i);
+                cfInc.push(incInRange(dStr, dStr));
+                cfExp.push(varExpInRange(dStr, dStr) + (i === 1 ? fixedTotal(sYM) : 0));
+            }
+        } else {
+            getMonthsInRangeStrictYTD(anaDateStart, anaDateEnd).forEach(mStr => {
+                cfLabels.push(mShort(mStr));
+                cfInc.push(incInRange(startOfMonth(mStr), endOfMonth(mStr)));
+                cfExp.push(varExpInRange(startOfMonth(mStr), endOfMonth(mStr)) + fixedTotal(mStr));
+            });
+        }
+        if(cfKpiChart) cfKpiChart.destroy();
+        cfKpiChart = new Chart(document.getElementById('cf-chart-kpi'), {
+            type: 'bar',
+            data: { labels: cfLabels, datasets: [{ label:'Entrate', data: cfInc, backgroundColor: '#34d399', borderRadius: 4}, { label:'Uscite', data: cfExp, backgroundColor: '#f87171', borderRadius: 4}] },
+            options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { display: false, color: 'rgba(255,255,255,0.05)' } }, y: { display: false } }, plugins: { legend: { display: false } } }
+        });
+
+    // TAB 2: PORTAFOGLI (Ripristinato)
+    } else if (anaActiveTab === 'port') {
+        let activeW = getActiveWallets(endYM);
+        let statsHTML = activeW.length ? activeW.map(w => {
+            let avg = getWalletAvg(w.id, endYM); let cur = walletMonthSpent(w.id, endYM); let alloc = walletMonthAlloc(w.id, endYM);
+            let st = (alloc > 0) ? (cur > alloc ? ["Fuori budget", "var(--red)", "var(--ra)"] : (cur >= alloc*0.8 ? ["Attenzione", "var(--gold)", "var(--ga)"] : ["Sotto budget", "var(--green)", "var(--gra)"])) : (avg===0 ? ["Nessuna spesa", "var(--tx3)", "var(--sf2)"] : (cur > avg*1.1 ? ["Sopra media", "var(--red)", "var(--ra)"] : ["In linea", "var(--green)", "var(--gra)"]));
+            return `<div class="stat-item" style="cursor:pointer;" data-a="open-wallet" data-id="${w.id}"><div style="display:flex; align-items:center; justify-content:space-between; gap:12px;"><div style="display:flex; align-items:center; gap:12px; min-width:0;"><div class="stat-ico" style="color:${w.color}; background:${w.color}22;">${Ics[w.icon] || Ics.wallet}</div><div style="display:flex; flex-direction:column; min-width:0;"><div style="font-size:15px; font-weight:600; color:var(--tx); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${esc(w.name)}</div><div style="font-size:12px; color:var(--tx3); font-family:var(--mono); margin-top:2px;">Media: ${fmt(avg)}/m</div></div></div><div style="display:flex; flex-direction:column; align-items:flex-end; flex-shrink:0;"><div style="font-family:var(--mono); font-size:16px; font-weight:600; color:var(--tx);">${fmt(cur)}</div><div style="font-size:11px; color:var(--tx3); font-family:var(--mono); margin-top:2px;">${alloc > 0 ? 'su ' + fmt(alloc) : 'no budget'}</div></div></div><div style="display:flex; justify-content:flex-end; margin-top:4px;"><div style="font-size:10px; font-weight:700; padding:4px 8px; border-radius:6px; color:${st[1]}; background:${st[2]}; text-transform:uppercase; letter-spacing:0.04em;">${st[0]}</div></div></div>`;
+        }).join('') : `<div class="empty"><div class="empty-i">${Ics.empty}</div><div class="empty-t">Nessun portafoglio</div></div>`;
+        document.getElementById('ana-stats-list').innerHTML = statsHTML;
+
+    // TAB 3: PREVISIONI (Ripristinate logiche e mini-grafici)
+    } else if (anaActiveTab === 'prev') {
+        let totalLiq = getAccumulatedWealthUpTo(endYM);
+        let startM = getAppStartMonth();
+        let mCount = getMonthsBetween(startM, endYM) || 1;
+        let totalIncAll = 0; let totalExpAll = 0;
+        getMonthsInRangeStrictYTD(startM, endYM).forEach(m => { totalIncAll += totalIncome(m); totalExpAll += totalExpense(m); });
+        
+        let avgSave = (totalIncAll - totalExpAll) / mCount;
+        let avgExp = totalExpAll / mCount;
+        let runway = avgExp > 0 ? Math.floor(totalLiq / avgExp) : 999;
+        
+        let curM = parseInt(endYM.split('-')[1]);
+        let monthsLeft = 12 - curM;
+        let projLiq = totalLiq + (avgSave * monthsLeft);
+        
+        document.getElementById('pr-patrimonio').textContent = fmt(projLiq);
+        document.getElementById('pr-spesa').textContent = fmt(avgSave);
+        document.getElementById('pr-runway').textContent = runway;
+        
+        const sparkOpts = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } }, elements: { point: { radius: 0 } } };
+        
+        if(prevEoyChart) prevEoyChart.destroy();
+        prevEoyChart = new Chart(document.getElementById('ch-prev-eoy'), { type: 'line', data: { labels: ['Ora', 'Fine Anno'], datasets: [{ data: [totalLiq, projLiq], borderColor: '#34d399', borderWidth: 3, tension: 0.4 }] }, options: sparkOpts });
+        
+        if(prevBarChart) prevBarChart.destroy();
+        prevBarChart = new Chart(document.getElementById('ch-prev-bar'), { type: 'bar', data: { labels: ['Entrate Medie', 'Uscite Medie'], datasets: [{ data: [totalIncAll/mCount, avgExp], backgroundColor: ['#34d399', '#f87171'], borderRadius: 4 }] }, options: sparkOpts });
+        
+        if(prevRunChart) prevRunChart.destroy();
+        prevRunChart = new Chart(document.getElementById('ch-prev-run'), { type: 'line', data: { labels: ['1','2','3','4','5'], datasets: [{ data: [totalLiq, totalLiq-(avgExp*1), totalLiq-(avgExp*2), totalLiq-(avgExp*3), totalLiq-(avgExp*4)], borderColor: '#a78bfa', borderWidth: 3, tension: 0.1 }] }, options: sparkOpts });
     }
 }
 
@@ -1325,55 +1391,3 @@ document.addEventListener('click',function(e){
     
     case 'sel-icon': selIcon = el.dataset.v; renderIconColGrids(); break;
     case 'sel-col': selColor = el.dataset.v; renderIconColGrids(); break;
-    case 'sel-preset': 
-        selIcon = el.dataset.i; 
-        selColor = el.dataset.c; 
-        document.getElementById('w-name').value = el.dataset.n; 
-        renderIconColGrids(); 
-        break;
-  }
-},true);
-
-// INITIALIZATION
-renderIconColGrids();
-loadS(); 
-updateLabels(); 
-renderHome();
-
-/* FIX DEFINITIVO IOS KEYBOARD: Approccio grezzo ma funzionante al 100% con auto-scroll */
-if (window.visualViewport) {
-    const handleViewportChange = () => {
-        const openSheet = document.querySelector('.sheet.open');
-        if (!openSheet) return;
-        
-        const layoutH = window.innerHeight;
-        const visualH = window.visualViewport.height;
-        const diff = layoutH - visualH;
-        
-        if (diff > 50) {
-            // Solleva l'intero foglio
-            openSheet.style.bottom = diff + 'px';
-            
-            // Forza il campo attivo a saltare al centro dello schermo
-            if (document.activeElement && ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
-                setTimeout(() => {
-                    document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100);
-            }
-        } else {
-            openSheet.style.bottom = '0px';
-        }
-    };
-
-    window.visualViewport.addEventListener('resize', handleViewportChange);
-    window.visualViewport.addEventListener('scroll', handleViewportChange);
-
-    document.addEventListener('focusout', () => {
-        const openSheet = document.querySelector('.sheet.open');
-        if (openSheet) openSheet.style.bottom = '0px';
-        window.scrollTo(0, 0);
-    });
-}
-</script>
-</body>
-</html>
