@@ -215,9 +215,9 @@ input, select, textarea {
 .w-sub{font-size:11px;color:var(--tx2);font-weight:500;margin-bottom:2px}
 .w-avg{font-size:10px;color:var(--tx3);font-family:var(--mono);}
 
-/* BOTTOM NAV */
-.bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 12px 12px max(10px, env(safe-area-inset-bottom, 8px)); z-index: 50; }
-.nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:4px;padding:6px 0;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
+/* BOTTOM NAV - OTTIMIZZATO PER ESSERE MOLTO PIU BASSO */
+.bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 8px 12px max(8px, env(safe-area-inset-bottom, 0px)); z-index: 50; }
+.nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:2px;padding:4px 0;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
 .nt.active{color:var(--tx)}
 .nt-i{display:flex;align-items:center;justify-content:center}
 .nt-i svg{width:22px;height:22px;stroke-width:2.2}
@@ -356,7 +356,7 @@ input, select, textarea {
 </div>
 
 <div class="page active" id="pg-home">
-  <div class="topbar"><div><div class="tb-title">Dashboard</div><div class="tb-sub" id="home-sub"></div></div><button class="mnav-btn" data-a="open-settings" id="btn-settings" style="background:var(--sf); border:1px solid var(--bd); width:36px; height:36px; border-radius:12px;"></button></div>
+  <div class="topbar"><div><div class="tb-title">Homepage</div><div class="tb-sub" id="home-sub"></div></div><button class="mnav-btn" data-a="open-settings" id="btn-settings" style="background:var(--sf); border:1px solid var(--bd); width:36px; height:36px; border-radius:12px;"></button></div>
   <div class="pw">
     <div class="hero-clean"><div class="hc-lbl">Liquidità Totale</div><div class="hc-val" id="h-liquidita">€0.00</div><div class="hc-badge"><div class="hc-badge-lbl">Netto Mese</div><div class="hc-badge-val" id="h-bal-s"><span id="h-bal-icon"></span><span id="h-bal">€0.00</span></div></div></div>
     <div class="dash-io"><div class="io-card"><div class="io-ico i" id="ic-dash-in"></div><div class="io-info"><div class="io-lbl">Entrate</div><div class="io-val" id="h-inc">€0</div></div></div><div class="io-card"><div class="io-ico e" id="ic-dash-out"></div><div class="io-info"><div class="io-lbl">Uscite</div><div class="io-val" id="h-exp">€0</div></div></div></div>
@@ -1340,19 +1340,7 @@ loadS();
 updateLabels(); 
 renderHome();
 
-/* FIX DEFINITIVO IOS KEYBOARD: Gestione transizioni Input vs Select */
-let activeInputType = null;
-
-// Intercettiamo globalmente il tipo di elemento su cui l'utente fa tap
-document.addEventListener('focusin', (e) => {
-    if (e.target) activeInputType = e.target.tagName;
-});
-
-// Resettiamo quando si esce dal campo
-document.addEventListener('focusout', () => {
-    activeInputType = null;
-});
-
+/* FIX DEFINITIVO IOS KEYBOARD: Approccio grezzo ma funzionante al 100% con auto-scroll */
 if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', () => {
         const openSheet = document.querySelector('.sheet.open');
@@ -1362,21 +1350,29 @@ if (window.visualViewport) {
         const visualH = window.visualViewport.height;
         const diff = layoutH - visualH;
         
-        // Se la tastiera/picker è visibile (occupa più di 100px di schermo)
+        // Se la tastiera si apre (la finestra si "rimpicciolisce" visivamente)
         if (diff > 100) {
-            // Solleviamo la tendina SOLO se il focus è su un campo testuale vero.
-            if (activeInputType === 'INPUT' || activeInputType === 'TEXTAREA') {
-                openSheet.style.setProperty('bottom', diff + 'px', 'important');
-            } else {
-                // Se passiamo a un SELECT (che apre la "rotella" nativa di iOS), 
-                // lasciamo scendere la tendina per non rompere l'impaginazione.
-                openSheet.style.removeProperty('bottom');
+            // 1. Solleva l'intero foglio brutalmente
+            openSheet.style.setProperty('bottom', diff + 'px', 'important');
+            
+            // 2. Forza il campo attivo a saltare al centro dello schermo 
+            // per evitare che rimanga "sotto" lo scorrimento
+            if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+                setTimeout(() => {
+                    document.activeElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                }, 50);
             }
         } else {
-            // Tastiera completamente chiusa
+            // La tastiera si è chiusa
             openSheet.style.removeProperty('bottom');
             window.scrollTo(0, 0); 
         }
+    });
+
+    document.addEventListener('focusout', () => {
+        const openSheet = document.querySelector('.sheet.open');
+        if (openSheet) openSheet.style.removeProperty('bottom');
+        window.scrollTo(0, 0);
     });
 }
 </script>
