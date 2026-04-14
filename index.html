@@ -65,7 +65,7 @@ input, select, textarea {
 .page.active{display:block;animation:fu .3s cubic-bezier(0.16, 1, 0.3, 1)}
 @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-/* TOPBAR */
+/* TOPBAR - TITOLI SPOSTATI PIÙ IN BASSO */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top, 44px) + 40px) 20px 16px;gap:8px}
 .tb-title{font-size:28px;font-weight:700;letter-spacing:-0.03em; color: var(--tx);}
 .tb-sub{font-size:13px;color:var(--tx2);margin-top:2px; font-weight: 500;}
@@ -219,18 +219,18 @@ input, select, textarea {
 .w-sub{font-size:11px;color:var(--tx2);font-weight:500;margin-bottom:2px}
 .w-avg{font-size:10px;color:var(--tx3);font-family:var(--mono);}
 
-/* BOTTOM NAV */
+/* BOTTOM NAV - COMPLETAMENTE SCHIACCIATA E ANCORATA AL FONDO */
 .bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 2px 12px env(safe-area-inset-bottom, 0px); z-index: 50; }
 .nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:2px;padding:4px 0 2px;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
 .nt.active{color:var(--tx)}
 .nt-i{display:flex;align-items:center;justify-content:center}
 .nt-i svg{width:22px;height:22px;stroke-width:2.2}
 
-/* FAB IN EVIDENZA */
+/* FAB IN EVIDENZA E ABBASSATO */
 .fab-w{flex:0 0 72px;display:flex;justify-content:center;align-items:center}
-.fab{width:54px;height:54px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-12px); box-shadow: 0 4px 16px rgba(255,255,255,0.15); transition:all 0.2s;} 
+.fab{width:54px;height:54px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-14px); box-shadow: 0 4px 16px rgba(255,255,255,0.15); transition:all 0.2s;} 
 .fab svg{width:24px;height:24px;stroke-width:2.5}
-.fab:active{transform:translateY(-12px) scale(0.92); background: #d0d0d0;}
+.fab:active{transform:translateY(-14px) scale(0.92); background: #d0d0d0;}
 
 /* UTILS */
 .empty{text-align:center;padding:40px 20px;color:var(--tx3)}
@@ -1211,7 +1211,12 @@ function saveTx(){
 function openAddTx(walletId, type){
   editTxId=null; curTxType = type || 'expense';
   document.getElementById('sh-tx-ttl').textContent = type === 'income' ? 'Nuova Entrata' : 'Nuova Uscita';
-  document.getElementById('tx-date').value=selMonth+'-01'; document.getElementById('tx-amt').value=''; document.getElementById('tx-desc').value='';
+  
+  // FIX DATA DI DEFAULT A OGGI
+  const td = new Date(); 
+  document.getElementById('tx-date').value = `${td.getFullYear()}-${String(td.getMonth()+1).padStart(2,'0')}-${String(td.getDate()).padStart(2,'0')}`; 
+  
+  document.getElementById('tx-amt').value=''; document.getElementById('tx-desc').value='';
   document.getElementById('fg-cat').style.display = curTxType === 'expense' ? 'block' : 'none';
   document.getElementById('fg-wallet').style.display = curTxType === 'expense' ? 'block' : 'none';
   document.getElementById('tx-wallet').innerHTML='<option value="">— Nessun portafoglio —</option>'+getActiveWallets(selMonth).map(w=>`<option value="${w.id}"${w.id===walletId?' selected':''}>${esc(w.name)}</option>`).join('');
