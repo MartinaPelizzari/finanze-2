@@ -252,7 +252,7 @@ input, select, textarea {
 .confirm-overlay{position:fixed;inset:0;background:rgba(0, 0, 0, 0.8);z-index:190; backdrop-filter: blur(4px); opacity:0;pointer-events:none;transition:opacity .3s ease}
 .confirm-overlay.on{opacity:1;pointer-events:all}
 
-/* TENDINE FIX KEYBOARD BUG */
+/* TENDINE FIX KEYBOARD BUG (Rimosso !important da bottom per non bloccare JS) */
 .sheet{position:fixed;bottom:-100%;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:100; transition:bottom .35s cubic-bezier(0.16, 1, 0.3, 1); max-height:90dvh; display:flex;flex-direction:column; -webkit-transform: translateZ(0); transform: translateZ(0);}
 .sheet.open{bottom:0;} 
 .sh-drag{width:48px;height:5px;background:var(--tx3);border-radius:3px;margin:16px auto 0;flex-shrink:0;opacity:0.5;}
@@ -431,7 +431,7 @@ input, select, textarea {
     <div class="or-div">Oppure personalizza date</div>
     <div class="frow"><div class="fg"><label class="fl">Da</label><input class="fi" type="date" id="ana-d-start"></div><div class="fg"><label class="fl">A</label><input class="fi" type="date" id="ana-d-end"></div></div>
   </div>
-  <div class="f-acts"><button class="btn btng" data-a="close-sh-period">Annulla</button><button class="btn btnp" data-a="save-period">Applica</button></div>
+  <div class="f-acts"><button class="btn btnp" data-a="save-period">Applica</button></div>
 </div>
 
 <div class="sheet" id="sh-add-choice">
@@ -448,7 +448,32 @@ input, select, textarea {
     <div class="sh-title" id="sh-tx-ttl">Nuova transazione</div>
     <div class="frow"><div class="fg"><label class="fl">Data</label><input class="fi" type="date" id="tx-date"></div><div class="fg"><label class="fl">Importo €</label><input class="fi" type="text" inputmode="decimal" id="tx-amt" placeholder="0,00"></div></div>
     <div class="fg"><label class="fl">Descrizione</label><input class="fi" type="text" id="tx-desc" placeholder="es. Spesa supermercato"></div>
-    <div class="fg" id="fg-cat"><label class="fl">Categoria</label><select class="fs" id="tx-cat"><optgroup label="Spese Fisse ed Essenziali"><option value="Affitto e Casa">Affitto e Casa</option><option value="Bollette">Bollette</option><option value="Spesa al Supermercato">Spesa al Supermercato</option><option value="Trasporti">Trasporti</option><option value="Salute e Prevenzione">Salute e Prevenzione</option></optgroup><optgroup label="Stile di Vita e Passioni"><option value="Corsa e Sport">Corsa e Sport</option><option value="Viaggi e Vacanze">Viaggi e Vacanze</option><option value="Abbonamenti e Servizi">Abbonamenti e Servizi</option><option value="Ristoranti e Socialità">Ristoranti e Socialità</option><option value="Shopping">Shopping</option><option value="Cultura e Svago">Cultura e Svago</option></optgroup><optgroup label="Imprevisti e Futuro"><option value="Imprevisti ed Emergenze">Imprevisti ed Emergenze</option><option value="Risparmi e Investimenti">Risparmi e Investimenti</option></optgroup><optgroup label="Generale"><option value="Altro">Altro</option></optgroup></select></div>
+    <div class="fg" id="fg-cat"><label class="fl">Categoria</label><select class="fs" id="tx-cat">
+        <optgroup label="Spese Fisse ed Essenziali">
+            <option value="Affitto e Casa">Affitto e Casa</option>
+            <option value="Bollette">Bollette</option>
+            <option value="Spesa al Supermercato">Spesa al Supermercato</option>
+            <option value="Trasporti">Trasporti</option>
+            <option value="Salute e Prevenzione">Salute e Prevenzione</option>
+        </optgroup>
+        <optgroup label="Stile di Vita e Passioni">
+            <option value="Corsa e Sport">Corsa e Sport</option>
+            <option value="Viaggi e Vacanze">Viaggi e Vacanze</option>
+            <option value="Abbonamenti e Servizi">Abbonamenti e Servizi</option>
+            <option value="Ristoranti e Socialità">Ristoranti e Socialità</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Cultura e Svago">Cultura e Svago</option>
+            <option value="Sigarette">Sigarette</option>
+        </optgroup>
+        <optgroup label="Imprevisti e Futuro">
+            <option value="Imprevisti ed Emergenze">Imprevisti ed Emergenze</option>
+            <option value="Risparmi e Investimenti">Risparmi e Investimenti</option>
+            <option value="Debiti">Debiti</option>
+        </optgroup>
+        <optgroup label="Generale">
+            <option value="Altro">Altro</option>
+        </optgroup>
+    </select></div>
     <div class="fg" id="fg-wallet"><label class="fl">Portafoglio (opzionale)</label><select class="fs" id="tx-wallet"><option value="">— Nessuno —</option></select></div>
   </div>
   <div class="f-acts"><button class="btn btng" data-a="close-sh-tx">Annulla</button><button class="btn btnp" data-a="save-tx">Salva</button></div>
@@ -493,7 +518,15 @@ input, select, textarea {
   <div class="sh-body">
     <div class="sh-title" id="sh-fx-ttl">Nuova spesa fissa</div>
     <div class="fg"><label class="fl">Nome</label><input class="fi" type="text" id="fx-name" placeholder="es. Affitto"></div>
-    <div class="frow"><div class="fg"><label class="fl">Importo €/mese</label><input class="fi" type="text" inputmode="decimal" id="fx-amt" placeholder="0,00"></div><div class="fg"><label class="fl">Categoria</label><select class="fs" id="fx-cat"><option value="Affitto e Casa">Affitto e Casa</option><option value="Bollette">Bollette</option><option value="Trasporti">Trasporti</option><option value="Abbonamenti e Servizi">Abbonamenti e Servizi</option><option value="Risparmi e Investimenti">Risparmi e Investimenti</option><option value="Altro">Altro</option></select></div></div>
+    <div class="frow"><div class="fg"><label class="fl">Importo €/mese</label><input class="fi" type="text" inputmode="decimal" id="fx-amt" placeholder="0,00"></div><div class="fg"><label class="fl">Categoria</label><select class="fs" id="fx-cat">
+        <option value="Affitto e Casa">Affitto e Casa</option>
+        <option value="Bollette">Bollette</option>
+        <option value="Trasporti">Trasporti</option>
+        <option value="Abbonamenti e Servizi">Abbonamenti e Servizi</option>
+        <option value="Risparmi e Investimenti">Risparmi e Investimenti</option>
+        <option value="Debiti">Debiti</option>
+        <option value="Altro">Altro</option>
+    </select></div></div>
   </div>
   <div class="f-acts"><button class="btn btng" data-a="close-sh-fx">Annulla</button><button class="btn btnp" data-a="save-fx">Salva</button></div>
 </div>
@@ -608,7 +641,7 @@ const PRESETS = [
 const ICONS  = ['game','shirt','food','plane','sport','tech','health','book','cart','car','home','briefcase','music','tool','star','shield'];
 const COLORS = ['#9b5de5','#3a86ff','#f77f00','#06d6a0','#2dc653','#5352ed','#ef233c','#ffd166','#00b4d8','#d4a843','#fb8500','#8ecae6','#ff006e','#8338ec','#38b000','#ffbe0b'];
 
-// FIX COLORI: 14 colori totalmente differenti per la torta
+// FIX COLORI: 16 colori totalmente differenti per le categorie (inclusi Debiti e Sigarette)
 const CAT_COLORS = {
   'Affitto e Casa': '#FF5733', 
   'Bollette': '#FFC300', 
@@ -623,6 +656,8 @@ const CAT_COLORS = {
   'Cultura e Svago': '#00CED1',
   'Imprevisti ed Emergenze': '#DC143C', 
   'Risparmi e Investimenti': '#0000CD',
+  'Debiti': '#8B4513',
+  'Sigarette': '#A9A9A9',
   'Altro': '#708090'
 };
 
