@@ -183,7 +183,7 @@ input, select, textarea {
 .fx-tog { width: 44px; height: 24px; background: var(--sf2); border-radius: 12px; cursor: pointer; position: relative; border: none; flex-shrink: 0; touch-action: manipulation; transition: background 0.3s; }
 .fx-tog::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: var(--tx2); border-radius: 50%; transition: transform 0.3s, background 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 .fx-tog.on { background: var(--green); }
-.fx-tog.on::after { transform: translateX(20px); background: #ffffff; }
+.tog.on::after { transform: translateX(20px); background: #ffffff; }
 
 /* CATEGORIE LISTA */
 .cat-color {width:12px;height:12px;border-radius:4px;flex-shrink:0}
@@ -252,7 +252,7 @@ input, select, textarea {
 .confirm-overlay{position:fixed;inset:0;background:rgba(0, 0, 0, 0.8);z-index:190; backdrop-filter: blur(4px); opacity:0;pointer-events:none;transition:opacity .3s ease}
 .confirm-overlay.on{opacity:1;pointer-events:all}
 
-/* TENDINE FIX KEYBOARD BUG (Rimosso !important da bottom per non bloccare JS) */
+/* TENDINE FIX KEYBOARD BUG */
 .sheet{position:fixed;bottom:-100%;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:100; transition:bottom .35s cubic-bezier(0.16, 1, 0.3, 1); max-height:90dvh; display:flex;flex-direction:column; -webkit-transform: translateZ(0); transform: translateZ(0);}
 .sheet.open{bottom:0;} 
 .sh-drag{width:48px;height:5px;background:var(--tx3);border-radius:3px;margin:16px auto 0;flex-shrink:0;opacity:0.5;}
@@ -431,7 +431,7 @@ input, select, textarea {
     <div class="or-div">Oppure personalizza date</div>
     <div class="frow"><div class="fg"><label class="fl">Da</label><input class="fi" type="date" id="ana-d-start"></div><div class="fg"><label class="fl">A</label><input class="fi" type="date" id="ana-d-end"></div></div>
   </div>
-  <div class="f-acts"><button class="btn btnp" data-a="save-period">Applica</button></div>
+  <div class="f-acts"><button class="btn btng" data-a="close-sh-period">Annulla</button><button class="btn btnp" data-a="save-period">Applica</button></div>
 </div>
 
 <div class="sheet" id="sh-add-choice">
@@ -1376,7 +1376,16 @@ function saveFx(){
   if(!name||!amt||amt<=0){alert('Inserisci nome e importo.');return}
   if(editFxId){
     const i=S.fixedExpenses.findIndex(f=>f.id===editFxId);
-    if(i>=0)S.fixedExpenses[i]={...S.fixedExpenses[i],name,amount:amt,cat:document.getElementById('fx-cat').value};
+    if(i>=0){
+      let old = S.fixedExpenses[i];
+      if (old.startMonth === selMonth || old.startMonth > selMonth) {
+         S.fixedExpenses[i] = {...old, name, amount:amt, cat:document.getElementById('fx-cat').value};
+      } else {
+         let origEnd = old.endMonth;
+         old.endMonth = selMonth;
+         S.fixedExpenses.push({id:genId(), name, amount:amt, cat:document.getElementById('fx-cat').value, skippedMonths:old.skippedMonths.filter(m=>m>selMonth), startMonth: selMonth, endMonth: origEnd});
+      }
+    }
   }else{
     S.fixedExpenses.push({id:genId(),name,amount:amt,cat:document.getElementById('fx-cat').value,skippedMonths:[], startMonth: selMonth, endMonth: null});
   }
@@ -1386,8 +1395,15 @@ function saveFx(){
 }
 
 function delFx(id) {
-    askConfirm('Elimina Spesa Fissa', 'Eliminare questa spesa fissa rimuoverà anche lo storico futuro. Procedere?', 'Elimina', () => {
-        S.fixedExpenses = S.fixedExpenses.filter(f => f.id !== id);
+    askConfirm('Elimina Spesa Fissa', 'Questa spesa fissa verrà interrotta da questo mese in poi. Lo storico passato rimarrà intatto. Procedere?', 'Elimina', () => {
+        const i = S.fixedExpenses.findIndex(f => f.id === id);
+        if(i >= 0) {
+            if(S.fixedExpenses[i].startMonth === selMonth) {
+                S.fixedExpenses.splice(i, 1);
+            } else {
+                S.fixedExpenses[i].endMonth = selMonth;
+            }
+        }
         saveS(); refreshUI();
     });
 }
