@@ -30,8 +30,8 @@
   
   --gold: #fbbf24;
   --ga: rgba(251, 191, 36, 0.12);
-  --green: #34d399;
-  --gra: rgba(52, 211, 153, 0.12);
+  --green: #10b981;
+  --gra: rgba(16, 185, 129, 0.12);
   --red: #f87171;
   --ra: rgba(248, 113, 113, 0.12);
   --blue: #60a5fa;
@@ -183,7 +183,7 @@ input, select, textarea {
 .fx-tog { width: 44px; height: 24px; background: var(--sf2); border-radius: 12px; cursor: pointer; position: relative; border: none; flex-shrink: 0; touch-action: manipulation; transition: background 0.3s; }
 .fx-tog::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: var(--tx2); border-radius: 50%; transition: transform 0.3s, background 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 .fx-tog.on { background: var(--green); }
-.tog.on::after { transform: translateX(20px); background: #ffffff; }
+.fx-tog.on::after { transform: translateX(20px); background: #ffffff; }
 
 /* CATEGORIE LISTA */
 .cat-color {width:12px;height:12px;border-radius:4px;flex-shrink:0}
@@ -571,7 +571,7 @@ const Ics = {
   bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>',
   target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>',
   calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>',
-  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
+  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
 };
 
 // UI Injects
@@ -1130,7 +1130,7 @@ function renderAnalisi(){
             data: { 
                 labels: cfLabels, 
                 datasets: [
-                    { label:'Entrate', data: cfInc, backgroundColor: '#34d399', borderRadius: 4, barPercentage: 0.6, categoryPercentage: 0.8 }, 
+                    { label:'Entrate', data: cfInc, backgroundColor: '#10b981', borderRadius: 4, barPercentage: 0.6, categoryPercentage: 0.8 }, 
                     { label:'Uscite', data: cfExp, backgroundColor: '#f87171', borderRadius: 4, barPercentage: 0.6, categoryPercentage: 0.8 }
                 ] 
             },
@@ -1215,10 +1215,10 @@ function renderAnalisi(){
         const sparkOpts = { responsive: true, maintainAspectRatio: false, layout: { padding: 4 }, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } } };
         
         if(prevEoyChart) prevEoyChart.destroy();
-        prevEoyChart = new Chart(document.getElementById('ch-prev-eoy'), { type: 'line', data: { labels: ['Ora', 'Fine Anno'], datasets: [{ data: [totalLiq, projLiq], borderColor: '#34d399', backgroundColor: 'rgba(52, 211, 153, 0.15)', borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: '#34d399', pointRadius: 3 }] }, options: sparkOpts });
+        prevEoyChart = new Chart(document.getElementById('ch-prev-eoy'), { type: 'line', data: { labels: ['Ora', 'Fine Anno'], datasets: [{ data: [totalLiq, projLiq], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.15)', borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: '#10b981', pointRadius: 3 }] }, options: sparkOpts });
         
         if(prevBarChart) prevBarChart.destroy();
-        prevBarChart = new Chart(document.getElementById('ch-prev-bar'), { type: 'bar', data: { labels: ['Entrate', 'Uscite'], datasets: [{ data: [totalIncAll/mCount, avgExp], backgroundColor: ['#34d399', '#f87171'], borderRadius: 6, barPercentage: 0.7 }] }, options: sparkOpts });
+        prevBarChart = new Chart(document.getElementById('ch-prev-bar'), { type: 'bar', data: { labels: ['Entrate', 'Uscite'], datasets: [{ data: [totalIncAll/mCount, avgExp], backgroundColor: ['#10b981', '#f87171'], borderRadius: 6, barPercentage: 0.7 }] }, options: sparkOpts });
         
         if(prevRunChart) prevRunChart.destroy();
         let runData = []; let runLabels = [];
