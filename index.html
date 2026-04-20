@@ -65,18 +65,17 @@ input, select, textarea {
 .page.active{display:block;animation:fu .3s cubic-bezier(0.16, 1, 0.3, 1)}
 @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-/* TOPBAR - TITOLI SPOSTATI PIÙ IN BASSO */
+/* TOPBAR */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top, 44px) + 40px) 20px 16px;gap:8px}
 .tb-title{font-size:28px;font-weight:700;letter-spacing:-0.03em; color: var(--tx);}
 .tb-sub{font-size:13px;color:var(--tx2);margin-top:2px; font-weight: 500;}
 .mnav{display:flex;align-items:center;gap:6px;flex-shrink:0; background: var(--sf); padding: 4px; border-radius: 100px; border: 1px solid var(--bd);}
 
-/* FIX ICONA IMPOSTAZIONI TAGLIATA */
-.mnav-btn{width:28px;height:28px;border-radius:50%;background:transparent;border:none;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
-.mnav-btn svg { width: 16px; height: 16px; stroke-width: 2.5; overflow: visible; }
-#btn-settings svg { stroke-width: 2; width: 18px; height: 18px; }
-
+/* FIX ICONA IMPOSTAZIONI NON TAGLIATA E BEN PROPORZIONATA */
+.mnav-btn{width:32px;height:32px;border-radius:50%;background:transparent;border:none;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+.mnav-btn svg { width: 20px; height: 20px; stroke-width: 2; }
 .mnav-btn:active{background:var(--sf2); color:var(--tx);}
+
 .mnav-lbl{font-size:12px;min-width:90px;text-align:center;color:var(--tx);font-weight:600; white-space:nowrap; overflow:hidden;}
 .period-btn{background:var(--sf); border:1px solid var(--bd); padding:8px 14px; border-radius:100px; font-size:12px; font-weight:600; color:var(--tx); cursor:pointer; display:flex; align-items:center; gap:6px; transition:background 0.2s;}
 .period-btn svg{width:14px; height:14px;}
@@ -219,14 +218,14 @@ input, select, textarea {
 .w-sub{font-size:11px;color:var(--tx2);font-weight:500;margin-bottom:2px}
 .w-avg{font-size:10px;color:var(--tx3);font-family:var(--mono);}
 
-/* BOTTOM NAV - COMPLETAMENTE SCHIACCIATA E ANCORATA AL FONDO */
+/* BOTTOM NAV */
 .bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 2px 12px env(safe-area-inset-bottom, 0px); z-index: 50; }
 .nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:2px;padding:4px 0 2px;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
 .nt.active{color:var(--tx)}
 .nt-i{display:flex;align-items:center;justify-content:center}
 .nt-i svg{width:22px;height:22px;stroke-width:2.2}
 
-/* FAB IN EVIDENZA E ABBASSATO */
+/* FAB IN EVIDENZA */
 .fab-w{flex:0 0 72px;display:flex;justify-content:center;align-items:center}
 .fab{width:54px;height:54px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-14px); box-shadow: 0 4px 16px rgba(255,255,255,0.15); transition:all 0.2s;} 
 .fab svg{width:24px;height:24px;stroke-width:2.5}
@@ -405,12 +404,50 @@ input, select, textarea {
   <div class="sh-drag"></div>
   <div class="sh-body">
     <div class="sh-title" style="text-align:center; margin-bottom:24px;">Impostazioni</div>
+    
     <div class="sec-row" style="margin-top:10px; margin-bottom:12px;"><span class="sec" style="margin:0; color:var(--tx3);">Configurazione</span></div>
-    <button class="io-card" data-a="open-profile" style="cursor:pointer; border:1px solid var(--bd); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px; margin-bottom:24px;"><div class="io-lbl" style="color:var(--gold);">Profilo</div><div class="io-val" style="font-size:14px; color:var(--tx);">Modifica Saldo e Mese Iniziale</div></button>
+    <div class="dash-io" style="margin-bottom:20px;">
+        <button class="io-card" data-a="open-profile" style="cursor:pointer; border:1px solid var(--bd); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">
+            <div class="io-lbl" style="color:var(--gold);">Profilo</div>
+            <div class="io-val" style="font-size:14px; color:var(--tx);">Dati Iniziali</div>
+        </button>
+        <button class="io-card" data-a="open-categories" style="cursor:pointer; border:1px solid var(--bd); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">
+            <div class="io-lbl" style="color:var(--purple);">Categorie</div>
+            <div class="io-val" style="font-size:14px; color:var(--tx);">Gestisci Voci</div>
+        </button>
+    </div>
+    
     <div class="sec-row" style="margin-bottom:12px;"><span class="sec" style="margin:0; color:var(--tx3);">Sistema</span></div>
-    <div class="dash-io" style="margin-bottom:20px;"><button class="io-card" data-a="force-update" style="cursor:pointer; border:1px solid rgba(96, 165, 250, 0.3); background:var(--ba); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px; grid-column: 1 / -1;"><div class="io-lbl" style="color:var(--blue);">App</div><div class="io-val" style="font-size:14px; color:var(--tx);">Cerca Aggiornamenti</div></button><button class="io-card" data-a="export-data" style="cursor:pointer; border:1px solid var(--bd); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;"><div class="io-lbl">Backup</div><div class="io-val" style="font-size:14px;">Esporta Dati</div></button><label class="io-card" style="cursor:pointer; margin:0; width:100%; padding:14px; border:1px solid var(--bd); display:flex; flex-direction:column; align-items:flex-start; gap:4px;"><div class="io-lbl">Ripristina</div><div class="io-val" style="font-size:14px;">Importa Dati</div><input type="file" id="import-file" accept=".json" style="display:none;"></label></div>
+    <div class="dash-io" style="margin-bottom:20px;">
+        <button class="io-card" data-a="force-update" style="cursor:pointer; border:1px solid rgba(96, 165, 250, 0.3); background:var(--ba); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px; grid-column: 1 / -1;">
+            <div class="io-lbl" style="color:var(--blue);">App</div>
+            <div class="io-val" style="font-size:14px; color:var(--tx);">Cerca Aggiornamenti</div>
+        </button>
+        <button class="io-card" data-a="export-data" style="cursor:pointer; border:1px solid var(--bd); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;">
+            <div class="io-lbl">Backup</div>
+            <div class="io-val" style="font-size:14px;">Esporta Dati</div>
+        </button>
+        <label class="io-card" style="cursor:pointer; margin:0; width:100%; padding:14px; border:1px solid var(--bd); display:flex; flex-direction:column; align-items:flex-start; gap:4px;">
+            <div class="io-lbl">Ripristina</div>
+            <div class="io-val" style="font-size:14px;">Importa Dati</div>
+            <input type="file" id="import-file" accept=".json" style="display:none;">
+        </label>
+    </div>
   </div>
   <div class="f-acts"><button class="btn btng" data-a="close-sh-settings">Chiudi</button></div>
+</div>
+
+<div class="sheet" id="sh-categories">
+  <div class="sh-drag"></div>
+  <div class="sh-body">
+    <div class="sh-title" style="text-align:center; margin-bottom:24px;">Gestisci Categorie</div>
+    <div style="display:flex; gap:10px; margin-bottom:20px;">
+        <input class="fi" type="text" id="new-cat-name" placeholder="Nuova categoria..." style="flex:1;">
+        <button class="btn btnp" data-a="add-cat" style="padding:16px; flex-shrink:0; border-radius:14px;">Aggiungi</button>
+    </div>
+    <div class="fxl" id="cat-manage-list"></div>
+  </div>
+  <div class="f-acts"><button class="btn btng" data-a="close-sh-categories">Indietro</button></div>
 </div>
 
 <div class="sheet" id="sh-profile">
@@ -449,31 +486,7 @@ input, select, textarea {
     <div class="frow"><div class="fg"><label class="fl">Data</label><input class="fi" type="date" id="tx-date"></div><div class="fg"><label class="fl">Importo €</label><input class="fi" type="text" inputmode="decimal" id="tx-amt" placeholder="0,00"></div></div>
     <div class="fg"><label class="fl">Descrizione</label><input class="fi" type="text" id="tx-desc" placeholder="es. Spesa supermercato"></div>
     <div class="fg" id="fg-cat"><label class="fl">Categoria</label><select class="fs" id="tx-cat">
-        <optgroup label="Spese Fisse ed Essenziali">
-            <option value="Affitto e Casa">Affitto e Casa</option>
-            <option value="Bollette">Bollette</option>
-            <option value="Spesa al Supermercato">Spesa al Supermercato</option>
-            <option value="Trasporti">Trasporti</option>
-            <option value="Salute e Prevenzione">Salute e Prevenzione</option>
-        </optgroup>
-        <optgroup label="Stile di Vita e Passioni">
-            <option value="Corsa e Sport">Corsa e Sport</option>
-            <option value="Viaggi e Vacanze">Viaggi e Vacanze</option>
-            <option value="Abbonamenti e Servizi">Abbonamenti e Servizi</option>
-            <option value="Ristoranti e Socialità">Ristoranti e Socialità</option>
-            <option value="Shopping">Shopping</option>
-            <option value="Cultura e Svago">Cultura e Svago</option>
-            <option value="Sigarette">Sigarette</option>
-        </optgroup>
-        <optgroup label="Imprevisti e Futuro">
-            <option value="Imprevisti ed Emergenze">Imprevisti ed Emergenze</option>
-            <option value="Risparmi e Investimenti">Risparmi e Investimenti</option>
-            <option value="Debiti">Debiti</option>
-        </optgroup>
-        <optgroup label="Generale">
-            <option value="Altro">Altro</option>
-        </optgroup>
-    </select></div>
+        </select></div>
     <div class="fg" id="fg-wallet"><label class="fl">Portafoglio (opzionale)</label><select class="fs" id="tx-wallet"><option value="">— Nessuno —</option></select></div>
   </div>
   <div class="f-acts"><button class="btn btng" data-a="close-sh-tx">Annulla</button><button class="btn btnp" data-a="save-tx">Salva</button></div>
@@ -519,14 +532,7 @@ input, select, textarea {
     <div class="sh-title" id="sh-fx-ttl">Nuova spesa fissa</div>
     <div class="fg"><label class="fl">Nome</label><input class="fi" type="text" id="fx-name" placeholder="es. Affitto"></div>
     <div class="frow"><div class="fg"><label class="fl">Importo €/mese</label><input class="fi" type="text" inputmode="decimal" id="fx-amt" placeholder="0,00"></div><div class="fg"><label class="fl">Categoria</label><select class="fs" id="fx-cat">
-        <option value="Affitto e Casa">Affitto e Casa</option>
-        <option value="Bollette">Bollette</option>
-        <option value="Trasporti">Trasporti</option>
-        <option value="Abbonamenti e Servizi">Abbonamenti e Servizi</option>
-        <option value="Risparmi e Investimenti">Risparmi e Investimenti</option>
-        <option value="Debiti">Debiti</option>
-        <option value="Altro">Altro</option>
-    </select></div></div>
+        </select></div></div>
   </div>
   <div class="f-acts"><button class="btn btng" data-a="close-sh-fx">Annulla</button><button class="btn btnp" data-a="save-fx">Salva</button></div>
 </div>
@@ -571,7 +577,7 @@ const Ics = {
   bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>',
   target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>',
   calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>',
-  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
+  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
 };
 
 // UI Injects
@@ -641,28 +647,20 @@ const PRESETS = [
 const ICONS  = ['game','shirt','food','plane','sport','tech','health','book','cart','car','home','briefcase','music','tool','star','shield'];
 const COLORS = ['#9b5de5','#3a86ff','#f77f00','#06d6a0','#2dc653','#5352ed','#ef233c','#ffd166','#00b4d8','#d4a843','#fb8500','#8ecae6','#ff006e','#8338ec','#38b000','#ffbe0b'];
 
-// FIX COLORI: 16 colori totalmente differenti per le categorie (inclusi Debiti e Sigarette)
+// DYNAMIC CHART COLORS
+const CHART_COLORS = ['#FF5733','#FFC300','#36A2EB','#4BC0C0','#FF9F40','#9966FF','#C9CBCF','#E056FD','#8B008B','#00FA9A','#00CED1','#DC143C','#0000CD','#8B4513','#A9A9A9','#708090','#f472b6','#fbbf24','#34d399','#60a5fa','#a78bfa'];
+
 const CAT_COLORS = {
-  'Affitto e Casa': '#FF5733', 
-  'Bollette': '#FFC300', 
-  'Spesa al Supermercato': '#36A2EB',
-  'Trasporti': '#4BC0C0', 
-  'Salute e Prevenzione': '#FF9F40',
-  'Corsa e Sport': '#9966FF', 
-  'Viaggi e Vacanze': '#C9CBCF', 
-  'Abbonamenti e Servizi': '#E056FD',
-  'Ristoranti e Socialità': '#8B008B', 
-  'Shopping': '#00FA9A', 
-  'Cultura e Svago': '#00CED1',
-  'Imprevisti ed Emergenze': '#DC143C', 
-  'Risparmi e Investimenti': '#0000CD',
-  'Debiti': '#8B4513',
-  'Sigarette': '#A9A9A9',
-  'Altro': '#708090'
+  'Affitto e Casa': '#FF5733', 'Bollette': '#FFC300', 'Spesa al Supermercato': '#36A2EB',
+  'Trasporti': '#4BC0C0', 'Salute e Prevenzione': '#FF9F40', 'Corsa e Sport': '#9966FF', 
+  'Viaggi e Vacanze': '#C9CBCF', 'Abbonamenti e Servizi': '#E056FD',
+  'Ristoranti e Socialità': '#8B008B', 'Shopping': '#00FA9A', 'Cultura e Svago': '#00CED1',
+  'Imprevisti ed Emergenze': '#DC143C', 'Risparmi e Investimenti': '#0000CD',
+  'Debiti': '#8B4513', 'Sigarette': '#A9A9A9', 'Altro': '#708090'
 };
 
 const SKEY = 'finanze_v6';
-let S = {transactions:[], fixedExpenses:[], monthlyIncome:{}, wallets:[], initialBalance: null, initialBalanceMonth: null, userName: null};
+let S = {transactions:[], fixedExpenses:[], monthlyIncome:{}, wallets:[], categories:[], initialBalance: null, initialBalanceMonth: null, userName: null};
 
 function thisMonth(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
 function startOfMonth(ym){ return `${ym}-01`; }
@@ -688,6 +686,14 @@ function renderIconColGrids() {
     document.getElementById('preset-grid').innerHTML = PRESETS.map(p => `<div class="ptile" data-a="sel-preset" data-i="${p.i}" data-c="${p.c}" data-n="${p.n}"><div class="pt-i" style="color:${p.c}">${Ics[p.i]}</div><div class="pt-n">${p.n}</div></div>`).join('');
 }
 
+function updateCategorySelects() {
+    const opts = S.categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    const txCat = document.getElementById('tx-cat');
+    if (txCat) txCat.innerHTML = opts;
+    const fxCat = document.getElementById('fx-cat');
+    if (fxCat) fxCat.innerHTML = opts;
+}
+
 function loadS(){
     try{
         const r=localStorage.getItem(SKEY);
@@ -701,8 +707,21 @@ function loadS(){
             }
         }
     }catch(e){}
+    
+    // Inizializza categorie di default se vuote
+    if (!S.categories || S.categories.length === 0) {
+        S.categories = [
+            'Affitto e Casa', 'Bollette', 'Spesa al Supermercato', 'Trasporti',
+            'Salute e Prevenzione', 'Corsa e Sport', 'Viaggi e Vacanze',
+            'Abbonamenti e Servizi', 'Ristoranti e Socialità', 'Shopping',
+            'Cultura e Svago', 'Sigarette', 'Imprevisti ed Emergenze',
+            'Risparmi e Investimenti', 'Debiti', 'Altro'
+        ];
+    }
+    updateCategorySelects();
     checkOnboarding();
 }
+
 function saveS(){localStorage.setItem(SKEY,JSON.stringify(S))}
 
 function parseAmt(val) {
@@ -810,6 +829,42 @@ function saveProfile() {
     closeSheet('sh-profile');
     updateLabels();
     refreshUI();
+}
+
+function openCategories() {
+    closeSheet('sh-settings');
+    renderCategoriesManager();
+    openSheet('sh-categories');
+}
+
+function renderCategoriesManager() {
+    document.getElementById('cat-manage-list').innerHTML = S.categories.map(c => `
+        <div class="fxr" style="flex-direction:row; align-items:center; justify-content:space-between; padding:12px 16px;">
+            <div style="font-weight:600; font-size:15px; color:var(--tx);">${esc(c)}</div>
+            <button class="abt abt-d" data-a="del-cat" data-name="${esc(c)}">${Ics.trash}</button>
+        </div>
+    `).join('');
+}
+
+function addCat() {
+    const n = document.getElementById('new-cat-name').value.trim();
+    if(!n) return;
+    if(S.categories.includes(n)) { alert("Categoria già esistente!"); return; }
+    S.categories.push(n);
+    saveS();
+    updateCategorySelects();
+    document.getElementById('new-cat-name').value = '';
+    renderCategoriesManager();
+}
+
+function delCat(n) {
+    if(S.categories.length <= 1) { alert("Devi avere almeno una categoria."); return; }
+    askConfirm('Elimina Categoria', `Rimuovere "${n}" dall'elenco categorie? (Le transazioni passate manterranno comunque l'etichetta).`, 'Elimina', () => {
+        S.categories = S.categories.filter(c => c !== n);
+        saveS();
+        updateCategorySelects();
+        renderCategoriesManager();
+    });
 }
 
 function txForMonth(ym){return S.transactions.filter(t=>t.date.startsWith(ym))}
@@ -1017,7 +1072,13 @@ function renderMovimenti(){
         let active = isFxActive(f, ym);
         return `<div class="fxr ${active?'':'off'}"><div class="fx-top"><div class="fx-body"><div class="fx-name">${esc(f.name)}</div><div class="fx-cat">${esc(f.cat)}</div></div><div class="fx-amt">${fmt(f.amount)}</div></div><div class="fx-bot"><div class="fx-status"><button class="fx-tog ${active?'on':''}" data-a="toggle-fx-month" data-id="${f.id}" data-ym="${ym}"></button><span class="fx-status-lbl">${active ? 'Attiva' : 'Sospesa'}</span></div><div class="fx-acts"><button class="abt" data-a="edit-fx" data-id="${f.id}">${Ics.edit}</button><button class="abt" data-a="del-fx" data-id="${f.id}">${Ics.trash}</button></div></div></div>`
     }).join('')+'</div>' : `<div class="empty"><div class="empty-t">Nessuna spesa fissa</div></div>`;
-  let txs=txForMonth(ym); txs.sort((a,b)=>b.date.localeCompare(a.date));
+  let txs=txForMonth(ym); 
+  // FIX: Ordine per Data (YYYY-MM-DD), e in caso di parità, la più recente in cima (grazie al nuovo attributo ts)
+  txs.sort((a,b) => {
+      let d = b.date.localeCompare(a.date);
+      if(d !== 0) return d;
+      return (b.ts || 0) - (a.ts || 0);
+  });
   document.getElementById('mov-txl').innerHTML=txs.length?txListHTML(txs,true) : `<div class="empty"><div class="empty-t">Nessuna transazione</div></div>`;
 }
 
@@ -1108,9 +1169,13 @@ function renderAnalisi(){
         let catArray = Object.keys(spese).map(k => ({name: k, amt: spese[k]})).sort((a,b) => b.amt - a.amt);
         
         if (totCat > 0) {
-            document.getElementById('ana-cat-list').innerHTML = catArray.map(c => `<div class="cat-item"><div class="cat-color" style="background:${CAT_COLORS[c.name]||'#4a4860'}"></div><div class="cat-name">${c.name}</div><div class="cat-pct">${Math.round(c.amt/totCat*100)}%</div><div class="cat-amt">${fmt(c.amt)}</div></div>`).join('');
+            document.getElementById('ana-cat-list').innerHTML = catArray.map((c, idx) => {
+                // FIX COLORI DINAMICI
+                let color = CAT_COLORS[c.name] || CHART_COLORS[idx % CHART_COLORS.length];
+                return `<div class="cat-item"><div class="cat-color" style="background:${color}"></div><div class="cat-name">${c.name}</div><div class="cat-pct">${Math.round(c.amt/totCat*100)}%</div><div class="cat-amt">${fmt(c.amt)}</div></div>`;
+            }).join('');
             if(catChart) catChart.destroy();
-            catChart = new Chart(document.getElementById('cat-chart'), { type: 'doughnut', data: { labels: catArray.map(c=>c.name), datasets: [{ data: catArray.map(c=>c.amt), backgroundColor: catArray.map(c=>CAT_COLORS[c.name]||'#4a4860'), borderWidth: 2, borderColor: '#151515' }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false } } } });
+            catChart = new Chart(document.getElementById('cat-chart'), { type: 'doughnut', data: { labels: catArray.map(c=>c.name), datasets: [{ data: catArray.map(c=>c.amt), backgroundColor: catArray.map((c, i)=>CAT_COLORS[c.name]||CHART_COLORS[i % CHART_COLORS.length]), borderWidth: 2, borderColor: '#151515' }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false } } } });
         } else {
             document.getElementById('ana-cat-list').innerHTML = `<div class="empty"><div class="empty-t">Nessuna spesa nel periodo</div></div>`;
             if(catChart) catChart.destroy();
@@ -1234,9 +1299,13 @@ function saveTx(){
   if(!date||!amt||amt<=0||!desc){alert('Compila tutti i campi.');return}
   if(editTxId){
     const i=S.transactions.findIndex(t=>t.id===editTxId);
-    if(i>=0)S.transactions[i]={...S.transactions[i],date,amount:amt,description:desc,category:curTxType==='expense'?document.getElementById('tx-cat').value:'Entrata',type:curTxType,walletId:curTxType==='expense'?document.getElementById('tx-wallet').value:undefined};
+    if(i>=0){
+        let oldTs = S.transactions[i].ts || Date.now();
+        S.transactions[i]={...S.transactions[i],date,amount:amt,description:desc,category:curTxType==='expense'?document.getElementById('tx-cat').value:'Entrata',type:curTxType,walletId:curTxType==='expense'?document.getElementById('tx-wallet').value:undefined, ts: oldTs};
+    }
   }else{
-    S.transactions.push({id:genId(),date,amount:amt,description:desc,category:curTxType==='expense'?document.getElementById('tx-cat').value:'Entrata',type:curTxType,walletId:curTxType==='expense'?document.getElementById('tx-wallet').value:undefined});
+    // FIX TIMESTAMP: Garantisce ordine cronologico esatto nella stessa giornata
+    S.transactions.push({id:genId(),date,amount:amt,description:desc,category:curTxType==='expense'?document.getElementById('tx-cat').value:'Entrata',type:curTxType,walletId:curTxType==='expense'?document.getElementById('tx-wallet').value:undefined, ts: Date.now()});
   }
   saveS();
   closeSheet('sh-tx');
@@ -1247,7 +1316,6 @@ function openAddTx(walletId, type){
   editTxId=null; curTxType = type || 'expense';
   document.getElementById('sh-tx-ttl').textContent = type === 'income' ? 'Nuova Entrata' : 'Nuova Uscita';
   
-  // FIX DATA DI DEFAULT A OGGI
   const td = new Date(); 
   document.getElementById('tx-date').value = `${td.getFullYear()}-${String(td.getMonth()+1).padStart(2,'0')}-${String(td.getDate()).padStart(2,'0')}`; 
   
@@ -1338,6 +1406,14 @@ function openWalletDetail(wid) {
     document.getElementById('wd-pbar').style.background = pct >= 100 ? 'var(--red)' : (pct >= 80 ? 'var(--gold)' : w.color);
     
     let txs = txForMonth(selMonth).filter(t => t.walletId === wid);
+    
+    // FIX ORDINE PORTAFOGLIO
+    txs.sort((a,b) => {
+      let d = b.date.localeCompare(a.date);
+      if(d !== 0) return d;
+      return (b.ts || 0) - (a.ts || 0);
+    });
+
     document.getElementById('wd-txl').innerHTML = txs.length ? txListHTML(txs, true) : `<div class="empty"><div class="empty-t">Nessuna transazione nel mese</div></div>`;
     
     openSheet('sh-wdet');
@@ -1454,6 +1530,11 @@ document.addEventListener('click',function(e){
     case 'close-sh-profile': closeSheet('sh-profile'); break;
     case 'save-profile': saveProfile(); break;
     
+    case 'open-categories': openCategories(); break;
+    case 'close-sh-categories': closeSheet('sh-categories'); openSheet('sh-settings'); break;
+    case 'add-cat': addCat(); break;
+    case 'del-cat': delCat(el.dataset.name); break;
+
     case 'force-update': 
         if(confirm("Vuoi ricaricare l'app per cercare e applicare nuovi aggiornamenti?")) {
             window.location.reload(true); 
