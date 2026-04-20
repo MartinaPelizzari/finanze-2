@@ -251,7 +251,7 @@ input, select, textarea {
 .confirm-overlay{position:fixed;inset:0;background:rgba(0, 0, 0, 0.8);z-index:190; backdrop-filter: blur(4px); opacity:0;pointer-events:none;transition:opacity .3s ease}
 .confirm-overlay.on{opacity:1;pointer-events:all}
 
-/* TENDINE FIX KEYBOARD BUG */
+/* TENDINE FIX KEYBOARD BUG (Rimosso !important da bottom per non bloccare JS) */
 .sheet{position:fixed;bottom:-100%;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:100; transition:bottom .35s cubic-bezier(0.16, 1, 0.3, 1); max-height:90dvh; display:flex;flex-direction:column; -webkit-transform: translateZ(0); transform: translateZ(0);}
 .sheet.open{bottom:0;} 
 .sh-drag{width:48px;height:5px;background:var(--tx3);border-radius:3px;margin:16px auto 0;flex-shrink:0;opacity:0.5;}
@@ -376,7 +376,7 @@ input, select, textarea {
 
 <div class="page" id="pg-portafogli">
   <div class="topbar"><div><div class="tb-title">Portafogli</div><div class="tb-sub" id="port-sub"></div></div><div class="mnav"><button class="mnav-btn" data-a="prev-month" id="icon-chevron-left-3"></button><div class="mnav-lbl" id="port-mlbl"></div><button class="mnav-btn" data-a="next-month" id="icon-chevron-right-3"></button></div></div>
-  <div class="pw"><div class="cards" style="margin-bottom:24px"><div class="card cfull"><div class="card-l">Da allocare</div><div class="card-v" id="port-disp">€0</div><div class="card-s">Entrate - Fisse attive - Fondi allocati</div></div><div class="card"><div class="card-l">Saldo totale</div><div class="card-v" id="port-saldo">€0</div></div><div class="card"><div class="card-l">Speso mese</div><div class="card-v" style="color:var(--red)" id="port-speso">€0</div></div></div><div class="wgrid" id="wallet-grid"></div><button class="add-btn" data-a="add-wallet" id="btn-add-wallet"></button></div>
+  <div class="pw"><div class="cards" style="margin-bottom:24px"><div class="card cfull"><div class="card-l">Disponibilità</div><div class="card-v" id="port-disp">€0</div><div class="card-s">Entrate - Fisse - Budget o Speso - Extra</div></div><div class="card"><div class="card-l">Saldo totale</div><div class="card-v" id="port-saldo">€0</div></div><div class="card"><div class="card-l">Speso mese</div><div class="card-v" style="color:var(--red)" id="port-speso">€0</div></div></div><div class="wgrid" id="wallet-grid"></div><button class="add-btn" data-a="add-wallet" id="btn-add-wallet"></button></div>
 </div>
 
 <div class="page" id="pg-analisi">
@@ -1163,8 +1163,26 @@ function txListHTML(txs,withActs){
 function renderPortafogli(){
   const ym=selMonth; document.getElementById('port-sub').textContent=mLabel(ym);
   let activeW = getActiveWallets(ym);
-  const tAlloc=activeW.reduce((s,w)=>s+walletMonthAlloc(w.id,ym),0);
-  document.getElementById('port-disp').textContent=fmt(totalIncome(ym) - fixedTotal(ym) - tAlloc);
+  
+  // NUOVA LOGICA DISPONIBILITA' "CASH LIBERO"
+  let tInc = totalIncome(ym);
+  let tFix = fixedTotal(ym);
+  let tVar = varExpense(ym);
+  let wImpact = 0;
+  let wSpentTotal = 0;
+  
+  activeW.forEach(w => {
+      let alloc = walletMonthAlloc(w.id, ym);
+      let spent = walletMonthSpent(w.id, ym);
+      wImpact += Math.max(alloc, spent);
+      wSpentTotal += spent;
+  });
+  
+  let unassignedExp = tVar - wSpentTotal;
+  let disp = tInc - tFix - wImpact - unassignedExp;
+  
+  document.getElementById('port-disp').textContent=fmt(disp);
+  
   const tb=activeW.reduce((s,w)=>s+walletBalance(w.id,ym),0); document.getElementById('port-saldo').textContent=fmt(tb); document.getElementById('port-saldo').style.color=tb>=0?'var(--tx)':'var(--red)';
   document.getElementById('port-speso').textContent=fmt(activeW.reduce((s,w)=>s+walletMonthSpent(w.id,ym),0));
   document.getElementById('wallet-grid').innerHTML= activeW.map(w=>{
@@ -1226,6 +1244,7 @@ function renderAnalisi(){
     let inc = incInRange(anaDateStart, anaDateEnd); let totalExp = varExpInRange(anaDateStart, anaDateEnd) + fixedInRange(anaDateStart, anaDateEnd);
     let endYM = anaDateEnd.slice(0,7);
 
+    // TAB 1: KPI E GRAFICI
     if (anaActiveTab === 'kpi') {
         document.getElementById('ana-liquidita').textContent = fmt(getAccumulatedWealthUpTo(endYM));
         document.getElementById('ana-qs-sav-rate').textContent = (inc > 0 ? Math.max(0, Math.round(((inc-totalExp) / inc) * 100)) : 0) + '%';
