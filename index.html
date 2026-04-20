@@ -65,7 +65,7 @@ input, select, textarea {
 .page.active{display:block;animation:fu .3s cubic-bezier(0.16, 1, 0.3, 1)}
 @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-/* TOPBAR */
+/* TOPBAR - TITOLI SPOSTATI PIÙ IN BASSO */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top, 44px) + 40px) 20px 16px;gap:8px}
 .tb-title{font-size:28px;font-weight:700;letter-spacing:-0.03em; color: var(--tx);}
 .tb-sub{font-size:13px;color:var(--tx2);margin-top:2px; font-weight: 500;}
@@ -73,7 +73,7 @@ input, select, textarea {
 
 /* FIX ICONA IMPOSTAZIONI NON TAGLIATA E BEN PROPORZIONATA */
 .mnav-btn{width:32px;height:32px;border-radius:50%;background:transparent;border:none;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
-.mnav-btn svg { width: 20px; height: 20px; stroke-width: 2; }
+.mnav-btn svg { width: 20px; height: 20px; stroke-width: 2; overflow: visible; }
 .mnav-btn:active{background:var(--sf2); color:var(--tx);}
 
 .mnav-lbl{font-size:12px;min-width:90px;text-align:center;color:var(--tx);font-weight:600; white-space:nowrap; overflow:hidden;}
@@ -218,14 +218,14 @@ input, select, textarea {
 .w-sub{font-size:11px;color:var(--tx2);font-weight:500;margin-bottom:2px}
 .w-avg{font-size:10px;color:var(--tx3);font-family:var(--mono);}
 
-/* BOTTOM NAV */
+/* BOTTOM NAV - COMPLETAMENTE SCHIACCIATA E ANCORATA AL FONDO */
 .bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 2px 12px env(safe-area-inset-bottom, 0px); z-index: 50; }
 .nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:2px;padding:4px 0 2px;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
 .nt.active{color:var(--tx)}
 .nt-i{display:flex;align-items:center;justify-content:center}
 .nt-i svg{width:22px;height:22px;stroke-width:2.2}
 
-/* FAB IN EVIDENZA */
+/* FAB IN EVIDENZA E ABBASSATO */
 .fab-w{flex:0 0 72px;display:flex;justify-content:center;align-items:center}
 .fab{width:54px;height:54px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-14px); box-shadow: 0 4px 16px rgba(255,255,255,0.15); transition:all 0.2s;} 
 .fab svg{width:24px;height:24px;stroke-width:2.5}
@@ -441,11 +441,23 @@ input, select, textarea {
   <div class="sh-drag"></div>
   <div class="sh-body">
     <div class="sh-title" style="text-align:center; margin-bottom:24px;">Gestisci Categorie</div>
+    
+    <div class="fg" style="margin-bottom:12px;">
+        <select class="fs" id="new-cat-group">
+            <option value="Spese Fisse ed Essenziali">Spese Fisse ed Essenziali</option>
+            <option value="Stile di Vita e Passioni">Stile di Vita e Passioni</option>
+            <option value="Imprevisti e Futuro">Imprevisti e Futuro</option>
+            <option value="Generale">Generale</option>
+        </select>
+    </div>
+    
     <div style="display:flex; gap:10px; margin-bottom:20px;">
         <input class="fi" type="text" id="new-cat-name" placeholder="Nuova categoria..." style="flex:1;">
         <button class="btn btnp" data-a="add-cat" style="padding:16px; flex-shrink:0; border-radius:14px;">Aggiungi</button>
     </div>
-    <div class="fxl" id="cat-manage-list"></div>
+    
+    <div id="cat-manage-list"></div>
+    
   </div>
   <div class="f-acts"><button class="btn btng" data-a="close-sh-categories">Indietro</button></div>
 </div>
@@ -577,7 +589,7 @@ const Ics = {
   bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>',
   target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>',
   calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>',
-  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
+  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
 };
 
 // UI Injects
@@ -660,7 +672,7 @@ const CAT_COLORS = {
 };
 
 const SKEY = 'finanze_v6';
-let S = {transactions:[], fixedExpenses:[], monthlyIncome:{}, wallets:[], categories:[], initialBalance: null, initialBalanceMonth: null, userName: null};
+let S = {transactions:[], fixedExpenses:[], monthlyIncome:{}, wallets:[], categories:{}, initialBalance: null, initialBalanceMonth: null, userName: null};
 
 function thisMonth(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
 function startOfMonth(ym){ return `${ym}-01`; }
@@ -686,8 +698,16 @@ function renderIconColGrids() {
     document.getElementById('preset-grid').innerHTML = PRESETS.map(p => `<div class="ptile" data-a="sel-preset" data-i="${p.i}" data-c="${p.c}" data-n="${p.n}"><div class="pt-i" style="color:${p.c}">${Ics[p.i]}</div><div class="pt-n">${p.n}</div></div>`).join('');
 }
 
+// FIX CATEGORIE A CLUSTER
 function updateCategorySelects() {
-    const opts = S.categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    let opts = '';
+    for (let group in S.categories) {
+        opts += `<optgroup label="${esc(group)}">`;
+        S.categories[group].forEach(c => {
+            opts += `<option value="${esc(c)}">${esc(c)}</option>`;
+        });
+        opts += `</optgroup>`;
+    }
     const txCat = document.getElementById('tx-cat');
     if (txCat) txCat.innerHTML = opts;
     const fxCat = document.getElementById('fx-cat');
@@ -708,16 +728,23 @@ function loadS(){
         }
     }catch(e){}
     
-    // Inizializza categorie di default se vuote
-    if (!S.categories || S.categories.length === 0) {
-        S.categories = [
-            'Affitto e Casa', 'Bollette', 'Spesa al Supermercato', 'Trasporti',
-            'Salute e Prevenzione', 'Corsa e Sport', 'Viaggi e Vacanze',
-            'Abbonamenti e Servizi', 'Ristoranti e Socialità', 'Shopping',
-            'Cultura e Svago', 'Sigarette', 'Imprevisti ed Emergenze',
-            'Risparmi e Investimenti', 'Debiti', 'Altro'
-        ];
+    // Migrazione o Inizializzazione Categorie a Cluster
+    const defaultGroups = {
+        "Spese Fisse ed Essenziali": ["Affitto e Casa", "Bollette", "Spesa al Supermercato", "Trasporti", "Salute e Prevenzione"],
+        "Stile di Vita e Passioni": ["Corsa e Sport", "Viaggi e Vacanze", "Abbonamenti e Servizi", "Ristoranti e Socialità", "Shopping", "Cultura e Svago", "Sigarette"],
+        "Imprevisti e Futuro": ["Imprevisti ed Emergenze", "Risparmi e Investimenti", "Debiti"],
+        "Generale": ["Altro"]
+    };
+    
+    if (!S.categories || Array.isArray(S.categories) || Object.keys(S.categories).length === 0) {
+        let oldArray = Array.isArray(S.categories) ? S.categories : [];
+        S.categories = JSON.parse(JSON.stringify(defaultGroups));
+        let known = Object.values(S.categories).flat();
+        oldArray.forEach(c => {
+            if (!known.includes(c)) S.categories["Generale"].push(c);
+        });
     }
+    
     updateCategorySelects();
     checkOnboarding();
 }
@@ -838,29 +865,71 @@ function openCategories() {
 }
 
 function renderCategoriesManager() {
-    document.getElementById('cat-manage-list').innerHTML = S.categories.map(c => `
-        <div class="fxr" style="flex-direction:row; align-items:center; justify-content:space-between; padding:12px 16px;">
-            <div style="font-weight:600; font-size:15px; color:var(--tx);">${esc(c)}</div>
-            <button class="abt abt-d" data-a="del-cat" data-name="${esc(c)}">${Ics.trash}</button>
-        </div>
-    `).join('');
+    let html = '';
+    for (let group in S.categories) {
+        html += `<div class="sec" style="margin:20px 0 8px; color:var(--tx3); font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">${esc(group)}</div>`;
+        html += `<div style="background:var(--sf); border:1px solid var(--bd); border-radius:var(--r); overflow:hidden;">`;
+        S.categories[group].forEach(c => {
+            html += `
+                <div class="fxr" style="flex-direction:row; align-items:center; justify-content:space-between; padding:12px 16px;">
+                    <div style="font-weight:600; font-size:15px; color:var(--tx);">${esc(c)}</div>
+                    <div style="display:flex; gap:8px;">
+                        <button class="abt" data-a="edit-cat" data-name="${esc(c)}" data-group="${esc(group)}">${Ics.edit}</button>
+                        <button class="abt abt-d" data-a="del-cat" data-name="${esc(c)}" data-group="${esc(group)}">${Ics.trash}</button>
+                    </div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+    }
+    document.getElementById('cat-manage-list').innerHTML = html;
 }
 
 function addCat() {
     const n = document.getElementById('new-cat-name').value.trim();
+    const g = document.getElementById('new-cat-group').value;
     if(!n) return;
-    if(S.categories.includes(n)) { alert("Categoria già esistente!"); return; }
-    S.categories.push(n);
+    
+    let exists = false;
+    for(let gr in S.categories) { if(S.categories[gr].includes(n)) exists = true; }
+    if(exists) { alert("Categoria già esistente!"); return; }
+    
+    S.categories[g].push(n);
     saveS();
     updateCategorySelects();
     document.getElementById('new-cat-name').value = '';
     renderCategoriesManager();
 }
 
-function delCat(n) {
-    if(S.categories.length <= 1) { alert("Devi avere almeno una categoria."); return; }
-    askConfirm('Elimina Categoria', `Rimuovere "${n}" dall'elenco categorie? (Le transazioni passate manterranno comunque l'etichetta).`, 'Elimina', () => {
-        S.categories = S.categories.filter(c => c !== n);
+function promptEditCat(oldName, group) {
+    let newName = prompt(`Rinomina "${oldName}"\nATTENZIONE: Questo aggiornerà automaticamente anche tutte le transazioni e spese fisse passate associate.`, oldName);
+    if (!newName) return;
+    newName = newName.trim();
+    if (newName === oldName || newName === "") return;
+    
+    let exists = false;
+    for(let gr in S.categories) { if(S.categories[gr].includes(newName)) exists = true; }
+    if(exists) { alert("Una categoria con questo nome esiste già!"); return; }
+
+    let idx = S.categories[group].indexOf(oldName);
+    if (idx > -1) S.categories[group][idx] = newName;
+
+    // CASCADING UPDATE GLOBALE
+    S.transactions.forEach(t => { if (t.category === oldName) t.category = newName; });
+    S.fixedExpenses.forEach(f => { if (f.cat === oldName) f.cat = newName; });
+
+    saveS();
+    updateCategorySelects();
+    renderCategoriesManager();
+    refreshUI();
+}
+
+function delCat(n, g) {
+    let total = 0; for(let gr in S.categories) total += S.categories[gr].length;
+    if(total <= 1) { alert("Devi avere almeno una categoria nel sistema."); return; }
+    
+    askConfirm('Elimina Categoria', `Vuoi rimuovere "${n}" dall'elenco categorie? (Le transazioni passate manterranno il nome, ma non apparirà più nel menu di aggiunta).`, 'Elimina', () => {
+        S.categories[g] = S.categories[g].filter(c => c !== n);
         saveS();
         updateCategorySelects();
         renderCategoriesManager();
@@ -1073,12 +1142,14 @@ function renderMovimenti(){
         return `<div class="fxr ${active?'':'off'}"><div class="fx-top"><div class="fx-body"><div class="fx-name">${esc(f.name)}</div><div class="fx-cat">${esc(f.cat)}</div></div><div class="fx-amt">${fmt(f.amount)}</div></div><div class="fx-bot"><div class="fx-status"><button class="fx-tog ${active?'on':''}" data-a="toggle-fx-month" data-id="${f.id}" data-ym="${ym}"></button><span class="fx-status-lbl">${active ? 'Attiva' : 'Sospesa'}</span></div><div class="fx-acts"><button class="abt" data-a="edit-fx" data-id="${f.id}">${Ics.edit}</button><button class="abt" data-a="del-fx" data-id="${f.id}">${Ics.trash}</button></div></div></div>`
     }).join('')+'</div>' : `<div class="empty"><div class="empty-t">Nessuna spesa fissa</div></div>`;
   let txs=txForMonth(ym); 
-  // FIX: Ordine per Data (YYYY-MM-DD), e in caso di parità, la più recente in cima (grazie al nuovo attributo ts)
+  
+  // FIX CRONOLOGIA: Ordine per Data decrescente, a parità di data usa il timestamp decrescente
   txs.sort((a,b) => {
       let d = b.date.localeCompare(a.date);
       if(d !== 0) return d;
       return (b.ts || 0) - (a.ts || 0);
   });
+  
   document.getElementById('mov-txl').innerHTML=txs.length?txListHTML(txs,true) : `<div class="empty"><div class="empty-t">Nessuna transazione</div></div>`;
 }
 
@@ -1149,14 +1220,12 @@ function savePeriod() {
     }
 }
 
-// FIX: Ricostruzione totale Analisi (Grafico Flussi Affiancato, Portafogli con Linee, Previsioni Potenziate)
 function renderAnalisi(){
     document.getElementById('ana-period-lbl').textContent = formatPeriod(anaDateStart, anaDateEnd);
     Chart.defaults.font.family = "'Inter', sans-serif"; Chart.defaults.color = "#9ca3af";
     let inc = incInRange(anaDateStart, anaDateEnd); let totalExp = varExpInRange(anaDateStart, anaDateEnd) + fixedInRange(anaDateStart, anaDateEnd);
     let endYM = anaDateEnd.slice(0,7);
 
-    // TAB 1: KPI E GRAFICI
     if (anaActiveTab === 'kpi') {
         document.getElementById('ana-liquidita').textContent = fmt(getAccumulatedWealthUpTo(endYM));
         document.getElementById('ana-qs-sav-rate').textContent = (inc > 0 ? Math.max(0, Math.round(((inc-totalExp) / inc) * 100)) : 0) + '%';
@@ -1170,7 +1239,6 @@ function renderAnalisi(){
         
         if (totCat > 0) {
             document.getElementById('ana-cat-list').innerHTML = catArray.map((c, idx) => {
-                // FIX COLORI DINAMICI
                 let color = CAT_COLORS[c.name] || CHART_COLORS[idx % CHART_COLORS.length];
                 return `<div class="cat-item"><div class="cat-color" style="background:${color}"></div><div class="cat-name">${c.name}</div><div class="cat-pct">${Math.round(c.amt/totCat*100)}%</div><div class="cat-amt">${fmt(c.amt)}</div></div>`;
             }).join('');
@@ -1181,7 +1249,6 @@ function renderAnalisi(){
             if(catChart) catChart.destroy();
         }
 
-        // FIX GRAFICO FLUSSI: Solo raggruppamento mensile con barre affiancate
         let cfLabels = []; let cfInc = []; let cfExp = [];
         getMonthsInRangeStrictYTD(anaDateStart, anaDateEnd).forEach(mStr => {
             cfLabels.push(mShort(mStr));
@@ -1210,7 +1277,6 @@ function renderAnalisi(){
             }
         });
 
-    // TAB 2: PORTAFOGLI (Ripristinato grafico a linee per ogni card)
     } else if (anaActiveTab === 'port') {
         let activeW = getActiveWallets(endYM);
         let statsHTML = activeW.length ? activeW.map(w => {
@@ -1238,7 +1304,6 @@ function renderAnalisi(){
         }).join('') : `<div class="empty"><div class="empty-i">${Ics.empty}</div><div class="empty-t">Nessun portafoglio</div></div>`;
         document.getElementById('ana-stats-list').innerHTML = statsHTML;
 
-        // Renderizza il grafico a linee dentro ogni card generata
         activeW.forEach((w) => {
             let trendData = getWalletTrend(w.id, anaDateStart, anaDateEnd);
             let ctx = document.getElementById(`ch-port-${w.id}`);
@@ -1255,7 +1320,6 @@ function renderAnalisi(){
             }
         });
 
-    // TAB 3: PREVISIONI (Calcoli con decimali ed estetica migliorata)
     } else if (anaActiveTab === 'prev') {
         let totalLiq = getAccumulatedWealthUpTo(endYM);
         let startM = getAppStartMonth();
@@ -1266,7 +1330,6 @@ function renderAnalisi(){
         let avgSave = (totalIncAll - totalExpAll) / mCount;
         let avgExp = totalExpAll / mCount;
         
-        // FIX: Autonomia con decimali (es. 4.5)
         let runway = avgExp > 0 ? (totalLiq / avgExp).toFixed(1) : '999';
         
         let curM = parseInt(endYM.split('-')[1]);
@@ -1304,7 +1367,6 @@ function saveTx(){
         S.transactions[i]={...S.transactions[i],date,amount:amt,description:desc,category:curTxType==='expense'?document.getElementById('tx-cat').value:'Entrata',type:curTxType,walletId:curTxType==='expense'?document.getElementById('tx-wallet').value:undefined, ts: oldTs};
     }
   }else{
-    // FIX TIMESTAMP: Garantisce ordine cronologico esatto nella stessa giornata
     S.transactions.push({id:genId(),date,amount:amt,description:desc,category:curTxType==='expense'?document.getElementById('tx-cat').value:'Entrata',type:curTxType,walletId:curTxType==='expense'?document.getElementById('tx-wallet').value:undefined, ts: Date.now()});
   }
   saveS();
@@ -1407,7 +1469,6 @@ function openWalletDetail(wid) {
     
     let txs = txForMonth(selMonth).filter(t => t.walletId === wid);
     
-    // FIX ORDINE PORTAFOGLIO
     txs.sort((a,b) => {
       let d = b.date.localeCompare(a.date);
       if(d !== 0) return d;
@@ -1533,7 +1594,8 @@ document.addEventListener('click',function(e){
     case 'open-categories': openCategories(); break;
     case 'close-sh-categories': closeSheet('sh-categories'); openSheet('sh-settings'); break;
     case 'add-cat': addCat(); break;
-    case 'del-cat': delCat(el.dataset.name); break;
+    case 'del-cat': delCat(el.dataset.name, el.dataset.group); break;
+    case 'edit-cat': promptEditCat(el.dataset.name, el.dataset.group); break;
 
     case 'force-update': 
         if(confirm("Vuoi ricaricare l'app per cercare e applicare nuovi aggiornamenti?")) {
