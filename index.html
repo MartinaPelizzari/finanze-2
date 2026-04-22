@@ -72,11 +72,10 @@ input, select, textarea {
 .mnav{display:flex;align-items:center;gap:6px;flex-shrink:0; background: var(--sf); padding: 4px; border-radius: 100px; border: 1px solid var(--bd);}
 
 /* FIX ICONE */
-.mnav-btn{width:28px;height:28px;border-radius:50%;background:transparent;border:none;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
-.mnav-btn svg { width: 16px; height: 16px; stroke-width: 2.5; overflow: visible; }
-#btn-settings svg { width: 18px; height: 18px; stroke-width: 2; overflow: visible; }
-
+.mnav-btn{width:32px;height:32px;border-radius:50%;background:transparent;border:none;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+.mnav-btn svg { width: 20px; height: 20px; stroke-width: 2; overflow: visible; }
 .mnav-btn:active{background:var(--sf2); color:var(--tx);}
+
 .mnav-lbl{font-size:12px;min-width:90px;text-align:center;color:var(--tx);font-weight:600; white-space:nowrap; overflow:hidden;}
 .period-btn{background:var(--sf); border:1px solid var(--bd); padding:8px 14px; border-radius:100px; font-size:12px; font-weight:600; color:var(--tx); cursor:pointer; display:flex; align-items:center; gap:6px; transition:background 0.2s;}
 .period-btn svg{width:14px; height:14px;}
@@ -360,10 +359,7 @@ input, select, textarea {
 </div>
 
 <div class="page active" id="pg-home">
-  <div class="topbar">
-      <div><div class="tb-title">Homepage</div><div class="tb-sub" id="home-sub"></div></div>
-      <button class="mnav-btn" data-a="open-settings" id="btn-settings" style="background:var(--sf); border:1px solid var(--bd); width:36px; height:36px; border-radius:12px;"></button>
-  </div>
+  <div class="topbar"><div><div class="tb-title">Homepage</div><div class="tb-sub" id="home-sub"></div></div><button class="mnav-btn" data-a="open-settings" id="btn-settings"></button></div>
   <div class="pw">
     <div class="hero-clean"><div class="hc-lbl">Liquidità Totale</div><div class="hc-val" id="h-liquidita">€0.00</div><div class="hc-badge"><div class="hc-badge-lbl">Netto Mese</div><div class="hc-badge-val" id="h-bal-s"><span id="h-bal-icon"></span><span id="h-bal">€0.00</span></div></div></div>
     
@@ -559,7 +555,13 @@ input, select, textarea {
   <div class="sh-body">
     <div class="sh-title" id="sh-alloc-ttl">Fondi mese</div>
     <p class="alloc-hint" id="sh-alloc-hint" style="color:var(--tx2); margin-bottom:16px; font-size:14px; line-height:1.5;"></p>
-    <div class="fg"><label class="fl">Importo (+ aggiungi, - togli)</label><input class="fi" type="text" inputmode="decimal" id="alloc-amt" placeholder="es. 150 oppure -30"></div>
+    
+    <div class="period-tabs" style="margin-bottom:20px;">
+        <button class="pt-btn active" id="btn-alloc-add" data-a="set-alloc-type" data-v="add">Aggiungi (+)</button>
+        <button class="pt-btn" id="btn-alloc-sub" data-a="set-alloc-type" data-v="sub">Rimuovi (-)</button>
+    </div>
+
+    <div class="fg"><label class="fl">Importo</label><input class="fi" type="text" inputmode="decimal" id="alloc-amt" placeholder="es. 150"></div>
     <div class="fg"><label class="fl">Note (opzionale)</label><input class="fi" type="text" id="alloc-note" placeholder="es. Stipendio"></div>
   </div>
   <div class="f-acts"><button class="btn btng" data-a="close-sh-alloc">Annulla</button><button class="btn btnp" data-a="save-alloc">Applica</button></div>
@@ -616,7 +618,7 @@ const Ics = {
   bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>',
   target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>',
   calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>',
-  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
+  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
 };
 
 // UI Injects
@@ -650,6 +652,7 @@ let prevEoyChart = null;
 let prevBarChart = null;
 let prevRunChart = null;
 let portCharts = {};
+let curAllocType = 'add'; // Variabile per gestire aggiungi/rimuovi nei fondi
 
 function askConfirm(title, body, okLabel, cb){
   _confirmCallback = cb;
@@ -686,7 +689,6 @@ const PRESETS = [
 const ICONS  = ['game','shirt','food','plane','sport','tech','health','book','cart','car','home','briefcase','music','tool','star','shield'];
 const COLORS = ['#9b5de5','#3a86ff','#f77f00','#06d6a0','#2dc653','#5352ed','#ef233c','#ffd166','#00b4d8','#d4a843','#fb8500','#8ecae6','#ff006e','#8338ec','#38b000','#ffbe0b'];
 
-// DYNAMIC CHART COLORS
 const CHART_COLORS = ['#FF5733','#FFC300','#36A2EB','#4BC0C0','#FF9F40','#9966FF','#C9CBCF','#E056FD','#8B008B','#00FA9A','#00CED1','#DC143C','#0000CD','#8B4513','#A9A9A9','#708090','#f472b6','#fbbf24','#34d399','#60a5fa','#a78bfa'];
 
 const CAT_COLORS = {
@@ -725,7 +727,6 @@ function renderIconColGrids() {
     document.getElementById('preset-grid').innerHTML = PRESETS.map(p => `<div class="ptile" data-a="sel-preset" data-i="${p.i}" data-c="${p.c}" data-n="${p.n}"><div class="pt-i" style="color:${p.c}">${Ics[p.i]}</div><div class="pt-n">${p.n}</div></div>`).join('');
 }
 
-// FIX CATEGORIE E GRUPPI DINAMICI
 function updateCategorySelects() {
     let opts = '';
     let groupOpts = '';
@@ -759,7 +760,6 @@ function loadS(){
         }
     }catch(e){}
     
-    // Migrazione o Inizializzazione Categorie a Cluster
     const defaultGroups = {
         "Spese Fisse ed Essenziali": ["Affitto e Casa", "Bollette", "Spesa al Supermercato", "Trasporti", "Salute e Prevenzione"],
         "Stile di Vita e Passioni": ["Corsa e Sport", "Viaggi e Vacanze", "Abbonamenti e Servizi", "Ristoranti e Socialità", "Shopping", "Cultura e Svago", "Sigarette"],
@@ -889,7 +889,6 @@ function saveProfile() {
     refreshUI();
 }
 
-// ═════ GESTIONE GRUPPI (CLUSTER) ═════
 function openGroups() {
     closeSheet('sh-settings');
     renderGroupsManager();
@@ -930,7 +929,6 @@ function promptEditGroup(oldName) {
     if (newName === oldName || newName === "") return;
     if (S.categories[newName]) { alert("Un gruppo con questo nome esiste già!"); return; }
     
-    // Cambia la chiave nell'oggetto
     S.categories[newName] = S.categories[oldName];
     delete S.categories[oldName];
     
@@ -951,7 +949,6 @@ function delGroup(oldName) {
     });
 }
 
-// ═════ GESTIONE CATEGORIE ═════
 function openCategories() {
     closeSheet('sh-settings');
     renderCategoriesManager();
@@ -1009,7 +1006,6 @@ function promptEditCat(oldName, group) {
     let idx = S.categories[group].indexOf(oldName);
     if (idx > -1) S.categories[group][idx] = newName;
 
-    // CASCADING UPDATE GLOBALE
     S.transactions.forEach(t => { if (t.category === oldName) t.category = newName; });
     S.fixedExpenses.forEach(f => { if (f.cat === oldName) f.cat = newName; });
 
@@ -1215,7 +1211,6 @@ function renderHome(){
   let zeroDays = getZeroSpendDaysInRange(startOfMonth(ym), endOfMonth(ym));
   let activeW = getActiveWallets(ym);
   
-  // Disponibilità Mese
   let tInc = totalIncome(ym);
   let tFix = fixedTotal(ym);
   let tVar = varExpense(ym);
@@ -1254,7 +1249,6 @@ function renderMovimenti(){
     }).join('')+'</div>' : `<div class="empty"><div class="empty-t">Nessuna spesa fissa</div></div>`;
   let txs=txForMonth(ym); 
   
-  // FIX CRONOLOGIA: Ordine per Data decrescente, a parità di data usa il timestamp decrescente
   txs.sort((a,b) => {
       let d = b.date.localeCompare(a.date);
       if(d !== 0) return d;
@@ -1275,7 +1269,6 @@ function renderPortafogli(){
   const ym=selMonth; document.getElementById('port-sub').textContent=mLabel(ym);
   let activeW = getActiveWallets(ym);
   
-  // NUOVA LOGICA DISPONIBILITA' "CASH LIBERO"
   let tInc = totalIncome(ym);
   let tFix = fixedTotal(ym);
   let tVar = varExpense(ym);
@@ -1355,7 +1348,6 @@ function renderAnalisi(){
     let inc = incInRange(anaDateStart, anaDateEnd); let totalExp = varExpInRange(anaDateStart, anaDateEnd) + fixedInRange(anaDateStart, anaDateEnd);
     let endYM = anaDateEnd.slice(0,7);
 
-    // TAB 1: KPI E GRAFICI
     if (anaActiveTab === 'kpi') {
         document.getElementById('ana-liquidita').textContent = fmt(getAccumulatedWealthUpTo(endYM));
         document.getElementById('ana-qs-sav-rate').textContent = (inc > 0 ? Math.max(0, Math.round(((inc-totalExp) / inc) * 100)) : 0) + '%';
@@ -1379,7 +1371,6 @@ function renderAnalisi(){
             if(catChart) catChart.destroy();
         }
 
-        // FIX GRAFICO FLUSSI: Solo raggruppamento mensile con barre affiancate
         let cfLabels = []; let cfInc = []; let cfExp = [];
         getMonthsInRangeStrictYTD(anaDateStart, anaDateEnd).forEach(mStr => {
             cfLabels.push(mShort(mStr));
@@ -1408,7 +1399,6 @@ function renderAnalisi(){
             }
         });
 
-    // TAB 2: PORTAFOGLI (Ripristinato grafico a linee per ogni card)
     } else if (anaActiveTab === 'port') {
         let activeW = getActiveWallets(endYM);
         let statsHTML = activeW.length ? activeW.map(w => {
@@ -1436,7 +1426,6 @@ function renderAnalisi(){
         }).join('') : `<div class="empty"><div class="empty-i">${Ics.empty}</div><div class="empty-t">Nessun portafoglio</div></div>`;
         document.getElementById('ana-stats-list').innerHTML = statsHTML;
 
-        // Renderizza il grafico a linee dentro ogni card generata
         activeW.forEach((w) => {
             let trendData = getWalletTrend(w.id, anaDateStart, anaDateEnd);
             let ctx = document.getElementById(`ch-port-${w.id}`);
@@ -1453,7 +1442,6 @@ function renderAnalisi(){
             }
         });
 
-    // TAB 3: PREVISIONI (Calcoli con decimali ed estetica migliorata)
     } else if (anaActiveTab === 'prev') {
         let totalLiq = getAccumulatedWealthUpTo(endYM);
         let startM = getAppStartMonth();
@@ -1464,7 +1452,6 @@ function renderAnalisi(){
         let avgSave = (totalIncAll - totalExpAll) / mCount;
         let avgExp = totalExpAll / mCount;
         
-        // FIX: Autonomia con decimali (es. 4.5)
         let runway = avgExp > 0 ? (totalLiq / avgExp).toFixed(1) : '999';
         
         let curM = parseInt(endYM.split('-')[1]);
@@ -1502,7 +1489,6 @@ function saveTx(){
         S.transactions[i]={...S.transactions[i],date,amount:amt,description:desc,category:curTxType==='expense'?document.getElementById('tx-cat').value:'Entrata',type:curTxType,walletId:curTxType==='expense'?document.getElementById('tx-wallet').value:undefined, ts: oldTs};
     }
   }else{
-    // FIX TIMESTAMP: Garantisce ordine cronologico esatto nella stessa giornata
     S.transactions.push({id:genId(),date,amount:amt,description:desc,category:curTxType==='expense'?document.getElementById('tx-cat').value:'Entrata',type:curTxType,walletId:curTxType==='expense'?document.getElementById('tx-wallet').value:undefined, ts: Date.now()});
   }
   saveS();
@@ -1605,7 +1591,6 @@ function openWalletDetail(wid) {
     
     let txs = txForMonth(selMonth).filter(t => t.walletId === wid);
     
-    // FIX ORDINE PORTAFOGLIO
     txs.sort((a,b) => {
       let d = b.date.localeCompare(a.date);
       if(d !== 0) return d;
@@ -1620,12 +1605,18 @@ function openWalletDetail(wid) {
 function openAllocSheet(wid) {
     document.getElementById('alloc-amt').value = '';
     document.getElementById('alloc-note').value = '';
+    curAllocType = 'add';
+    document.getElementById('btn-alloc-add').classList.add('active');
+    document.getElementById('btn-alloc-sub').classList.remove('active');
     openSheet('sh-alloc');
 }
 
 function saveAlloc(){
-  const amt=parseAmt(document.getElementById('alloc-amt').value);
+  let amt=parseAmt(document.getElementById('alloc-amt').value);
   if(isNaN(amt)||amt===0){alert('Inserisci un importo.');return}
+  amt = Math.abs(amt);
+  if(curAllocType === 'sub') amt = -amt;
+  
   const w=walletById(curWId); if(!w)return;
   if(!w.allocations[selMonth])w.allocations[selMonth]=[];
   w.allocations[selMonth].push({amt,note:document.getElementById('alloc-note').value.trim()||null,ts:Date.now()});
@@ -1640,7 +1631,11 @@ function openAddFx() {
     document.getElementById('sh-fx-ttl').textContent = 'Nuova spesa fissa';
     document.getElementById('fx-name').value = '';
     document.getElementById('fx-amt').value = '';
-    document.getElementById('fx-cat').value = 'Affitto e Casa';
+    
+    let firstCat = '';
+    for(let gr in S.categories) { if(S.categories[gr].length > 0) { firstCat = S.categories[gr][0]; break; } }
+    document.getElementById('fx-cat').value = firstCat;
+    
     closeSheet('sh-add-choice');
     openSheet('sh-fx');
 }
@@ -1763,6 +1758,12 @@ document.addEventListener('click',function(e){
     case 'open-wallet': openWalletDetail(id); break;
     case 'close-sh-wdet': closeSheet('sh-wdet'); break;
     
+    case 'set-alloc-type':
+        curAllocType = el.dataset.v;
+        document.getElementById('btn-alloc-add').classList.toggle('active', curAllocType === 'add');
+        document.getElementById('btn-alloc-sub').classList.toggle('active', curAllocType === 'sub');
+        break;
+        
     case 'wd-alloc': openAllocSheet(curWId); break;
     case 'save-alloc': saveAlloc(); break; 
     case 'close-sh-alloc': closeSheet('sh-alloc'); openWalletDetail(curWId); break;
