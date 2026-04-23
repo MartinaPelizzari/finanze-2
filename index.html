@@ -72,22 +72,15 @@ input, select, textarea {
 .tb-sub{font-size:13px;color:var(--tx2);margin-top:2px; font-weight: 500;}
 .mnav{display:flex;align-items:center;gap:6px;flex-shrink:0; background: var(--sf); padding: 4px; border-radius: 100px; border: 1px solid var(--bd);}
 
-/* FIX SALVAVITA: Tasto impostazioni in Homepage blindato contro CSS di base iOS */
-#btn-settings { 
-    width: 36px; height: 36px; 
-    border-radius: 12px; background: var(--sf); 
-    border: 1px solid var(--bd); 
-    display: flex; align-items: center; justify-content: center; 
-    cursor: pointer; color: var(--tx2);
-    padding: 0; outline: none; -webkit-appearance: none;
-    flex-shrink: 0;
-}
-#btn-settings svg { width: 20px; height: 20px; stroke-width: 2; overflow: visible; display: block; stroke: currentColor; fill: none; }
-#btn-settings:active { background: var(--sf2); color: var(--tx); }
-
+/* FIX ICONE NAVIGAZIONE */
 .mnav-btn{width:32px;height:32px;border-radius:50%;background:transparent;border:none;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
 .mnav-btn svg { width: 20px; height: 20px; stroke-width: 2; overflow: visible; }
 .mnav-btn:active{background:var(--sf2); color:var(--tx);}
+
+/* FIX ASSOLUTO ICONA IMPOSTAZIONI: BLINDATO NEL CEMENTO ARMATO */
+#btn-settings { width: 36px !important; height: 36px !important; border-radius: 12px !important; background: var(--sf) !important; border: 1px solid var(--bd) !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; color: var(--tx2) !important; padding: 0 !important; outline: none !important; -webkit-appearance: none !important; flex-shrink: 0 !important; box-sizing: border-box !important; }
+#btn-settings svg { width: 20px !important; height: 20px !important; stroke-width: 2 !important; overflow: visible !important; display: block !important; stroke: currentColor !important; fill: none !important; }
+#btn-settings:active { background: var(--sf2) !important; color: var(--tx) !important; }
 
 .mnav-lbl{font-size:12px;min-width:90px;text-align:center;color:var(--tx);font-weight:600; white-space:nowrap; overflow:hidden;}
 .period-btn{background:var(--sf); border:1px solid var(--bd); padding:8px 14px; border-radius:100px; font-size:12px; font-weight:600; color:var(--tx); cursor:pointer; display:flex; align-items:center; gap:6px; transition:background 0.2s;}
@@ -242,7 +235,7 @@ input, select, textarea {
 .nt-i{display:flex;align-items:center;justify-content:center}
 .nt-i svg{width:22px;height:22px;stroke-width:2.2}
 
-/* FAB IN EVIDENZA E ABBASSATO */
+/* FAB */
 .fab-w{flex:0 0 72px;display:flex;justify-content:center;align-items:center}
 .fab{width:54px;height:54px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-14px); box-shadow: 0 4px 16px rgba(255,255,255,0.15); transition:all 0.2s;} 
 .fab svg{width:24px;height:24px;stroke-width:2.5}
@@ -268,7 +261,7 @@ input, select, textarea {
 .confirm-overlay{position:fixed;inset:0;background:rgba(0, 0, 0, 0.8);z-index:190; backdrop-filter: blur(4px); opacity:0;pointer-events:none;transition:opacity .3s ease}
 .confirm-overlay.on{opacity:1;pointer-events:all}
 
-/* TENDINE FIX KEYBOARD BUG */
+/* TENDINE */
 .sheet{position:fixed;bottom:-100%;left:0;right:0;background:var(--sf); border-radius:28px 28px 0 0;border-top:1px solid var(--bd);z-index:100; transition:bottom .35s cubic-bezier(0.16, 1, 0.3, 1); max-height:90dvh; display:flex;flex-direction:column; -webkit-transform: translateZ(0); transform: translateZ(0);}
 .sheet.open{bottom:0;} 
 .sh-drag{width:48px;height:5px;background:var(--tx3);border-radius:3px;margin:16px auto 0;flex-shrink:0;opacity:0.5;}
@@ -671,6 +664,7 @@ document.getElementById('icon-chevron-left-2').innerHTML = Ics.chevronL;
 document.getElementById('icon-chevron-right-2').innerHTML = Ics.chevronR;
 document.getElementById('icon-chevron-left-3').innerHTML = Ics.chevronL;
 document.getElementById('icon-chevron-right-3').innerHTML = Ics.chevronR;
+document.getElementById('icon-calendar-1').innerHTML = Ics.calendar;
 document.getElementById('btn-settings').innerHTML = Ics.settings;
 document.getElementById('nav-ic-home').innerHTML = Ics.home;
 document.getElementById('nav-ic-list').innerHTML = Ics.list;
@@ -945,7 +939,6 @@ function saveProfile() {
     refreshUI();
 }
 
-// ═════ GESTIONE GRUPPI (CLUSTER) CON DRAG & DROP ═════
 function openGroups() {
     closeSheet('sh-settings');
     renderGroupsManager();
@@ -1029,7 +1022,6 @@ function delGroup(oldName) {
     });
 }
 
-// ═════ GESTIONE CATEGORIE CON DRAG & DROP ═════
 function openCategories() {
     closeSheet('sh-settings');
     renderCategoriesManager();
@@ -1259,9 +1251,12 @@ function nav(page){
   document.getElementById('pg-'+page).classList.add('active');
   const nt=document.getElementById('nt-'+page);if(nt)nt.classList.add('active');
   
-  window.scrollTo({top: 0, behavior: 'instant'});
-  
   renderPage(page);
+  
+  // FIX SCROLL: Metodo infallibile per resettare lo scorrimento
+  window.scrollTo(0, 0);
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
 }
 
 function renderPage(p){
@@ -1918,7 +1913,7 @@ loadS();
 updateLabels(); 
 renderHome();
 
-/* FIX COMPATIBILITA' IOS TASTIERA */
+/* FIX iOS KEYBOARD */
 if (window.visualViewport) {
     const handleViewportChange = () => {
         const openSheet = document.querySelector('.sheet.open');
