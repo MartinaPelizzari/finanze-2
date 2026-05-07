@@ -659,7 +659,8 @@ const Ics = {
   chevronL: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>',
   chevronR: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>',
   empty: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
-  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>',
+  
+  settings: '<svg viewBox="-2 -2 28 28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>',
   
   game: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect><line x1="6" y1="12" x2="10" y2="12"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line></svg>',
   shirt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>',
@@ -729,52 +730,6 @@ let prevRunChart = null;
 let portCharts = {};
 let curAllocType = 'add'; 
 
-// SCHEMA AGGIORNATO CON ACCOUNTS
-let S = {
-    transactions: [], 
-    fixedExpenses: [], 
-    wallets: [], 
-    categories: {}, 
-    accounts: [], // NUOVO: Conti per la liquidità
-    initialBalance: null, 
-    initialBalanceMonth: null, 
-    userName: null
-};
-
-const SKEY = 'finanze_v6';
-
-// LISTA ICONE
-const ICONS  = ['game','shirt','food','plane','sport','tech','health','book','cart','car','home','briefcase','music','tool','star','shield','scissors','sparkles','cigarette','lips','banknote','coins','brain','landmark','phone','dice','cloud','fire','wind', 'cocktail', 'rossetto'];
-const COLORS = ['#ef4444', '#f97316', '#f59e0b', '#84cc16', '#10b981', '#14b8a6', '#06b6d4', '#0ea5e9', '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#dc2626', '#ea580c', '#d97706', '#65a30d', '#059669', '#0d9488', '#0891b2', '#0284c7', '#2563eb', '#4f46e5', '#7c3aed', '#9333ea', '#c026d3', '#db2777', '#e11d48', '#57534e', '#334155'];
-
-const CHART_COLORS = ['#FF5733','#FFC300','#36A2EB','#4BC0C0','#FF9F40','#9966FF','#C9CBCF','#E056FD','#8B008B','#00FA9A','#00CED1','#DC143C','#0000CD','#8B4513','#A9A9A9','#708090','#f472b6','#fbbf24','#34d399','#60a5fa','#a78bfa'];
-
-const CAT_COLORS = {
-  'Affitto e Casa': '#FF5733', 'Bollette': '#FFC300', 'Spesa al Supermercato': '#36A2EB',
-  'Trasporti': '#4BC0C0', 'Salute e Prevenzione': '#FF9F40', 'Corsa e Sport': '#9966FF', 
-  'Viaggi e Vacanze': '#C9CBCF', 'Abbonamenti e Servizi': '#E056FD',
-  'Ristoranti e Socialità': '#8B008B', 'Shopping': '#00FA9A', 'Cultura e Svago': '#00CED1',
-  'Imprevisti ed Emergenze': '#DC143C', 'Risparmi e Investimenti': '#0000CD',
-  'Debiti': '#8B4513', 'Sigarette': '#A9A9A9', 'Altro': '#708090'
-};
-
-function thisMonth(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
-function startOfMonth(ym){ return `${ym}-01`; }
-function endOfMonth(ym){ let [y,m]=ym.split('-').map(Number); let e=new Date(y,m,0); return `${y}-${String(m).padStart(2,'0')}-${String(e.getDate()).padStart(2,'0')}`; }
-
-let selMonth   = thisMonth(); 
-let anaDateStart = startOfMonth(thisMonth()); 
-let anaDateEnd   = endOfMonth(thisMonth()); 
-let anaActiveTab = 'kpi';
-
-let editTxId   = null;
-let editFxId   = null;
-let editWId    = null;
-let curTxType  = 'expense';
-let curWId     = null;
-let selIcon    = ICONS[0];
-let selColor   = COLORS[0];
-
 function askConfirm(title, body, okLabel, cb){
   _confirmCallback = cb;
   document.getElementById('cs-title').textContent = title;
@@ -796,6 +751,54 @@ document.getElementById('cs-ok').addEventListener('click', function(){
   if(cb) cb();
 });
 
+// ════════════════════════════════════════════════════════════════
+// DATA & PRESETS
+// ════════════════════════════════════════════════════════════════
+const PRESETS = [
+  {i:'game',n:'Svago',c:'#9b5de5'},{i:'shirt',n:'Abbigliamento',c:'#3a86ff'},
+  {i:'food',n:'Ristoranti',c:'#f77f00'},{i:'plane',n:'Viaggi',c:'#06d6a0'},
+  {i:'sport',n:'Sport',c:'#2dc653'},{i:'tech',n:'Tecnologia',c:'#5352ed'},
+  {i:'health',n:'Salute',c:'#ef233c'},{i:'book',n:'Formazione',c:'#ffd166'},
+  {i:'cart',n:'Spesa',c:'#00b4d8'},{i:'car',n:'Auto',c:'#d4a843'},
+  {i:'home',n:'Casa',c:'#fb8500'},{i:'briefcase',n:'Lavoro',c:'#8ecae6'},
+];
+
+// LISTA ICONE AGGIORNATA
+const ICONS  = ['game','shirt','food','plane','sport','tech','health','book','cart','car','home','briefcase','music','tool','star','shield','scissors','sparkles','cigarette','lips','banknote','coins','brain','landmark','phone','dice','cloud','fire','wind', 'cocktail', 'rossetto'];
+const COLORS = ['#ef4444', '#f97316', '#f59e0b', '#84cc16', '#10b981', '#14b8a6', '#06b6d4', '#0ea5e9', '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#dc2626', '#ea580c', '#d97706', '#65a30d', '#059669', '#0d9488', '#0891b2', '#0284c7', '#2563eb', '#4f46e5', '#7c3aed', '#9333ea', '#c026d3', '#db2777', '#e11d48', '#57534e', '#334155'];
+
+const CHART_COLORS = ['#FF5733','#FFC300','#36A2EB','#4BC0C0','#FF9F40','#9966FF','#C9CBCF','#E056FD','#8B008B','#00FA9A','#00CED1','#DC143C','#0000CD','#8B4513','#A9A9A9','#708090','#f472b6','#fbbf24','#34d399','#60a5fa','#a78bfa'];
+
+const CAT_COLORS = {
+  'Affitto e Casa': '#FF5733', 'Bollette': '#FFC300', 'Spesa al Supermercato': '#36A2EB',
+  'Trasporti': '#4BC0C0', 'Salute e Prevenzione': '#FF9F40', 'Corsa e Sport': '#9966FF', 
+  'Viaggi e Vacanze': '#C9CBCF', 'Abbonamenti e Servizi': '#E056FD',
+  'Ristoranti e Socialità': '#8B008B', 'Shopping': '#00FA9A', 'Cultura e Svago': '#00CED1',
+  'Imprevisti ed Emergenze': '#DC143C', 'Risparmi e Investimenti': '#0000CD',
+  'Debiti': '#8B4513', 'Sigarette': '#A9A9A9', 'Altro': '#708090'
+};
+
+const SKEY = 'finanze_v6';
+let S = {transactions:[], fixedExpenses:[], monthlyIncome:{}, wallets:[], categories:{}, accounts:[], initialBalance: null, initialBalanceMonth: null, userName: null};
+
+function thisMonth(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
+function startOfMonth(ym){ return `${ym}-01`; }
+function endOfMonth(ym){ let [y,m]=ym.split('-').map(Number); let e=new Date(y,m,0); return `${y}-${String(m).padStart(2,'0')}-${String(e.getDate()).padStart(2,'0')}`; }
+
+let selMonth   = thisMonth(); 
+let anaDateStart = startOfMonth(thisMonth()); 
+let anaDateEnd   = endOfMonth(thisMonth()); 
+let anaActiveTab = 'kpi';
+
+let editTxId   = null;
+let editFxId   = null;
+let editWId    = null;
+let curTxType  = 'expense';
+let curWId     = null;
+let preFillWId = null;
+let selIcon    = ICONS[0];
+let selColor   = COLORS[0];
+
 function renderIconColGrids() {
     document.getElementById('icon-grid').innerHTML = ICONS.map(i => `<div class="iopt ${i===selIcon?'sel':''}" data-a="sel-icon" data-v="${i}">${Ics[i]||''}</div>`).join('');
     document.getElementById('col-grid').innerHTML = COLORS.map(c => `<div class="copt ${c===selColor?'sel':''}" data-a="sel-col" data-v="${c}" style="background:${c}"></div>`).join('');
@@ -814,14 +817,19 @@ function updateSelects() {
         });
         opts += `</optgroup>`;
     }
-    document.getElementById('tx-cat').innerHTML = opts;
-    document.getElementById('fx-cat').innerHTML = opts;
-    document.getElementById('new-cat-group').innerHTML = groupOpts;
+    const txCat = document.getElementById('tx-cat');
+    if (txCat) txCat.innerHTML = opts;
+    const fxCat = document.getElementById('fx-cat');
+    if (fxCat) fxCat.innerHTML = opts;
+    const newCatGroup = document.getElementById('new-cat-group');
+    if (newCatGroup) newCatGroup.innerHTML = groupOpts;
 
-    // Aggiorna Conti (Metodi di Pagamento)
+    // Aggiorna Conti
     let accOpts = S.accounts.map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join('');
-    document.getElementById('tx-account').innerHTML = accOpts;
-    document.getElementById('fx-account').innerHTML = accOpts;
+    const txAcc = document.getElementById('tx-account');
+    if(txAcc) txAcc.innerHTML = accOpts;
+    const fxAcc = document.getElementById('fx-account');
+    if(fxAcc) fxAcc.innerHTML = accOpts;
 }
 
 function loadS(){
@@ -838,7 +846,7 @@ function loadS(){
         }
     }catch(e){}
     
-    // Inizializza conti di default se non esistono
+    // Inizializza i conti se non ci sono
     if (!S.accounts || S.accounts.length === 0) {
         S.accounts = [
             {id: 'default', name: 'Conto Principale'},
@@ -998,7 +1006,7 @@ function openAccounts() {
 function renderAccountsManager() {
     let html = '';
     S.accounts.forEach((acc, i) => {
-        let isDefault = i === 0; // Il primo è il principale
+        let isDefault = i === 0; 
         html += `
             <div class="fxr sort-item" data-id="${acc.id}" style="flex-direction:row; align-items:center; justify-content:space-between; padding:12px 16px;">
                 <div style="display:flex; align-items:center; gap:12px;">
@@ -1063,7 +1071,6 @@ function delAccount(id) {
     let acc = S.accounts.find(a => a.id === id);
     askConfirm('Elimina Conto', `Vuoi eliminare "${acc.name}"? Tutte le transazioni associate verranno spostate sul Conto Principale.`, 'Elimina', () => {
         let defaultAccId = S.accounts[0].id;
-        // Sposta transazioni
         S.transactions.forEach(t => { if(t.accountId === id) t.accountId = defaultAccId; });
         S.fixedExpenses.forEach(f => { if(f.accountId === id) f.accountId = defaultAccId; });
         
@@ -1081,7 +1088,6 @@ function getLiquidityBreakdown(endYm) {
     let defaultAcc = S.accounts[0] ? S.accounts[0].id : 'default';
     if (!balances[defaultAcc]) balances[defaultAcc] = 0;
     
-    // Il saldo iniziale va tutto nel conto principale
     balances[defaultAcc] += parseFloat(S.initialBalance) || 0;
 
     let startM = S.initialBalanceMonth || "1970-01";
@@ -1123,7 +1129,6 @@ function openLiquidity() {
     document.getElementById('liquidity-list').innerHTML = html;
     openSheet('sh-liquidity');
 }
-
 
 // ═════ GESTIONE GRUPPI (CLUSTER) CON DRAG & DROP ═════
 function openGroups() {
@@ -1813,7 +1818,7 @@ function openAddTx(walletId, type){
   
   document.getElementById('tx-amt').value=''; document.getElementById('tx-desc').value='';
   
-  let defaultAcc = S.accounts[0] ? S.accounts[0].id : '';
+  let defaultAcc = S.accounts && S.accounts.length > 0 ? S.accounts[0].id : '';
   document.getElementById('tx-account').value = defaultAcc;
   
   document.getElementById('fg-cat').style.display = curTxType === 'expense' ? 'block' : 'none';
@@ -1959,7 +1964,7 @@ function openAddFx() {
     for(let gr in S.categories) { if(S.categories[gr].length > 0) { firstCat = S.categories[gr][0]; break; } }
     document.getElementById('fx-cat').value = firstCat;
     
-    let defaultAcc = S.accounts[0] ? S.accounts[0].id : '';
+    let defaultAcc = S.accounts && S.accounts.length > 0 ? S.accounts[0].id : '';
     document.getElementById('fx-account').value = defaultAcc;
     
     closeSheet('sh-add-choice');
