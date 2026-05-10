@@ -196,6 +196,7 @@ input, select, textarea {
 .cat-name {flex:1;font-size:14px;font-weight:500;color:var(--tx)}
 .cat-pct {font-size:13px;color:var(--tx3);font-family:var(--mono);width:45px;text-align:right}
 .cat-amt {font-family:var(--mono);font-size:14px;font-weight:600;color:var(--tx)}
+
 .sort-item { -webkit-user-select: none; user-select: none; }
 .drag-handle { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: none; cursor: grab; padding: 10px 10px 10px 0; margin-left: -8px; color: var(--tx3); display: flex; align-items: center; }
 .drag-handle svg { width: 18px; height: 18px; stroke-width: 2.5; }
@@ -209,7 +210,7 @@ input, select, textarea {
 .abt:active { background: var(--sf2); color: var(--tx); }
 .abt-d:active { background: var(--ra); color: var(--red); }
 
-/* CARDS PORTAFOGLI */
+/* CARDS PORTAFOGLI PURI */
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
 .card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:16px; display: flex; flex-direction: column; gap: 6px;}
 .card-l{font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:var(--tx2);font-weight:600;}
@@ -694,6 +695,7 @@ const Ics = {
   lips: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s2-4.5 6-4.5c2 0 3 1 4 2 1-1 2-2 4-2 4 0 6 4.5 6 4.5s-2 5.5-10 5.5S2 12 2 12z"/><path d="M2 12s3.5 2 10 2 10-2 10-2"/></svg>'
 };
 
+// UI Injects
 document.getElementById('icon-chevron-left-2').innerHTML = Ics.chevronL;
 document.getElementById('icon-chevron-right-2').innerHTML = Ics.chevronR;
 document.getElementById('icon-chevron-left-3').innerHTML = Ics.chevronL;
@@ -711,6 +713,7 @@ document.getElementById('btn-wd-edit').innerHTML = Ics.edit + ' Modifica';
 document.getElementById('btn-add-wallet').innerHTML = Ics.plus + ' Crea Nuovo Portafoglio';
 document.getElementById('h-bal-icon').innerHTML = Ics.target;
 
+// Add choices
 document.getElementById('btn-ch-out').innerHTML = `<div style="background:var(--ra); width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${Ics.down}</div> <span style="font-weight:600">Uscita</span>`;
 document.getElementById('btn-ch-in').innerHTML = `<div style="background:var(--gra); width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${Ics.up}</div> <span style="font-weight:600">Entrata</span>`;
 document.getElementById('btn-ch-fx').innerHTML = `<div style="background:var(--sf2); width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${Ics.plus}</div> <span style="font-weight:600">Spesa Fissa</span>`;
@@ -831,7 +834,7 @@ function loadS(){
     S.wallets = Array.isArray(S.wallets) ? S.wallets : [];
     S.accounts = Array.isArray(S.accounts) ? S.accounts : [];
 
-    // FIX CRITICO: Protezione per convertire le vecchie categorie nel nuovo formato a Cluster
+    // FIX CRITICO: Protezione totale per convertire le vecchie categorie nel nuovo formato a Cluster senza bloccare l'app
     const defaultGroups = {
         "Spese Fisse ed Essenziali": ["Affitto e Casa", "Bollette", "Spesa al Supermercato", "Trasporti", "Salute e Prevenzione"],
         "Stile di Vita e Passioni": ["Corsa e Sport", "Viaggi e Vacanze", "Abbonamenti e Servizi", "Ristoranti e Socialità", "Shopping", "Cultura e Svago", "Sigarette"],
@@ -843,9 +846,12 @@ function loadS(){
     if (!S.categories || Array.isArray(S.categories) || typeof S.categories !== 'object') {
         S.categories = JSON.parse(JSON.stringify(defaultGroups));
         if (Array.isArray(oldCategories)) {
-            let known = Object.values(S.categories).flat();
+            let known = [];
+            Object.values(S.categories).forEach(arr => {
+                if(Array.isArray(arr)) known.push(...arr);
+            });
             oldCategories.forEach(c => {
-                if (!known.includes(c)) S.categories["Generale"].push(c);
+                if (c && !known.includes(c)) S.categories["Generale"].push(c);
             });
         }
     }
@@ -874,8 +880,9 @@ function loadS(){
     try { updateSelects(); } catch (e) { console.error("UpdateSelects error", e); }
     
     checkOnboarding();
-    document.getElementById('ic-h-sav').innerHTML = Ics.star;
-    document.getElementById('ic-h-zero').innerHTML = Ics.calendar;
+    
+    let icHSav = document.getElementById('ic-h-sav'); if(icHSav) icHSav.innerHTML = Ics.star;
+    let icHZero = document.getElementById('ic-h-zero'); if(icHZero) icHZero.innerHTML = Ics.calendar;
 }
 
 function saveS(){localStorage.setItem(SKEY,JSON.stringify(S))}
@@ -961,7 +968,7 @@ function renderAccountsManager() {
     container.innerHTML = html;
     
     new Sortable(container, {
-        handle: '.drag-handle', animation: 150, delay: 150, delayOnTouchOnly: true, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen',
+        handle: '.drag-handle', animation: 150, delay: 200, delayOnTouchOnly: true, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen',
         onEnd: function (evt) {
             const newOrder = Array.from(evt.to.children).map(el => el.dataset.id);
             let newAccs = [];
@@ -1069,7 +1076,7 @@ function renderGroupsManager() {
     container.innerHTML = html;
     
     new Sortable(container, {
-        handle: '.drag-handle', animation: 150, delay: 150, delayOnTouchOnly: true, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen',
+        handle: '.drag-handle', animation: 150, delay: 200, delayOnTouchOnly: true, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen',
         onEnd: function (evt) {
             const newOrder = Array.from(evt.to.children).map(el => el.dataset.id);
             let newCats = {};
@@ -1131,7 +1138,7 @@ function renderCategoriesManager() {
     
     document.querySelectorAll('.sortable-cat-list').forEach(el => {
         new Sortable(el, {
-            group: 'shared-categories', handle: '.drag-handle', animation: 150, delay: 150, delayOnTouchOnly: true, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen',
+            group: 'shared-categories', handle: '.drag-handle', animation: 150, delay: 200, delayOnTouchOnly: true, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen',
             onEnd: function (evt) {
                 document.querySelectorAll('.sortable-cat-list').forEach(listEl => {
                     const gName = listEl.dataset.group;
@@ -1714,14 +1721,7 @@ document.addEventListener('click',function(e){
                 let dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
                 
                 S.transactions.push({
-                    id: genId(),
-                    date: dateStr,
-                    amount: diff, 
-                    description: "Rettifica saldo manuale",
-                    category: "Sistema", 
-                    type: 'adjustment',
-                    accountId: id, 
-                    ts: Date.now()
+                    id: genId(), date: dateStr, amount: diff, description: "Rettifica saldo manuale", category: "Sistema", type: 'adjustment', accountId: id, ts: Date.now()
                 });
                 saveS(); openLiquidity(); refreshUI(); 
             }
@@ -1771,19 +1771,12 @@ document.addEventListener('click',function(e){
   }
 },true);
 
-// INITIALIZATION
-renderIconColGrids();
-loadS(); 
-updateLabels(); 
-renderHome();
+renderIconColGrids(); loadS(); updateLabels(); renderHome();
 
-/* FIX COMPATIBILITA' IOS TASTIERA SENZA BLOCCARE LE TENDINE */
 if (window.visualViewport) {
     const handleViewportChange = () => {
         const openSheet = document.querySelector('.sheet.open');
-        if (!openSheet) {
-            document.querySelectorAll('.sheet').forEach(s => { s.style.removeProperty('bottom'); s.style.bottom = ''; }); return;
-        }
+        if (!openSheet) { document.querySelectorAll('.sheet').forEach(s => { s.style.removeProperty('bottom'); s.style.bottom = ''; }); return; }
         const diff = window.innerHeight - window.visualViewport.height;
         if (diff > 50) { openSheet.style.bottom = diff + 'px'; } else { openSheet.style.removeProperty('bottom'); openSheet.style.bottom = ''; }
     };
