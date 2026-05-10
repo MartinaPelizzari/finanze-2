@@ -54,7 +54,6 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overscroll-behavior:none;background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:15px;overflow-x:hidden}
 
-/* FIX DEFINITIVO IOS INPUTS E TASTIERA */
 input, select, textarea { 
     -webkit-user-select: text !important; 
     user-select: text !important; 
@@ -72,28 +71,17 @@ input, select, textarea {
 .tb-sub{font-size:13px;color:var(--tx2);margin-top:2px; font-weight: 500;}
 .mnav{display:flex;align-items:center;gap:6px;flex-shrink:0; background: var(--sf); padding: 4px; border-radius: 100px; border: 1px solid var(--bd);}
 
-/* FIX ICONE NAVIGAZIONE */
 .mnav-btn{width:32px;height:32px;border-radius:50%;background:transparent;border:none;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
 .mnav-btn svg { width: 20px; height: 20px; stroke-width: 2; overflow: visible; }
 .mnav-btn:active{background:var(--sf2); color:var(--tx);}
 
-/* FIX SALVAVITA ICONA IMPOSTAZIONI: DIMENSIONI SICURE */
 .settings-btn { 
-    width: 36px; height: 36px; 
-    border-radius: 12px; 
-    background: var(--sf); 
-    border: 1px solid var(--bd); 
-    color: var(--tx2); 
-    display: flex; align-items: center; justify-content: center; 
-    cursor: pointer; 
-    transition: all 0.2s; 
-    flex-shrink: 0; padding: 0; margin: 0; outline: none; -webkit-appearance: none; 
+    width: 36px; height: 36px; border-radius: 12px; background: var(--sf); border: 1px solid var(--bd); 
+    color: var(--tx2); display: flex; align-items: center; justify-content: center; cursor: pointer; 
+    transition: background 0.2s, color 0.2s; flex-shrink: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent;
 }
 .settings-btn:active { background: var(--sf2); color: var(--tx); }
-.settings-btn svg { 
-    width: 18px; height: 18px; 
-    stroke-width: 2; display: block; overflow: visible; 
-}
+.settings-btn svg { width: 20px; height: 20px; stroke-width: 2; display: block; overflow: visible; transform: scale(0.85); }
 
 .mnav-lbl{font-size:12px;min-width:90px;text-align:center;color:var(--tx);font-weight:600; white-space:nowrap; overflow:hidden;}
 .period-btn{background:var(--sf); border:1px solid var(--bd); padding:8px 14px; border-radius:100px; font-size:12px; font-weight:600; color:var(--tx); cursor:pointer; display:flex; align-items:center; gap:6px; transition:background 0.2s;}
@@ -201,6 +189,7 @@ input, select, textarea {
 .fx-acts { display: flex; gap: 6px; }
 .fx-tog { width: 44px; height: 24px; background: var(--sf2); border-radius: 12px; cursor: pointer; position: relative; border: none; flex-shrink: 0; touch-action: manipulation; transition: background 0.3s; }
 .fx-tog::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: var(--tx2); border-radius: 50%; transition: transform 0.3s, background 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.tog-adj { width: 44px; height: 24px; background: var(--sf2); border-radius: 12px; position: relative; border: none; flex-shrink: 0; }
 .fx-tog.on { background: var(--green); }
 .fx-tog.on::after { transform: translateX(20px); background: #ffffff; }
 
@@ -352,7 +341,7 @@ input, select, textarea {
 .wd-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
 .wd-mini{background:var(--bg);border:1px solid var(--bd);border-radius:16px;padding:16px}
 .wd-mini-l{font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:6px}
-.wd-mini-v{font-family:var(--mono);font-size:20px;font-weight:600}
+.wd-mini-v{font-family:var(--mono);font-size:20px;font-weight:600; display:flex; flex-direction:column;}
 
 .wd-prog{height:6px;background:var(--bg);border-radius:3px;margin-bottom:10px;overflow:hidden}
 .wd-pbar{height:100%;border-radius:3px}
@@ -645,6 +634,7 @@ input, select, textarea {
         <button class="pt-btn" id="btn-alloc-sub" data-a="set-alloc-type" data-v="sub">Rimuovi (-)</button>
     </div>
 
+    <div class="fg"><label class="fl">Conto di origine</label><select class="fs" id="alloc-account"></select></div>
     <div class="fg"><label class="fl">Importo</label><input class="fi" type="text" inputmode="decimal" id="alloc-amt" placeholder="es. 150"></div>
     <div class="fg"><label class="fl">Note (opzionale)</label><input class="fi" type="text" id="alloc-note" placeholder="es. Stipendio"></div>
   </div>
@@ -754,39 +744,6 @@ let prevRunChart = null;
 let portCharts = {};
 let curAllocType = 'add'; 
 
-function askConfirm(title, body, okLabel, cb){
-  _confirmCallback = cb;
-  document.getElementById('cs-title').textContent = title;
-  document.getElementById('cs-body').textContent  = body;
-  document.getElementById('cs-ok').textContent    = okLabel || 'Elimina';
-  document.getElementById('conf-sheet').classList.add('open');
-  document.getElementById('conf-overlay').classList.add('on');
-}
-function closeConfirm(){
-  document.getElementById('conf-sheet').classList.remove('open');
-  document.getElementById('conf-overlay').classList.remove('on');
-  _confirmCallback = null;
-}
-document.getElementById('cs-cancel').addEventListener('click', closeConfirm);
-document.getElementById('conf-overlay').addEventListener('click', closeConfirm);
-document.getElementById('cs-ok').addEventListener('click', function(){
-  let cb = _confirmCallback;
-  closeConfirm();
-  if(cb) cb();
-});
-
-// ════════════════════════════════════════════════════════════════
-// DATA & PRESETS
-// ════════════════════════════════════════════════════════════════
-const PRESETS = [
-  {i:'game',n:'Svago',c:'#9b5de5'},{i:'shirt',n:'Abbigliamento',c:'#3a86ff'},
-  {i:'food',n:'Ristoranti',c:'#f77f00'},{i:'plane',n:'Viaggi',c:'#06d6a0'},
-  {i:'sport',n:'Sport',c:'#2dc653'},{i:'tech',n:'Tecnologia',c:'#5352ed'},
-  {i:'health',n:'Salute',c:'#ef233c'},{i:'book',n:'Formazione',c:'#ffd166'},
-  {i:'cart',n:'Spesa',c:'#00b4d8'},{i:'car',n:'Auto',c:'#d4a843'},
-  {i:'home',n:'Casa',c:'#fb8500'},{i:'briefcase',n:'Lavoro',c:'#8ecae6'},
-];
-
 let S = {
     transactions: [], 
     fixedExpenses: [], 
@@ -848,13 +805,20 @@ function updateSelects() {
         });
         opts += `</optgroup>`;
     }
-    document.getElementById('tx-cat').innerHTML = opts;
-    document.getElementById('fx-cat').innerHTML = opts;
-    document.getElementById('new-cat-group').innerHTML = groupOpts;
+    const txCat = document.getElementById('tx-cat');
+    if (txCat) txCat.innerHTML = opts;
+    const fxCat = document.getElementById('fx-cat');
+    if (fxCat) fxCat.innerHTML = opts;
+    const newCatGroup = document.getElementById('new-cat-group');
+    if (newCatGroup) newCatGroup.innerHTML = groupOpts;
 
     let accOpts = S.accounts.map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join('');
-    document.getElementById('tx-account').innerHTML = accOpts;
-    document.getElementById('fx-account').innerHTML = accOpts;
+    const txAcc = document.getElementById('tx-account');
+    if(txAcc) txAcc.innerHTML = accOpts;
+    const fxAcc = document.getElementById('fx-account');
+    if(fxAcc) fxAcc.innerHTML = accOpts;
+    const alAcc = document.getElementById('alloc-account');
+    if(alAcc) alAcc.innerHTML = accOpts;
 }
 
 function loadS(){
@@ -1020,7 +984,7 @@ function saveProfile() {
     refreshUI();
 }
 
-// ═════ GESTIONE CONTI E LIQUIDITÀ ═════
+// ═════ GESTIONE CONTI E LIQUIDITÀ CON RETTIFICHE ═════
 function openAccounts() {
     closeSheet('sh-settings');
     renderAccountsManager();
@@ -1047,9 +1011,12 @@ function renderAccountsManager() {
     const container = document.getElementById('account-manage-list');
     container.innerHTML = html;
     
+    // FIX DRAG DROP CONTI: Delay su mobile per evitare scroll accidentale
     new Sortable(container, {
         handle: '.drag-handle',
         animation: 150,
+        delay: 150,
+        delayOnTouchOnly: true,
         ghostClass: 'sortable-ghost',
         chosenClass: 'sortable-chosen',
         onEnd: function (evt) {
@@ -1125,15 +1092,15 @@ function getLiquidityBreakdown(endYm) {
         });
         txForMonth(mStr).forEach(t => {
             let acc = t.accountId || defaultAcc;
-            if (t.type === 'income') balances[acc] = (balances[acc] || 0) + t.amount;
-            if (t.type === 'expense') balances[acc] = (balances[acc] || 0) - t.amount;
+            if (t.type === 'income') balances[acc] += t.amount;
+            if (t.type === 'expense') balances[acc] -= t.amount;
+            if (t.type === 'adjustment') balances[acc] += t.amount; // Adjustment
         });
     });
 
     return balances;
 }
 
-// FIX: RETTIFICA MANUALE DEL SALDO
 function openLiquidity() {
     let endYm = document.querySelector('.page.active').id === 'pg-analisi' ? anaDateEnd.slice(0,7) : thisMonth();
     let breakdown = getLiquidityBreakdown(endYm);
@@ -1148,7 +1115,7 @@ function openLiquidity() {
                 <div class="cat-name" style="font-size:16px; flex:1;">${esc(a.name)}</div>
                 <div style="display:flex; align-items:center; gap:8px;">
                     <div class="cat-amt" style="font-size:16px; color:${color}">${fmt(bal)}</div>
-                    <button class="abt" data-a="prompt-adj-bal" data-id="${a.id}" data-bal="${bal}" style="background:var(--sf2); width:28px; height:28px;">${Ics.edit}</button>
+                    <button class="abt" data-a="prompt-adj-bal" data-id="${a.id}" data-bal="${bal}" style="background:var(--sf2); width:32px; height:32px; flex-shrink:0;">${Ics.edit}</button>
                 </div>
             </div>
         `;
@@ -1158,8 +1125,7 @@ function openLiquidity() {
     openSheet('sh-liquidity');
 }
 
-
-// ═════ GESTIONE GRUPPI E CATEGORIE ═════
+// ═════ GESTIONE GRUPPI (CLUSTER) CON DRAG & DROP ═════
 function openGroups() {
     closeSheet('sh-settings');
     renderGroupsManager();
@@ -1188,6 +1154,8 @@ function renderGroupsManager() {
     new Sortable(container, {
         handle: '.drag-handle',
         animation: 150,
+        delay: 150,
+        delayOnTouchOnly: true,
         ghostClass: 'sortable-ghost',
         chosenClass: 'sortable-chosen',
         onEnd: function (evt) {
@@ -1243,6 +1211,7 @@ function delGroup(oldName) {
     });
 }
 
+// ═════ GESTIONE CATEGORIE CON DRAG & DROP CROSS-CLUSTER ═════
 function openCategories() {
     closeSheet('sh-settings');
     renderCategoriesManager();
@@ -1277,6 +1246,8 @@ function renderCategoriesManager() {
             group: 'shared-categories', 
             handle: '.drag-handle',
             animation: 150,
+            delay: 150,
+            delayOnTouchOnly: true,
             ghostClass: 'sortable-ghost',
             chosenClass: 'sortable-chosen',
             onEnd: function (evt) {
@@ -1354,7 +1325,15 @@ function fixedTotal(ym){return S.fixedExpenses.filter(f=>isFxActive(f, ym)).redu
 function totalIncome(ym){return txForMonth(ym).filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0)}
 function varExpense(ym){return txForMonth(ym).filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0)}
 function totalExpense(ym){return fixedTotal(ym)+varExpense(ym)}
-function netBalance(ym){return totalIncome(ym)-totalExpense(ym)}
+
+// FIX: Aggiunte le "rettifiche" al calcolo netto per non sballare la liquidità globale
+function netBalance(ym){
+    let inc = totalIncome(ym);
+    let exp = totalExpense(ym);
+    let adj = txForMonth(ym).filter(t => t.type === 'adjustment').reduce((s,t) => s + t.amount, 0);
+    return inc - exp + adj;
+}
+
 function walletById(id){return S.wallets.find(w=>w.id===id)}
 function getActiveWallets(ym) {
     return S.wallets.filter(w => !w.archivedMonth || w.archivedMonth > ym || walletMonthSpent(w.id, ym) > 0 || walletMonthAlloc(w.id, ym) > 0);
@@ -1420,7 +1399,7 @@ function getMonthsInRangeStrictYTD(start, end) {
     return res;
 }
 
-function txInRange(start, end) { return S.transactions.filter(t => t.date >= start && t.date <= end); }
+function txInRange(start, end) { return S.transactions.filter(t => t.date >= start && t.date <= end && t.type !== 'adjustment'); }
 function incInRange(start, end) { return txInRange(start, end).filter(t => t.type === 'income').reduce((s,t)=>s+t.amount,0); }
 function varExpInRange(start, end) { return txInRange(start, end).filter(t => t.type === 'expense').reduce((s,t)=>s+t.amount,0); }
 function fixedInRange(start, end) { return getMonthsInRangeStrictYTD(start, end).reduce((s,m) => s + fixedTotal(m), 0); }
@@ -1524,12 +1503,12 @@ function closeAll(){
 function renderHome(){
   const ym = thisMonth(); const inc = totalIncome(ym), exp = totalExpense(ym), bal = netBalance(ym);
   document.getElementById('h-liquidita').textContent = fmt(getAccumulatedWealthUpTo(ym));
-  const bv=document.getElementById('h-bal'); bv.textContent=fmt(bal); bv.style.color = bal >= 0 ? 'var(--tx)' : 'var(--red)';
+  const bv=document.getElementById('h-bal'); bv.textContent=fmt(inc - exp); bv.style.color = (inc - exp) >= 0 ? 'var(--tx)' : 'var(--red)';
   const bs=document.getElementById('h-bal-s'); const bi=document.getElementById('h-bal-icon');
-  if(bal >= 0) { bs.classList.remove('neg'); bs.classList.add('pos'); bi.innerHTML = Ics.up; } else { bs.classList.remove('pos'); bs.classList.add('neg'); bi.innerHTML = Ics.down; }
+  if((inc - exp) >= 0) { bs.classList.remove('neg'); bs.classList.add('pos'); bi.innerHTML = Ics.up; } else { bs.classList.remove('pos'); bs.classList.add('neg'); bi.innerHTML = Ics.down; }
   document.getElementById('h-inc').textContent=fmt(inc); document.getElementById('h-exp').textContent=fmt(exp);
   
-  let savRate = inc > 0 ? Math.max(0, (bal / inc) * 100) : 0;
+  let savRate = inc > 0 ? Math.max(0, ((inc - exp) / inc) * 100) : 0;
   let zeroDays = getZeroSpendDaysInRange(startOfMonth(ym), endOfMonth(ym));
   let burnRate = inc > 0 ? Math.round((fixedTotal(ym) / inc) * 100) : 0;
   
@@ -1576,7 +1555,9 @@ function renderMovimenti(){
         let active = isFxActive(f, ym);
         return `<div class="fxr ${active?'':'off'}"><div class="fx-top"><div class="fx-body"><div class="fx-name">${esc(f.name)}</div><div class="fx-cat">${esc(f.cat)}</div></div><div class="fx-amt">${fmt(f.amount)}</div></div><div class="fx-bot"><div class="fx-status"><button class="fx-tog ${active?'on':''}" data-a="toggle-fx-month" data-id="${f.id}" data-ym="${ym}"></button><span class="fx-status-lbl">${active ? 'Attiva' : 'Sospesa'}</span></div><div class="fx-acts"><button class="abt" data-a="edit-fx" data-id="${f.id}">${Ics.edit}</button><button class="abt" data-a="del-fx" data-id="${f.id}">${Ics.trash}</button></div></div></div>`
     }).join('')+'</div>' : `<div class="empty"><div class="empty-t">Nessuna spesa fissa</div></div>`;
-  let txs=txForMonth(ym); 
+  
+  // FIX: nascondi le transazioni fantasma (rettifiche) dalla lista movimenti
+  let txs = txForMonth(ym).filter(t => t.type !== 'adjustment'); 
   
   txs.sort((a,b) => {
       let d = b.date.localeCompare(a.date);
@@ -1935,16 +1916,27 @@ function openWalletDetail(wid) {
     document.getElementById('wd-sub').textContent = 'Media spesa: ' + fmt(getWalletAvg(wid, selMonth));
     document.getElementById('wd-bal').textContent = fmt(walletBalance(wid, selMonth));
     
-    let alloc = walletMonthAlloc(wid, selMonth);
+    let allocs = w.allocations && w.allocations[selMonth] ? w.allocations[selMonth] : [];
+    let alloc = allocs.reduce((s,e)=>s+e.amt,0);
+    
+    // Mostra da che conto viene il fondo se è stato scelto
+    let lastAccName = '';
+    if(allocs.length > 0 && allocs[allocs.length-1].accountId) {
+        let a = S.accounts.find(x => x.id === allocs[allocs.length-1].accountId);
+        if(a) lastAccName = `<div style="font-size:10px; color:var(--tx3); font-weight:500; margin-top:2px;">(da ${esc(a.name)})</div>`;
+    }
+    
+    document.getElementById('wd-alloc').innerHTML = alloc > 0 ? fmt(alloc) + lastAccName : 'No budget';
+    
     let spent = walletMonthSpent(wid, selMonth);
-    document.getElementById('wd-alloc').textContent = alloc > 0 ? fmt(alloc) : 'No budget';
     document.getElementById('wd-spent').textContent = fmt(spent);
     
     let pct = alloc > 0 ? Math.min(100, Math.round((spent/alloc)*100)) : 0;
     document.getElementById('wd-pbar').style.width = pct + '%';
     document.getElementById('wd-pbar').style.background = pct >= 100 ? 'var(--red)' : (pct >= 80 ? 'var(--gold)' : w.color);
     
-    let txs = txForMonth(selMonth).filter(t => t.walletId === wid);
+    // Non mostrare rettifiche nei portafogli
+    let txs = txForMonth(selMonth).filter(t => t.walletId === wid && t.type !== 'adjustment');
     
     txs.sort((a,b) => {
       let d = b.date.localeCompare(a.date);
@@ -1960,6 +1952,8 @@ function openWalletDetail(wid) {
 function openAllocSheet(wid) {
     document.getElementById('alloc-amt').value = '';
     document.getElementById('alloc-note').value = '';
+    let defaultAcc = S.accounts && S.accounts.length > 0 ? S.accounts[0].id : '';
+    document.getElementById('alloc-account').value = defaultAcc;
     curAllocType = 'add';
     document.getElementById('btn-alloc-add').classList.add('active');
     document.getElementById('btn-alloc-sub').classList.remove('active');
@@ -1973,9 +1967,11 @@ function saveAlloc(){
   amt = Math.abs(amt);
   if(curAllocType === 'sub') amt = -amt;
   
+  let accId = document.getElementById('alloc-account').value;
+  
   const w=walletById(curWId); if(!w)return;
   if(!w.allocations[selMonth])w.allocations[selMonth]=[];
-  w.allocations[selMonth].push({amt,note:document.getElementById('alloc-note').value.trim()||null,ts:Date.now()});
+  w.allocations[selMonth].push({amt, note:document.getElementById('alloc-note').value.trim()||null, accountId: accId, ts:Date.now()});
   saveS();
   closeSheet('sh-alloc');
   openWalletDetail(curWId);
@@ -2120,15 +2116,14 @@ document.addEventListener('click',function(e){
             if(diff !== 0) {
                 let d = new Date();
                 let dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-                let type = diff > 0 ? 'income' : 'expense';
                 
                 S.transactions.push({
                     id: genId(),
                     date: dateStr,
-                    amount: Math.abs(diff),
+                    amount: diff, 
                     description: "Rettifica saldo manuale",
-                    category: "Generale", 
-                    type: type,
+                    category: "Sistema", 
+                    type: 'adjustment',
                     accountId: id, 
                     ts: Date.now()
                 });
