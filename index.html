@@ -196,7 +196,6 @@ input, select, textarea {
 .cat-name {flex:1;font-size:14px;font-weight:500;color:var(--tx)}
 .cat-pct {font-size:13px;color:var(--tx3);font-family:var(--mono);width:45px;text-align:right}
 .cat-amt {font-family:var(--mono);font-size:14px;font-weight:600;color:var(--tx)}
-
 .sort-item { -webkit-user-select: none; user-select: none; }
 .drag-handle { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: none; cursor: grab; padding: 10px 10px 10px 0; margin-left: -8px; color: var(--tx3); display: flex; align-items: center; }
 .drag-handle svg { width: 18px; height: 18px; stroke-width: 2.5; }
@@ -375,7 +374,7 @@ input, select, textarea {
 <div class="page active" id="pg-home">
   <div class="topbar">
       <div><div class="tb-title">Dashboard</div><div class="tb-sub" id="home-sub"></div></div>
-      <button class="settings-btn" id="btn-settings" data-a="open-settings"></button>
+      <div class="settings-btn" id="btn-settings" data-a="open-settings"></div>
   </div>
   <div class="pw">
     <div class="hero-clean"><div class="hc-lbl">Liquidità Totale</div><div class="hc-val" id="h-liquidita" data-a="open-liquidity">€0.00</div><div class="hc-badge"><div class="hc-badge-lbl">Netto Mese</div><div class="hc-badge-val" id="h-bal-s"><span id="h-bal-icon"></span><span id="h-bal">€0.00</span></div></div></div>
@@ -642,9 +641,6 @@ input, select, textarea {
 </div>
 
 <script>
-// ════════════════════════════════════════════════════════════════
-// SVG ICONS E SISTEMA
-// ════════════════════════════════════════════════════════════════
 const Ics = {
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>',
   list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>',
@@ -695,7 +691,6 @@ const Ics = {
   lips: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s2-4.5 6-4.5c2 0 3 1 4 2 1-1 2-2 4-2 4 0 6 4.5 6 4.5s-2 5.5-10 5.5S2 12 2 12z"/><path d="M2 12s3.5 2 10 2 10-2 10-2"/></svg>'
 };
 
-// UI Injects
 document.getElementById('icon-chevron-left-2').innerHTML = Ics.chevronL;
 document.getElementById('icon-chevron-right-2').innerHTML = Ics.chevronR;
 document.getElementById('icon-chevron-left-3').innerHTML = Ics.chevronL;
@@ -713,7 +708,6 @@ document.getElementById('btn-wd-edit').innerHTML = Ics.edit + ' Modifica';
 document.getElementById('btn-add-wallet').innerHTML = Ics.plus + ' Crea Nuovo Portafoglio';
 document.getElementById('h-bal-icon').innerHTML = Ics.target;
 
-// Add choices
 document.getElementById('btn-ch-out').innerHTML = `<div style="background:var(--ra); width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${Ics.down}</div> <span style="font-weight:600">Uscita</span>`;
 document.getElementById('btn-ch-in').innerHTML = `<div style="background:var(--gra); width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${Ics.up}</div> <span style="font-weight:600">Entrata</span>`;
 document.getElementById('btn-ch-fx').innerHTML = `<div style="background:var(--sf2); width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${Ics.plus}</div> <span style="font-weight:600">Spesa Fissa</span>`;
@@ -834,7 +828,6 @@ function loadS(){
     S.wallets = Array.isArray(S.wallets) ? S.wallets : [];
     S.accounts = Array.isArray(S.accounts) ? S.accounts : [];
 
-    // FIX CRITICO: Protezione totale per convertire le vecchie categorie nel nuovo formato a Cluster senza bloccare l'app
     const defaultGroups = {
         "Spese Fisse ed Essenziali": ["Affitto e Casa", "Bollette", "Spesa al Supermercato", "Trasporti", "Salute e Prevenzione"],
         "Stile di Vita e Passioni": ["Corsa e Sport", "Viaggi e Vacanze", "Abbonamenti e Servizi", "Ristoranti e Socialità", "Shopping", "Cultura e Svago", "Sigarette"],
@@ -847,9 +840,7 @@ function loadS(){
         S.categories = JSON.parse(JSON.stringify(defaultGroups));
         if (Array.isArray(oldCategories)) {
             let known = [];
-            Object.values(S.categories).forEach(arr => {
-                if(Array.isArray(arr)) known.push(...arr);
-            });
+            for (let k in S.categories) { known = known.concat(S.categories[k]); }
             oldCategories.forEach(c => {
                 if (c && !known.includes(c)) S.categories["Generale"].push(c);
             });
@@ -869,12 +860,22 @@ function loadS(){
     }
     
     let needsSave = false;
+    
+    // Assegna vecchi dati senza conto al conto di default
+    let defaultAccId = S.accounts[0].id;
     S.transactions.forEach((t, i) => {
+        if (!t.accountId) { t.accountId = defaultAccId; needsSave = true; }
         if (t && !t.ts && t.date) {
             t.ts = Date.parse(t.date) + i; 
             needsSave = true;
         }
     });
+    
+    S.fixedExpenses.forEach(f => {
+        if (!f.accountId) { f.accountId = defaultAccId; needsSave = true; }
+        if (!f.skippedMonths) { f.skippedMonths = []; needsSave = true; }
+    });
+
     if (needsSave) saveS();
 
     try { updateSelects(); } catch (e) { console.error("UpdateSelects error", e); }
@@ -1322,12 +1323,15 @@ function closeAll(){
 function renderHome(){
   const ym = thisMonth(); const inc = totalIncome(ym), exp = totalExpense(ym), bal = netBalance(ym);
   document.getElementById('h-liquidita').textContent = fmt(getAccumulatedWealthUpTo(ym));
-  const bv=document.getElementById('h-bal'); bv.textContent=fmt(inc - exp); bv.style.color = (inc - exp) >= 0 ? 'var(--tx)' : 'var(--red)';
+  
+  // NETTO MESE (Entrate reali - Spese reali, escludendo le rettifiche dai widget colorati)
+  let nettoRealeMese = inc - exp;
+  const bv=document.getElementById('h-bal'); bv.textContent=fmt(nettoRealeMese); bv.style.color = nettoRealeMese >= 0 ? 'var(--tx)' : 'var(--red)';
   const bs=document.getElementById('h-bal-s'); const bi=document.getElementById('h-bal-icon');
-  if((inc - exp) >= 0) { bs.classList.remove('neg'); bs.classList.add('pos'); bi.innerHTML = Ics.up; } else { bs.classList.remove('pos'); bs.classList.add('neg'); bi.innerHTML = Ics.down; }
+  if(nettoRealeMese >= 0) { bs.classList.remove('neg'); bs.classList.add('pos'); bi.innerHTML = Ics.up; } else { bs.classList.remove('pos'); bs.classList.add('neg'); bi.innerHTML = Ics.down; }
   document.getElementById('h-inc').textContent=fmt(inc); document.getElementById('h-exp').textContent=fmt(exp);
   
-  let savRate = inc > 0 ? Math.max(0, ((inc - exp) / inc) * 100) : 0;
+  let savRate = inc > 0 ? Math.max(0, (nettoRealeMese / inc) * 100) : 0;
   let zeroDays = getZeroSpendDaysInRange(startOfMonth(ym), endOfMonth(ym));
   let burnRate = inc > 0 ? Math.round((fixedTotal(ym) / inc) * 100) : 0;
   
@@ -1337,11 +1341,10 @@ function renderHome(){
   document.getElementById('h-kpi-zero-text').innerHTML = msgZero;
   
   let activeW = getActiveWallets(ym);
-  let tInc = totalIncome(ym); let tFix = fixedTotal(ym); let tVar = varExpense(ym);
   let wImpact = 0; let wSpentTotal = 0;
   activeW.forEach(w => { let alloc = walletMonthAlloc(w.id, ym); let spent = walletMonthSpent(w.id, ym); wImpact += Math.max(alloc, spent); wSpentTotal += spent; });
-  let unassignedExp = tVar - wSpentTotal;
-  let disp = tInc - tFix - wImpact - unassignedExp;
+  let unassignedExp = exp - fixedTotal(ym) - wSpentTotal;
+  let disp = inc - fixedTotal(ym) - wImpact - unassignedExp;
   document.getElementById('h-disp').textContent = fmt(disp);
 
   let insights = [];
@@ -1712,7 +1715,7 @@ document.addEventListener('click',function(e){
     
     case 'prompt-adj-bal':
         let currentB = parseFloat(el.dataset.bal);
-        let newVal = prompt(`Inserisci il saldo reale che hai attualmente:`, currentB.toFixed(2));
+        let newVal = prompt(`Inserisci il saldo reale che hai attualmente in cassa:`, currentB.toFixed(2));
         if(newVal !== null && newVal !== "") {
             let parsedNew = parseAmt(newVal);
             let diff = parsedNew - currentB;
@@ -1771,7 +1774,15 @@ document.addEventListener('click',function(e){
   }
 },true);
 
-renderIconColGrids(); loadS(); updateLabels(); renderHome();
+// INITIALIZATION
+try {
+    renderIconColGrids();
+    loadS(); 
+    updateLabels(); 
+    renderHome();
+} catch(e) {
+    console.error("Errore di inizializzazione critica", e);
+}
 
 if (window.visualViewport) {
     const handleViewportChange = () => {
