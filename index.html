@@ -23,7 +23,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 
 <style>
-:root{
+/* TEMA SCURO (PREDEFINITO) */
+:root {
   --bg: #000000;
   --sf: #111111; 
   --sf2: #1e1e1e;
@@ -44,11 +45,40 @@
   --tx2: #9ca3af;
   --tx3: #6b7280;
   
+  --bnav-bg: rgba(10, 10, 10, 0.85);
+  --overlay-bg: rgba(0, 0, 0, 0.8);
+  
   --mono: 'JetBrains Mono', monospace;
   --sans: 'Inter', sans-serif;
   --r: 24px; 
   --rs: 16px;
   --nav: 86px; 
+}
+
+/* TEMA CHIARO */
+:root[data-theme="light"] {
+  --bg: #f3f4f6;
+  --sf: #ffffff; 
+  --sf2: #f9fafb;
+  --bd: rgba(0, 0, 0, 0.08); 
+  
+  --gold: #d97706;
+  --ga: rgba(217, 119, 6, 0.12);
+  --green: #059669;
+  --gra: rgba(5, 150, 105, 0.12);
+  --red: #dc2626;
+  --ra: rgba(220, 38, 38, 0.12);
+  --blue: #2563eb;
+  --ba: rgba(37, 99, 235, 0.12);
+  --purple: #7c3aed;
+  --pa: rgba(124, 58, 237, 0.12);
+  
+  --tx: #111827;
+  --tx2: #4b5563;
+  --tx3: #6b7280;
+  
+  --bnav-bg: rgba(255, 255, 255, 0.85);
+  --overlay-bg: rgba(255, 255, 255, 0.7);
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -104,7 +134,7 @@ input, select, textarea {
 /* TABS ANALISI */
 .period-tabs { display:flex; background:var(--sf); border:1px solid var(--bd); border-radius:100px; padding:4px; margin-bottom:24px; }
 .pt-btn { flex:1; text-align:center; padding:10px; font-size:13px; font-weight:600; color:var(--tx3); border-radius:100px; cursor:pointer; transition:all 0.2s; border:none; background:transparent;}
-.pt-btn.active { background:var(--sf2); color:var(--tx); box-shadow:0 2px 8px rgba(0,0,0,0.3); }
+.pt-btn.active { background:var(--sf2); color:var(--tx); box-shadow:0 2px 8px rgba(0,0,0,0.05); }
 
 /* HERO SECTION */
 .hero-clean { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px 0 32px; position: relative; }
@@ -229,12 +259,11 @@ input, select, textarea {
 .drag-handle:active { cursor: grabbing; color: var(--tx); }
 .sortable-ghost { opacity: 0.2; }
 .sortable-chosen { background: var(--sf2) !important; transform: scale(1.02); z-index: 10; border-radius: 8px; }
-/* Classe fondamentale per iOS/Mobile quando disattiviamo HTML5 Drag */
 .sortable-fallback { 
     z-index: 9999 !important; 
     background: var(--sf2) !important; 
     border-radius: 8px; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
     pointer-events: none !important; 
     opacity: 1 !important; 
 }
@@ -268,7 +297,7 @@ input, select, textarea {
 .w-avg{font-size:10px;color:var(--tx3);font-family:var(--mono);}
 
 /* BOTTOM NAV */
-.bnav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 2px 12px env(safe-area-inset-bottom, 0px); z-index: 50; }
+.bnav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bnav-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid var(--bd); display: flex; align-items: center; justify-content: space-between; padding: 2px 12px env(safe-area-inset-bottom, 0px); z-index: 50; }
 .nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center; gap:2px;padding:4px 0 2px;cursor:pointer;color:var(--tx3);font-size:10px;font-weight:600; user-select:none;touch-action:manipulation}
 .nt.active{color:var(--tx)}
 .nt-i{display:flex;align-items:center;justify-content:center}
@@ -276,9 +305,9 @@ input, select, textarea {
 
 /* FAB */
 .fab-w{flex:0 0 72px;display:flex;justify-content:center;align-items:center}
-.fab{width:54px;height:54px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-14px); box-shadow: 0 4px 16px rgba(255,255,255,0.15); transition:all 0.2s;} 
+.fab{width:54px;height:54px;border-radius:50%;background:var(--tx);color:var(--bg);border:none; cursor:pointer;display:flex;align-items:center;justify-content:center; touch-action:manipulation;transform:translateY(-14px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); transition:all 0.2s;} 
 .fab svg{width:24px;height:24px;stroke-width:2.5}
-.fab:active{transform:translateY(-14px) scale(0.92); background: #d0d0d0;}
+.fab:active{transform:translateY(-14px) scale(0.92); opacity:0.8;}
 
 /* UTILS */
 .empty{text-align:center;padding:40px 20px;color:var(--tx3)}
@@ -294,10 +323,10 @@ input, select, textarea {
 .chart-lbl{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:16px;text-align:center; text-transform:uppercase; letter-spacing:0.05em;}
 
 /* OVERLAY & SHEETS */
-.overlay{position:fixed;inset:0;background:rgba(0, 0, 0, 0.8);z-index:90; backdrop-filter: blur(4px); opacity:0;pointer-events:none;transition:opacity .3s ease}
+.overlay{position:fixed;inset:0;background:var(--overlay-bg);z-index:90; backdrop-filter: blur(4px); opacity:0;pointer-events:none;transition:opacity .3s ease}
 .overlay.on{opacity:1;pointer-events:all}
 
-.confirm-overlay{position:fixed;inset:0;background:rgba(0, 0, 0, 0.8);z-index:190; backdrop-filter: blur(4px); opacity:0;pointer-events:none;transition:opacity .3s ease}
+.confirm-overlay{position:fixed;inset:0;background:var(--overlay-bg);z-index:190; backdrop-filter: blur(4px); opacity:0;pointer-events:none;transition:opacity .3s ease}
 .confirm-overlay.on{opacity:1;pointer-events:all}
 
 /* TENDINE */
@@ -317,7 +346,7 @@ input, select, textarea {
 .f-acts { display: flex; gap: 12px; flex-shrink: 0; padding: 16px 24px; padding-bottom: max(24px, env(safe-area-inset-bottom, 20px)); background: var(--sf); border-top: 1px solid var(--bd); position: relative; z-index: 101;}
 
 .btn{flex:1;padding:18px;border-radius:16px;font-family:var(--sans);font-size:16px; font-weight:600;cursor:pointer;border:none;touch-action:manipulation;transition:all 0.2s;}
-.btnp{background:var(--tx);color:var(--bg);}.btnp:active{background:#d0d0d0}
+.btnp{background:var(--tx);color:var(--bg);}.btnp:active{opacity:0.8;}
 .btng{background:var(--bg);color:var(--tx);border:1px solid var(--bd);}.btng:active{background:var(--sf2)}
 
 /* Quick Links Periodo */
@@ -376,8 +405,8 @@ input, select, textarea {
 .cs-body{font-size:15px;color:var(--tx2);line-height:1.6;margin-bottom:28px}
 
 /* ONBOARDING MODAL */
-#onboarding-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:9999; flex-direction:column; justify-content:center; align-items:center; padding:20px; }
-.ob-card { background:var(--sf); border:1px solid var(--bd); border-radius:28px; padding:32px 24px; width:100%; max-width:400px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.5); }
+#onboarding-modal { display:none; position:fixed; inset:0; background:var(--overlay-bg); backdrop-filter:blur(8px); z-index:9999; flex-direction:column; justify-content:center; align-items:center; padding:20px; }
+.ob-card { background:var(--sf); border:1px solid var(--bd); border-radius:28px; padding:32px 24px; width:100%; max-width:400px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.2); }
 .ob-icon { font-size:48px; margin-bottom:16px; }
 .ob-title { font-size:24px; font-weight:700; margin-bottom:12px; color:var(--tx); letter-spacing:-0.02em; }
 .ob-desc { color:var(--tx2); font-size:14px; line-height:1.5; margin-bottom:24px; }
@@ -500,6 +529,13 @@ input, select, textarea {
     
     <div class="sec-row" style="margin-bottom:12px;"><span class="sec" style="margin:0; color:var(--tx3);">Sistema</span></div>
     <div class="dash-io" style="margin-bottom:20px;">
+        <button class="io-card" data-a="toggle-theme" style="cursor:pointer; border:1px solid var(--bd); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px; grid-column: 1 / -1;">
+            <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+                 <div class="io-lbl">Aspetto</div>
+                 <div id="theme-icon" style="color:var(--tx); width:18px; height:18px;"></div>
+            </div>
+            <div class="io-val" style="font-size:14px;" id="theme-lbl">Tema Scuro</div>
+        </button>
         <button class="io-card" data-a="force-update" style="cursor:pointer; border:1px solid rgba(96, 165, 250, 0.3); background:var(--ba); text-align:left; width:100%; padding:14px; display:flex; flex-direction:column; align-items:flex-start; gap:4px; grid-column: 1 / -1;">
             <div class="io-lbl" style="color:var(--blue);">App</div>
             <div class="io-val" style="font-size:14px; color:var(--tx);">Cerca Aggiornamenti</div>
@@ -694,6 +730,8 @@ const Ics = {
   chevronR: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>',
   empty: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
   settings: '<svg viewBox="-2 -2 28 28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>',
+  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>',
+  moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>',
   
   game: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect><line x1="6" y1="12" x2="10" y2="12"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line></svg>',
   shirt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>',
@@ -816,7 +854,8 @@ let S = {
     accounts: [], 
     initialBalance: null, 
     initialBalanceMonth: null, 
-    userName: null
+    userName: null,
+    theme: 'dark' // Valore per il tema
 };
 
 const SKEY = 'finanze_v6';
@@ -851,6 +890,29 @@ let curTxType  = 'expense';
 let curWId     = null;
 let selIcon    = ICONS[0];
 let selColor   = COLORS[0];
+
+// ═════ GESTIONE TEMA ═════
+function applyTheme() {
+    let theme = S.theme || 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+    
+    let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+        metaThemeColor.setAttribute('content', theme === 'dark' ? '#000000' : '#f3f4f6');
+    }
+    
+    let tLbl = document.getElementById('theme-lbl');
+    let tIco = document.getElementById('theme-icon');
+    if(tLbl) tLbl.textContent = theme === 'dark' ? 'Passa a Modalità Chiara' : 'Passa a Modalità Scura';
+    if(tIco) tIco.innerHTML = theme === 'dark' ? Ics.sun : Ics.moon;
+}
+
+function toggleTheme() {
+    S.theme = (S.theme === 'dark' || !S.theme) ? 'light' : 'dark';
+    saveS();
+    applyTheme();
+    refreshUI(); // Re-renderizza i grafici coi nuovi colori
+}
 
 function renderIconColGrids() {
     document.getElementById('icon-grid').innerHTML = ICONS.map(i => `<div class="iopt ${i===selIcon?'sel':''}" data-a="sel-icon" data-v="${i}">${Ics[i]||''}</div>`).join('');
@@ -893,6 +955,7 @@ function loadS(){
             if(S.initialBalanceMonth === undefined) {
                 S.initialBalanceMonth = getAppStartMonth();
             }
+            if(!S.theme) S.theme = 'dark';
         }
     }catch(e){}
     
@@ -929,6 +992,7 @@ function loadS(){
     });
     if(needsSave) saveS();
     
+    applyTheme();
     updateSelects();
     checkOnboarding();
     
@@ -1698,7 +1762,18 @@ function savePeriod() {
 
 function renderAnalisi(){
     document.getElementById('ana-period-lbl').textContent = formatPeriod(anaDateStart, anaDateEnd);
-    Chart.defaults.font.family = "'Inter', sans-serif"; Chart.defaults.color = "#9ca3af";
+    
+    // Assicuriamoci che i grafici leggano i colori del tema
+    let cssVars = getComputedStyle(document.documentElement);
+    let cTx2 = cssVars.getPropertyValue('--tx2').trim() || '#9ca3af';
+    let cGr = cssVars.getPropertyValue('--green').trim() || '#10b981';
+    let cRd = cssVars.getPropertyValue('--red').trim() || '#f87171';
+    let cPu = cssVars.getPropertyValue('--purple').trim() || '#a78bfa';
+    let cSf = cssVars.getPropertyValue('--sf').trim() || '#111111';
+
+    Chart.defaults.font.family = "'Inter', sans-serif"; 
+    Chart.defaults.color = cTx2;
+    
     let inc = incInRange(anaDateStart, anaDateEnd); let totalExp = varExpInRange(anaDateStart, anaDateEnd) + fixedInRange(anaDateStart, anaDateEnd);
     let endYM = anaDateEnd.slice(0,7);
 
@@ -1723,7 +1798,7 @@ function renderAnalisi(){
                 return `<div class="cat-item"><div class="cat-color" style="background:${color}"></div><div class="cat-name">${c.name}</div><div class="cat-pct">${pct}%</div><div class="cat-amt">${fmt(c.amt)}</div></div>`;
             }).join('');
             if(catChart) catChart.destroy();
-            catChart = new Chart(document.getElementById('cat-chart'), { type: 'doughnut', data: { labels: catArray.map(c=>c.name), datasets: [{ data: catArray.map(c=>c.amt), backgroundColor: catArray.map((c, i)=>CAT_COLORS[c.name]||CHART_COLORS[i % CHART_COLORS.length]), borderWidth: 2, borderColor: '#151515' }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false } } } });
+            catChart = new Chart(document.getElementById('cat-chart'), { type: 'doughnut', data: { labels: catArray.map(c=>c.name), datasets: [{ data: catArray.map(c=>c.amt), backgroundColor: catArray.map((c, i)=>CAT_COLORS[c.name]||CHART_COLORS[i % CHART_COLORS.length]), borderWidth: 2, borderColor: cSf }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false } } } });
         } else {
             document.getElementById('ana-cat-list').innerHTML = `<div class="empty"><div class="empty-t">Nessuna spesa nel periodo</div></div>`;
             if(catChart) catChart.destroy();
@@ -1742,8 +1817,8 @@ function renderAnalisi(){
             data: { 
                 labels: cfLabels, 
                 datasets: [
-                    { label:'Entrate', data: cfInc, backgroundColor: '#10b981', borderRadius: 4, barPercentage: 0.6, categoryPercentage: 0.8 }, 
-                    { label:'Uscite', data: cfExp, backgroundColor: '#f87171', borderRadius: 4, barPercentage: 0.6, categoryPercentage: 0.8 }
+                    { label:'Entrate', data: cfInc, backgroundColor: cGr, borderRadius: 4, barPercentage: 0.6, categoryPercentage: 0.8 }, 
+                    { label:'Uscite', data: cfExp, backgroundColor: cRd, borderRadius: 4, barPercentage: 0.6, categoryPercentage: 0.8 }
                 ] 
             },
             options: { 
@@ -1826,15 +1901,15 @@ function renderAnalisi(){
         const sparkOpts = { responsive: true, maintainAspectRatio: false, layout: { padding: 4 }, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } } };
         
         if(prevEoyChart) prevEoyChart.destroy();
-        prevEoyChart = new Chart(document.getElementById('ch-prev-eoy'), { type: 'line', data: { labels: ['Ora', 'Fine Anno'], datasets: [{ data: [totalLiq, projLiq], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.15)', borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: '#10b981', pointRadius: 3 }] }, options: sparkOpts });
+        prevEoyChart = new Chart(document.getElementById('ch-prev-eoy'), { type: 'line', data: { labels: ['Ora', 'Fine Anno'], datasets: [{ data: [totalLiq, projLiq], borderColor: cGr, backgroundColor: cGr+'26', borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: cGr, pointRadius: 3 }] }, options: sparkOpts });
         
         if(prevBarChart) prevBarChart.destroy();
-        prevBarChart = new Chart(document.getElementById('ch-prev-bar'), { type: 'bar', data: { labels: ['Entrate', 'Uscite'], datasets: [{ data: [totalIncAll/mCount, avgExp], backgroundColor: ['#10b981', '#f87171'], borderRadius: 6, barPercentage: 0.7 }] }, options: sparkOpts });
+        prevBarChart = new Chart(document.getElementById('ch-prev-bar'), { type: 'bar', data: { labels: ['Entrate', 'Uscite'], datasets: [{ data: [totalIncAll/mCount, avgExp], backgroundColor: [cGr, cRd], borderRadius: 6, barPercentage: 0.7 }] }, options: sparkOpts });
         
         if(prevRunChart) prevRunChart.destroy();
         let runData = []; let runLabels = [];
         for(let i=0; i<=5; i++) { runData.push(Math.max(0, totalLiq - (avgExp * i))); runLabels.push(i); }
-        prevRunChart = new Chart(document.getElementById('ch-prev-run'), { type: 'line', data: { labels: runLabels, datasets: [{ data: runData, borderColor: '#a78bfa', backgroundColor: 'rgba(167, 139, 250, 0.15)', borderWidth: 3, tension: 0.4, fill: true, pointRadius: 0 }] }, options: sparkOpts });
+        prevRunChart = new Chart(document.getElementById('ch-prev-run'), { type: 'line', data: { labels: runLabels, datasets: [{ data: runData, borderColor: cPu, backgroundColor: cPu+'26', borderWidth: 3, tension: 0.4, fill: true, pointRadius: 0 }] }, options: sparkOpts });
     }
 }
 
@@ -2002,7 +2077,6 @@ function saveAlloc(){
   if(!w.allocations[selMonth])w.allocations[selMonth]=[];
   w.allocations[selMonth].push({amt,note:document.getElementById('alloc-note').value.trim()||null,ts:Date.now()});
   
-  // Se l'utente seleziona un conto di provenienza, crea un movimento nascosto
   if (accId) {
       let hType = amt > 0 ? 'hidden_minus' : 'hidden_plus';
       let d = new Date();
@@ -2122,6 +2196,8 @@ document.addEventListener('click',function(e){
     case 'open-settings': openSheet('sh-settings'); break; 
     case 'close-sh-settings': closeSheet('sh-settings'); break;
     
+    case 'toggle-theme': toggleTheme(); break;
+
     case 'open-profile': openProfile(); break;
     case 'close-sh-profile': closeSheet('sh-profile'); break;
     case 'save-profile': saveProfile(); break;
@@ -2147,7 +2223,6 @@ document.addEventListener('click',function(e){
     case 'open-liquidity': openLiquidity(); break;
     case 'close-sh-liquidity': closeSheet('sh-liquidity'); break;
     
-    // GESTIONE RETTIFICA SALDO CON MOVIMENTI NASCOSTI
     case 'prompt-adj-bal':
         let currentB = parseFloat(el.dataset.bal);
         let newVal = prompt(`Inserisci il saldo reale che hai attualmente:`, currentB.toFixed(2));
